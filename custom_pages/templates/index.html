@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="bg-dark text-white text-center p-5"
+    style="background:url('https://images.unsplash.com/photo-1555992336-03a23c7b20ee') center/cover;">
+    <div class="container py-5">
+        <h1 class="display-3 fw-bold">Welcome to Restro</h1>
+        <p class="lead">Experience the finest dining</p>
+        <a href="{% url 'menu' %}" class="btn btn-warning btn-lg mt-3">Explore Menu</a>
+    </div>
+</div>
+
+<div class="container py-5 text-center">
+    <h2 class="mb-4">Why Choose Us?</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Fresh Ingredients</h4>
+        </div>
+        <div class="col-md-4">
+            <h4>Expert Chefs</h4>
+        </div>
+        <div class="col-md-4">
+            <h4>Cozy Ambience</h4>
+        </div>
+    </div>
+</div>
+
+<div class="bg-light py-5">
+    <div class="container text-center">
+        <h2 class="mb-4">Customer Reviews</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <blockquote class="blockquote">
+                    <p>"Amazing food and great service!"</p>
+                    <footer class="blockquote-footer">- Sarah K.</footer>
+                </blockquote>
+            </div>
+            <div class="col-md-4">
+                <blockquote class="blockquote">
+                    <p>"A delightful dining experience."</p>
+                    <footer class="blockquote-footer">- John D.</footer>
+                </blockquote>
+            </div>
+            <div class="col-md-4">
+                <blockquote class="blockquote">
+                    <p>"Will definitely come back again!"</p>
+                    <footer class="blockquote-footer">- Emily R.</footer>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

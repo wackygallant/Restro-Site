@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container px-3 px-lg-4 my-4">
+    <div class="text-justify text-black">
+        <h1 class="display-4 fw-bolder">{{ menu_item.name }}</h1>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card mb-3 w-100">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{ menu_item.image.url }}" 
+                     class="img-fluid rounded-start h-100 w-100"
+                     alt="{{ menu_item.name }}" 
+                     style="object-fit: cover;">
+            </div>
+
+            <div class="col-md-8">
+                <div class="card-body">
+
+                    <!-- TOP ROW -->
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h4 class="card-title mb-2"><strong>Details</strong></h4>
+                        <a href="{% url 'menu' %}" class="btn btn-primary btn-sm">Back</a>
+                    </div>
+
+                    <p class="card-text">$ {{ menu_item.price }}</p>
+                    <p class="card-text"><strong>Category:</strong> {{ menu_item.category }}</p>
+                    <p class="card-text">{{ menu_item.description }}</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

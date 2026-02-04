@@ -1,0 +1,12 @@
+/booking/migrations
+/core/migrations
+/menu/migrations/
+/orders/migrations/
+/restro/migrations/
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+/venv/
+.env
+Django_Backend_Project_Plan.pdf

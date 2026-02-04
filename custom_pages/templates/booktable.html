@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-4">Book a Table</h1>
+
+    <form class="col-md-6 mx-auto">
+        <input type="text" class="form-control mb-3" placeholder="Full Name">
+        <input type="email" class="form-control mb-3" placeholder="Email">
+        <input type="date" class="form-control mb-3">
+        <input type="time" class="form-control mb-3">
+        <button class="btn btn-warning w-100">Reserve Now</button>
+    </form>
+</div>
+{% endblock %}
