@@ -24,9 +24,13 @@
                 <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'menu' %}">Menu</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'book' %}">Book Table</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Login</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Register</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'booking_page' %}">Book Table</a></li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
             </ul>
         </div>
     </div>

@@ -8,7 +8,3 @@ class HomePage(View):
 class AboutPage(View):
     def get(self, request):
         return render(request, "about.html", {})
-
-class BookingPage(View):
-    def get(self, request):
-        return render(request, "booktable.html", {})

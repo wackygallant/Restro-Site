@@ -31,8 +31,6 @@ DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'users.User'
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,7 +43,7 @@ INSTALLED_APPS = [
     'custom_pages',
     'menu',
     'booking',
-    'users',
+    'user_accounts',
 ]
 
 MIDDLEWARE = [
@@ -63,7 +61,9 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / "templates",
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
