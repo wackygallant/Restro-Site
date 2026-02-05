@@ -1,47 +1,57 @@
 {% extends "base.html" %}
-
 {% block content %}
 
-<div class="container py-5">
-  <div class="container py-5">
-    <h1 class="text-center mb-5">Our Menu</h1>
-    <ul class="nav nav-tabs justify-content-center" id="myTab" role="tablist">
-      <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="{% url 'menu' %}">
-          <h3>All</h3>
-        </a>
-      </li>
-      {% for category in options %}
-      <li class="nav-item">
-        <a class="nav-link" aria-current="page" href="{% url 'category_filter' category.slug %}">
-          <h3>{{ category.name }}</h3>
-        </a>
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
+<section class="container py-5">
+  <h1 class="text-center fw-bold mb-5">Our Menu</h1>
 
-  <div class="row g-4"> <!-- ONE row for all items -->
+  <!-- CATEGORY FILTER -->
+  <ul class="nav menu-categories justify-content-center mb-5 flex-wrap gap-2">
+    <li class="nav-item">
+      <a class="nav-link px-4 py-2 rounded-pill {% if not request.resolver_match.kwargs.category_slug %}active-category{% endif %}"
+        href="{% url 'menu' %}">
+        All
+      </a>
+    </li>
+
+    {% for category in options %}
+    <li class="nav-item">
+      <a class="nav-link px-4 py-2 rounded-pill 
+         {% if request.resolver_match.kwargs.category_slug == category.slug %}active-category{% endif %}"
+        href="{% url 'category_filter' category.slug %}">
+        {{ category.name }}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <!-- MENU ITEMS -->
+  <div class="row g-4">
     {% if filtered_menu_items %}
     {% for menu_item in filtered_menu_items %}
-    <div class="col-lg-3 col-md-6 col-sm-12"> <!-- 4 cols on large screens -->
-      <div class="card h-100 shadow-sm">
-        <img src="{{ menu_item.image.url }}" class="card-img-top" alt="{{ menu_item.name }}">
+    <div class="col-lg-3 col-md-6 col-sm-12">
+      <div class="card h-100 border-0 shadow-sm menu-card">
+
+        <div class="img-wrapper">
+          <img src="{{ menu_item.image.url }}" class="card-img-top" alt="{{ menu_item.name }}">
+          <span class="price-badge">${{ menu_item.price }}</span>
+        </div>
+
         <div class="card-body text-center">
-          <h5 class="card-title">{{ menu_item.name }}</h5>
-          <p class="card-text fw-bold text-success">${{ menu_item.price }}</p>
-          <a href="{% url 'menu_item_detail' menu_item.slug %}" class="btn btn-primary btn-sm">View Details</a>
+          <h5 class="card-title fw-semibold">{{ menu_item.name }}</h5>
+          <a href="{% url 'menu_item_detail' menu_item.slug %}" class="btn btn-dark btn-sm mt-2 px-3">
+            View Details
+          </a>
         </div>
       </div>
     </div>
     {% endfor %}
     {% else %}
-    <div class="alert alert-warning text-center" role="alert">
-      No items found in this category.
+    <div class="col-12">
+      <div class="alert alert-warning text-center shadow-sm">
+        No items found in this category.
+      </div>
     </div>
     {% endif %}
-
   </div>
-</div>
-
+</section>
 {% endblock %}

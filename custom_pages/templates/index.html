@@ -1,53 +1,85 @@
 {% extends "base.html" %}
-
 {% block content %}
-<div class="bg-dark text-white text-center p-5"
-    style="background:url('https://images.unsplash.com/photo-1555992336-03a23c7b20ee') center/cover;">
-    <div class="container py-5">
-        <h1 class="display-3 fw-bold">Welcome to Restro</h1>
-        <p class="lead">Experience the finest dining</p>
-        <a href="{% url 'menu' %}" class="btn btn-warning btn-lg mt-3">Explore Menu</a>
-    </div>
-</div>
 
-<div class="container py-5 text-center">
-    <h2 class="mb-4">Why Choose Us?</h2>
-    <div class="row">
-        <div class="col-md-4">
-            <h4>Fresh Ingredients</h4>
-        </div>
-        <div class="col-md-4">
-            <h4>Expert Chefs</h4>
-        </div>
-        <div class="col-md-4">
-            <h4>Cozy Ambience</h4>
+<!-- HERO SECTION -->
+<section class="position-relative text-white text-center">
+    <div class="hero-overlay d-flex align-items-center">
+        <div class="container py-5">
+            <h1 class="display-2 fw-bold">Welcome to Restro</h1>
+            <p class="lead fs-4">Experience the finest dining in town</p>
+            <a href="{% url 'menu' %}" class="btn btn-warning btn-lg px-4 mt-3 shadow">
+                Explore Menu
+            </a>
         </div>
     </div>
-</div>
+</section>
 
-<div class="bg-light py-5">
+<!-- WHY CHOOSE US -->
+<section class="py-5">
     <div class="container text-center">
-        <h2 class="mb-4">Customer Reviews</h2>
-        <div class="row">
+        <h2 class="fw-bold mb-5">Why Choose Us?</h2>
+        <div class="row g-4">
+
             <div class="col-md-4">
-                <blockquote class="blockquote">
-                    <p>"Amazing food and great service!"</p>
-                    <footer class="blockquote-footer">- Sarah K.</footer>
-                </blockquote>
+                <div class="card border-0 shadow-sm p-4 h-100">
+                    <div class="fs-1 mb-3">🥗</div>
+                    <h4 class="fw-semibold">Fresh Ingredients</h4>
+                    <p class="text-muted">Only locally sourced, high-quality ingredients.</p>
+                </div>
             </div>
+
             <div class="col-md-4">
-                <blockquote class="blockquote">
-                    <p>"A delightful dining experience."</p>
-                    <footer class="blockquote-footer">- John D.</footer>
-                </blockquote>
+                <div class="card border-0 shadow-sm p-4 h-100">
+                    <div class="fs-1 mb-3">👨‍🍳</div>
+                    <h4 class="fw-semibold">Expert Chefs</h4>
+                    <p class="text-muted">World-class chefs delivering perfection.</p>
+                </div>
             </div>
+
             <div class="col-md-4">
-                <blockquote class="blockquote">
-                    <p>"Will definitely come back again!"</p>
-                    <footer class="blockquote-footer">- Emily R.</footer>
-                </blockquote>
+                <div class="card border-0 shadow-sm p-4 h-100">
+                    <div class="fs-1 mb-3">🕯️</div>
+                    <h4 class="fw-semibold">Cozy Ambience</h4>
+                    <p class="text-muted">A warm and welcoming dining environment.</p>
+                </div>
             </div>
+
         </div>
     </div>
-</div>
+</section>
+
+<!-- REVIEWS -->
+<section class="bg-light py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold mb-5">What Our Guests Say</h2>
+        <div class="row g-4">
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-4 h-100">
+                    <p class="fst-italic">"Amazing food and great service!"</p>
+                    <div class="text-warning fs-5">★★★★★</div>
+                    <small class="text-muted">— Sarah K.</small>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-4 h-100">
+                    <p class="fst-italic">"A delightful dining experience."</p>
+                    <div class="text-warning fs-5">★★★★★</div>
+                    <small class="text-muted">— John D.</small>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-4 h-100">
+                    <p class="fst-italic">"Will definitely come back again!"</p>
+                    <div class="text-warning fs-5">★★★★★</div>
+                    <small class="text-muted">— Emily R.</small>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
 {% endblock %}

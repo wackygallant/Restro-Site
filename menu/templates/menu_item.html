@@ -1,40 +1,56 @@
 {% extends "base.html" %}
-
 {% block content %}
-<div class="container px-3 px-lg-4 my-4">
-    <div class="text-justify text-black">
-        <h1 class="display-4 fw-bolder">{{ menu_item.name }}</h1>
+
+<!-- PAGE HEADER (Matches site style) -->
+<div class="bg-dark text-white py-5 text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold">{{ menu_item.name }}</h1>
+        <p class="lead text-warning mb-0">${{ menu_item.price }}</p>
     </div>
 </div>
 
-<div class="container">
-    <div class="card mb-3 w-100">
+
+<div class="container my-5">
+    <div class="card border-0 shadow-lg overflow-hidden">
+
         <div class="row g-0">
-            <div class="col-md-4">
-                <img src="{{ menu_item.image.url }}" 
-                     class="img-fluid rounded-start h-100 w-100"
-                     alt="{{ menu_item.name }}" 
-                     style="object-fit: cover;">
+
+            <!-- IMAGE SIDE -->
+            <div class="col-lg-5">
+                <div class="h-100">
+                    <img src="{{ menu_item.image.url }}"
+                         class="w-100 h-100"
+                         alt="{{ menu_item.name }}"
+                         style="object-fit: cover; min-height: 350px;">
+                </div>
             </div>
 
-            <div class="col-md-8">
-                <div class="card-body">
+            <!-- DETAILS SIDE -->
+            <div class="col-lg-7">
+                <div class="card-body p-4 p-lg-5 d-flex flex-column h-100">
 
-                    <!-- TOP ROW -->
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h4 class="card-title mb-2"><strong>Details</strong></h4>
-                        <a href="{% url 'menu' %}" class="btn btn-primary btn-sm">Back</a>
+                    <h4 class="fw-bold mb-3">About this dish</h4>
+
+                    <p class="text-muted mb-3">
+                        <strong>Category:</strong> {{ menu_item.category }}
+                    </p>
+
+                    <p class="card-text flex-grow-1">
+                        {{ menu_item.description }}
+                    </p>
+
+                    <!-- BUTTONS -->
+                    <div class="mt-4">
+                        <a href="{% url 'menu' %}" class="btn btn-outline-dark">
+                            ← Back to Menu
+                        </a>
                     </div>
-
-                    <p class="card-text">$ {{ menu_item.price }}</p>
-                    <p class="card-text"><strong>Category:</strong> {{ menu_item.category }}</p>
-                    <p class="card-text">{{ menu_item.description }}</p>
 
                 </div>
             </div>
+
         </div>
     </div>
 </div>
-
 
 {% endblock %}
