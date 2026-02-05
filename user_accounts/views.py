@@ -1,10 +1,15 @@
 from django.shortcuts import redirect, render
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
+from user_accounts.forms import SignUpForm
 
 
 class LoginView(View):
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('home')
         return render(request, 'login.html',{})
     
     def post(self, request):
@@ -20,8 +25,24 @@ class LoginView(View):
 class LogoutView(View):
     def get(self, request):
         logout(request)
-        return redirect('login')
+        return redirect('home')
     
 class RegisterView(View):
     def get(self, request):
-        return render(request, 'register.html', {})
+        form = SignUpForm()
+        return render(request, 'register.html', {'form' : form })
+    
+    def post(self, request):
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            # Login the user after registration
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            message = 'Account created successfully'
+            return redirect('home')
+        else:
+            message = 'Please correct the error below.'
+        return render(request, 'register.html', {'form': form, 'message': message})
