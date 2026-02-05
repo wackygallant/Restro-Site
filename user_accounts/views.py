@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from user_accounts.forms import SignUpForm
+from utils import _utils
+from booking.models import Booking
 
 
 class LoginView(View):
@@ -46,3 +48,20 @@ class RegisterView(View):
         else:
             message = 'Please correct the error below.'
         return render(request, 'register.html', {'form': form, 'message': message})
+    
+class ProfileView(View):
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        
+        user = request.user
+        bookings = Booking.objects.filter(user=user.username).order_by('-date')
+        
+        context = {
+            'user': user,
+            'username': user.username,
+            'email': user.email,
+            'date_joined': user.date_joined,
+            'bookings': bookings,
+        }
+        return render(request, 'user_profile.html', context)

@@ -10,7 +10,7 @@
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    
+
 </head>
 
 <body>
@@ -42,7 +42,7 @@
 
                         <ul class="dropdown-menu dropdown-menu-end shadow">
                             {% if user.is_authenticated %}
-                            <li><a class="dropdown-item" href="#">View Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'profile' %}">View Profile</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
@@ -67,10 +67,47 @@
     <!-- FOOTER -->
     <footer class="text-center">
         © {% now "Y" %} Restro | Crafted with ❤️ using Django
+        <!-- NEWSLETTER SIGNUP -->
+        <section class="py-5 bg-dark text-white">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 text-center">
+                        <h3 class="fw-bold mb-2">Stay Updated</h3>
+                        <p class="mb-4">Subscribe to our newsletter for exclusive offers and new menu updates</p>
+                        <form class="d-flex gap-2">
+                            <input type="email" class="form-control form-control-lg" placeholder="Enter your email"
+                                required>
+                            <button type="submit" class="btn btn-warning btn-lg px-4">Subscribe</button>
+                        </form>
+                        <small class="text-muted mt-3 d-block">We respect your privacy. Unsubscribe at any time.</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOCIAL MEDIA LINKS -->
+        <section class="py-4 bg-light border-top">
+            <div class="container text-center">
+                <p class="text-muted mb-3">Follow Us On Social Media</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="#"
+                        class="btn btn-outline-dark btn-sm rounded-circle d-inline-flex align-items-center justify-content-center"
+                        style="width: 45px; height: 45px; font-size: 1.2rem;" title="Facebook">f</a>
+                    <a href="#"
+                        class="btn btn-outline-dark btn-sm rounded-circle d-inline-flex align-items-center justify-content-center"
+                        style="width: 45px; height: 45px; font-size: 1.2rem;" title="Instagram">📷</a>
+                    <a href="#"
+                        class="btn btn-outline-dark btn-sm rounded-circle d-inline-flex align-items-center justify-content-center"
+                        style="width: 45px; height: 45px; font-size: 1.2rem;" title="Twitter">𝕏</a>
+                    <a href="#"
+                        class="btn btn-outline-dark btn-sm rounded-circle d-inline-flex align-items-center justify-content-center"
+                        style="width: 45px; height: 45px; font-size: 1.2rem;" title="YouTube">▶</a>
+                </div>
+            </div>
+        </section>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-
 </html>

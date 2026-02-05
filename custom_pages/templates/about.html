@@ -1,38 +1,274 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="container py-5">
-    <h1 class="text-center mb-4">About Us</h1>
-    <p class="lead text-center">We serve delicious food with love and passion.</p>
 
-    <div class="row mt-5">
-        <div class="col-md-6">
-            <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1" class="img-fluid rounded">
-        </div>
-        <div class="col-md-6">
-            <h3>Our Story</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque hendrerit nunc et ex tincidunt, in
-                consectetur ante rhoncus. Cras magna arcu, fermentum sed augue congue, molestie tempor diam.
-                Pellentesque sollicitudin sapien ut facilisis ullamcorper. Etiam ullamcorper cursus sagittis. Vivamus
-                sit amet vehicula sem, et porta eros. Pellentesque tempor nisi nec augue sollicitudin tincidunt. In
-                scelerisque tellus lectus, at interdum nulla ullamcorper non. Curabitur sed purus in mi rutrum iaculis.
-                Sed et velit bibendum, fringilla neque eu, dignissim ligula. Vivamus at congue nunc. Nullam a leo mi. Ut
-                nec molestie ante, sed viverra massa. Fusce sagittis, tellus ac eleifend tristique, turpis dui varius
-                quam, sed lacinia velit arcu vel ipsum.
-
-                Nam tellus ex, gravida nec elementum non, eleifend a lectus. Curabitur ornare cursus tincidunt. Integer
-                at ipsum ultrices, laoreet tellus non, convallis lacus. Maecenas sit amet fringilla nisi. Fusce eleifend
-                dignissim consequat. Pellentesque faucibus vel nunc eget viverra. Etiam vel ipsum eros.
-
-                Ut pretium quam a orci elementum pellentesque. Mauris varius neque erat. Vivamus tincidunt sem purus,
-                eget vestibulum diam finibus quis. Quisque nisi lectus, ultrices eu vestibulum nec, blandit quis turpis.
-                Aenean eu tellus eu lacus eleifend sodales in vel eros. Nulla ut mauris sem. Donec ultrices aliquet ex,
-                vitae fringilla purus maximus id. Maecenas gravida consectetur quam eget tincidunt. Donec varius nisl et
-                felis vulputate posuere.
-
-            </p>
-        </div>
+<!-- About Hero Section -->
+<section class="position-relative text-white text-center" style="background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1514432324607-2e467f4af445') center/cover no-repeat; min-height: 50vh; display: flex; align-items: center;">
+    <div class="container">
+        <h1 class="display-3 fw-bold">About Restro</h1>
+        <p class="lead fs-5">Crafting culinary excellence since 2015</p>
     </div>
+</section>
+
+<div class="container py-5">
+
+    <!-- Our Story Section -->
+    <section class="mb-5">
+        <div class="row align-items-center g-4">
+            <div class="col-md-6">
+                <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1" class="img-fluid rounded-lg shadow-sm" alt="Restaurant Interior">
+            </div>
+            <div class="col-md-6">
+                <h2 class="fw-bold mb-3">Our Story</h2>
+                <p class="lead text-muted">Restro was founded with a simple mission: to bring authentic, delicious cuisine to our community while maintaining the highest standards of quality and hospitality.</p>
+                <p>Started in 2015 by culinary enthusiasts with over 40 years of combined experience in fine dining, Restro has grown from a small neighborhood bistro to one of the city's most celebrated restaurants. Our commitment to sourcing the finest local ingredients and our passion for innovative yet traditional cooking methods set us apart.</p>
+                <p>Today, we continue to serve our guests with the same dedication and love that started it all, earning us multiple awards and the loyalty of thousands of satisfied customers.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Vision -->
+    <section class="mb-5 bg-light p-5 rounded">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <h3 class="fw-bold mb-3">🎯 Our Mission</h3>
+                <p>To deliver exceptional dining experiences by combining culinary expertise, the finest ingredients, and impeccable service in a warm and welcoming atmosphere.</p>
+            </div>
+            <div class="col-md-6">
+                <h3 class="fw-bold mb-3">👁️ Our Vision</h3>
+                <p>To become the most beloved restaurant in the region, known for innovation, sustainability, and commitment to culinary excellence and community values.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Team -->
+    <section class="mb-5">
+        <h2 class="fw-bold text-center mb-5">Meet Our Team</h2>
+        <div class="row g-4">
+            <!-- Team Member 1 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm text-center h-100">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d" class="card-img-top" 
+                         alt="Head Chef" style="height: 250px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Chef Marco Rossi</h5>
+                        <p class="card-text text-muted small">Executive Chef</p>
+                        <p class="small text-muted">20+ years of culinary experience from Italy and France</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 2 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm text-center h-100">
+                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330" class="card-img-top" 
+                         alt="Sous Chef" style="height: 250px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Chef Anna Garcia</h5>
+                        <p class="card-text text-muted small">Sous Chef</p>
+                        <p class="small text-muted">Specializes in modern fusion cuisine and desserts</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 3 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm text-center h-100">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80" class="card-img-top" 
+                         alt="Manager" style="height: 250px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">James Thompson</h5>
+                        <p class="card-text text-muted small">Restaurant Manager</p>
+                        <p class="small text-muted">Dedicated to providing exceptional service</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Member 4 -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm text-center h-100">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e" class="card-img-top" 
+                         alt="Head Sommelier" style="height: 250px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Sophie Martinez</h5>
+                        <p class="card-text text-muted small">Head Sommelier</p>
+                        <p class="small text-muted">Expert wine pairings and beverage selection</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards & Recognition -->
+    <section class="mb-5 bg-light p-5 rounded">
+        <h2 class="fw-bold text-center mb-4">🏆 Awards & Recognition</h2>
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <h5 class="fw-bold">Critic's Choice Award</h5>
+                    <p class="text-muted small">2024 Best Restaurant in the City</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <h5 class="fw-bold">Excellence in Cuisine</h5>
+                    <p class="text-muted small">2023 Regional Culinary Excellence Award</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <h5 class="fw-bold">Top Rated</h5>
+                    <p class="text-muted small">Consistently 4.8+ rating across platforms</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Facilities & Amenities -->
+    <section class="mb-5">
+        <h2 class="fw-bold text-center mb-5">🏢 Our Facilities</h2>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm p-4">
+                    <h5 class="fw-bold mb-3">📍 Main Dining Area</h5>
+                    <p class="text-muted">Seating for 80 guests with elegant ambiance, soft lighting, and carefully curated music for the perfect dining atmosphere.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm p-4">
+                    <h5 class="fw-bold mb-3">🎤 Private Event Space</h5>
+                    <p class="text-muted">Intimate room perfect for corporate events, celebrations, and private gatherings. Accommodates up to 35 guests.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm p-4">
+                    <h5 class="fw-bold mb-3">🍴 Chef's Table</h5>
+                    <p class="text-muted">Exclusive seating directly at the chef's counter for an interactive, behind-the-scenes culinary experience.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm p-4">
+                    <h5 class="fw-bold mb-3">♿ Full Accessibility</h5>
+                    <p class="text-muted">Wheelchair accessible entrances, restrooms, and accommodations to ensure comfort for all our guests.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sourcing & Sustainability -->
+    <section class="mb-5 bg-light p-5 rounded">
+        <h2 class="fw-bold text-center mb-4">🌱 Commitment to Sustainability</h2>
+        <p class="text-center text-muted mb-4">We partner with local farmers and suppliers to ensure the freshest ingredients while supporting our community and minimizing our environmental impact.</p>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="fs-3 mb-3">🚚</div>
+                    <h5 class="fw-bold">Local Sourcing</h5>
+                    <p class="small text-muted">80% of ingredients sourced within 50 miles</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="fs-3 mb-3">♻️</div>
+                    <h5 class="fw-bold">Zero Waste Program</h5>
+                    <p class="small text-muted">Composting and recycling for all waste materials</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="fs-3 mb-3">⚡</div>
+                    <h5 class="fw-bold">Green Energy</h5>
+                    <p class="small text-muted">100% renewable energy powered kitchen</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catering & Private Events -->
+    <section class="mb-5">
+        <div class="row align-items-center g-4">
+            <div class="col-md-6">
+                <h2 class="fw-bold mb-3">🎉 Catering & Private Events</h2>
+                <p class="text-muted mb-3">Let us bring our culinary expertise to your special occasion. Whether it's a corporate gala, wedding reception, or intimate gathering, our team will create a memorable dining experience tailored to your needs.</p>
+                <ul class="list-unstyled mb-4">
+                    <li class="mb-2">✓ Customized menus designed by our chefs</li>
+                    <li class="mb-2">✓ On-site or off-premise catering</li>
+                    <li class="mb-2">✓ Professional service staff included</li>
+                    <li class="mb-2">✓ Flexible pricing for events of any size</li>
+                </ul>
+                <a href="#" class="btn btn-dark">Inquire About Events</a>
+            </div>
+            <div class="col-md-6">
+                <img src="https://images.unsplash.com/photo-1519671482677-504be0ffec60" class="img-fluid rounded-lg shadow-sm" alt="Event Catering">
+            </div>
+        </div>
+    </section>
+
+    <!-- Quality Assurance -->
+    <section class="mb-5 bg-light p-5 rounded">
+        <h2 class="fw-bold text-center mb-4">✓ Quality & Safety Standards</h2>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <h5 class="fw-bold mb-3">🏅 Certifications</h5>
+                <ul class="list-unstyled text-muted">
+                    <li>✓ Health Department Certified</li>
+                    <li>✓ Food Safety Manager Certified</li>
+                    <li>✓ HACCP Compliance</li>
+                    <li>✓ Allergen Awareness Trained Staff</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h5 class="fw-bold mb-3">🔍 Quality Control</h5>
+                <ul class="list-unstyled text-muted">
+                    <li>✓ Rigorous ingredient inspections</li>
+                    <li>✓ Regular kitchen audits</li>
+                    <li>✓ Staff hygiene protocols</li>
+                    <li>✓ Customer feedback monitoring</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="mb-5">
+        <h2 class="fw-bold text-center mb-5">📍 Visit Us Today</h2>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm p-4">
+                    <h5 class="fw-bold mb-3">Contact Information</h5>
+                    <p class="mb-3">
+                        <strong>📍 Address</strong><br>
+                        123 Main Street<br>
+                        Your City, ST 12345
+                    </p>
+                    <p class="mb-3">
+                        <strong>📞 Phone</strong><br>
+                        <a href="tel:+1234567890" class="text-decoration-none">(123) 456-7890</a>
+                    </p>
+                    <p class="mb-3">
+                        <strong>📧 Email</strong><br>
+                        <a href="mailto:info@restro.com" class="text-decoration-none">info@restro.com</a>
+                    </p>
+                    <div class="d-grid">
+                        <a href="{% url 'booking_page' %}" class="btn btn-dark">Reserve Now</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm p-4 h-100">
+                    <h5 class="fw-bold mb-3">Map & Directions</h5>
+                    <!-- Placeholder for embedded map -->
+                    <div style="background: #e9ecef; height: 250px; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; color: #6c757d;">
+                        <div class="text-center">
+                            <p class="mb-0">📍 Embed Google Map Here</p>
+                            <small>Map integration will be added with backend setup</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </div>
 
 {% endblock %}

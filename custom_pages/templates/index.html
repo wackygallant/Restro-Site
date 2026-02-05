@@ -7,9 +7,97 @@
         <div class="container py-5">
             <h1 class="display-2 fw-bold">Welcome to Restro</h1>
             <p class="lead fs-4">Experience the finest dining in town</p>
-            <a href="{% url 'menu' %}" class="btn btn-warning btn-lg px-4 mt-3 shadow">
-                Explore Menu
-            </a>
+            <div class="mt-4">
+                <a href="{% url 'menu' %}" class="btn btn-warning btn-lg px-4 shadow me-3">
+                    Explore Menu
+                </a>
+                <a href="{% url 'booking_page' %}" class="btn btn-light btn-lg px-4 shadow">
+                    Reserve Table
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SPECIAL OFFERS BANNER -->
+<section class="py-4 bg-dark text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h3 class="mb-2 fw-bold">🎉 Special Offer This Month</h3>
+                <p class="mb-0">Get 20% off on all pasta dishes when you book before 6 PM!</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <a href="{% url 'booking_page' %}" class="btn btn-warning btn-sm px-3">Book Now</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURED DISHES -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="fw-bold text-center mb-5">Chef's Featured Dishes</h2>
+        <div class="row g-4">
+            <!-- Featured Dish 1 -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
+                    <div class="position-relative">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" class="card-img-top" 
+                             alt="Signature Pasta" style="height: 250px; object-fit: cover;">
+                        <span class="badge bg-danger position-absolute top-0 end-0 m-3">Chef's Pick</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Signature Pasta Carbonara</h5>
+                        <p class="card-text text-muted small">Creamy perfection with pancetta and aged Parmesan</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-warning fs-5">★★★★★</span>
+                            <span class="fw-bold">$16.99</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Dish 2 -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
+                    <div class="position-relative">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" class="card-img-top" 
+                             alt="Grilled Salmon" style="height: 250px; object-fit: cover;">
+                        <span class="badge bg-success position-absolute top-0 end-0 m-3">New</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Atlantic Salmon Fillet</h5>
+                        <p class="card-text text-muted small">Pan-seared with seasonal vegetables and lemon butter</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-warning fs-5">★★★★★</span>
+                            <span class="fw-bold">$24.99</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Dish 3 -->
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
+                    <div class="position-relative">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" class="card-img-top" 
+                             alt="Ribeye Steak" style="height: 250px; object-fit: cover;">
+                        <span class="badge bg-warning position-absolute top-0 end-0 m-3">Popular</span>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">Prime Ribeye Steak</h5>
+                        <p class="card-text text-muted small">Juicy 14oz cut with chimichurri and truffle potatoes</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-warning fs-5">★★★★★</span>
+                            <span class="fw-bold">$32.99</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <a href="{% url 'menu' %}" class="btn btn-dark btn-lg">View Full Menu</a>
         </div>
     </div>
 </section>
@@ -21,26 +109,50 @@
         <div class="row g-4">
 
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 h-100">
+                <div class="card border-0 shadow-sm p-4 h-100 feature-card">
                     <div class="fs-1 mb-3">🥗</div>
                     <h4 class="fw-semibold">Fresh Ingredients</h4>
-                    <p class="text-muted">Only locally sourced, high-quality ingredients.</p>
+                    <p class="text-muted">Only locally sourced, high-quality ingredients sourced from trusted suppliers.</p>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 h-100">
+                <div class="card border-0 shadow-sm p-4 h-100 feature-card">
                     <div class="fs-1 mb-3">👨‍🍳</div>
                     <h4 class="fw-semibold">Expert Chefs</h4>
-                    <p class="text-muted">World-class chefs delivering perfection.</p>
+                    <p class="text-muted">Award-winning chefs with decades of combined culinary experience.</p>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 h-100">
+                <div class="card border-0 shadow-sm p-4 h-100 feature-card">
                     <div class="fs-1 mb-3">🕯️</div>
                     <h4 class="fw-semibold">Cozy Ambience</h4>
-                    <p class="text-muted">A warm and welcoming dining environment.</p>
+                    <p class="text-muted">A warm and welcoming dining environment perfect for every occasion.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-4 h-100 feature-card">
+                    <div class="fs-1 mb-3">🚀</div>
+                    <h4 class="fw-semibold">Fast Service</h4>
+                    <p class="text-muted">Efficient and courteous service without compromising on quality.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-4 h-100 feature-card">
+                    <div class="fs-1 mb-3">💳</div>
+                    <h4 class="fw-semibold">Multiple Payments</h4>
+                    <p class="text-muted">Accept all major credit cards, digital wallets, and cash payments.</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm p-4 h-100 feature-card">
+                    <div class="fs-1 mb-3">🎁</div>
+                    <h4 class="fw-semibold">Loyalty Program</h4>
+                    <p class="text-muted">Earn points with every visit and unlock exclusive rewards.</p>
                 </div>
             </div>
 
@@ -48,33 +160,45 @@
     </div>
 </section>
 
-<!-- REVIEWS -->
+<!-- REVIEWS/TESTIMONIALS -->
 <section class="bg-light py-5">
     <div class="container text-center">
         <h2 class="fw-bold mb-5">What Our Guests Say</h2>
         <div class="row g-4">
 
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 h-100">
-                    <p class="fst-italic">"Amazing food and great service!"</p>
-                    <div class="text-warning fs-5">★★★★★</div>
-                    <small class="text-muted">— Sarah K.</small>
+                <div class="card border-0 shadow-sm p-4 h-100 testimonial-card">
+                    <div class="mb-3">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330" 
+                             alt="Guest" class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
+                    </div>
+                    <div class="text-warning fs-5 mb-2">★★★★★</div>
+                    <p class="fst-italic mb-3">"Amazing food and exceptional service! The atmosphere is perfect for a romantic dinner."</p>
+                    <small class="text-muted fw-bold">— Sarah K.</small>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 h-100">
-                    <p class="fst-italic">"A delightful dining experience."</p>
-                    <div class="text-warning fs-5">★★★★★</div>
-                    <small class="text-muted">— John D.</small>
+                <div class="card border-0 shadow-sm p-4 h-100 testimonial-card">
+                    <div class="mb-3">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d" 
+                             alt="Guest" class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
+                    </div>
+                    <div class="text-warning fs-5 mb-2">★★★★★</div>
+                    <p class="fst-italic mb-3">"A truly delightful dining experience from start to finish. Everything was perfect!"</p>
+                    <small class="text-muted fw-bold">— John D.</small>
                 </div>
             </div>
 
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 h-100">
-                    <p class="fst-italic">"Will definitely come back again!"</p>
-                    <div class="text-warning fs-5">★★★★★</div>
-                    <small class="text-muted">— Emily R.</small>
+                <div class="card border-0 shadow-sm p-4 h-100 testimonial-card">
+                    <div class="mb-3">
+                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80" 
+                             alt="Guest" class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
+                    </div>
+                    <div class="text-warning fs-5 mb-2">★★★★★</div>
+                    <p class="fst-italic mb-3">"Hands down the best restaurant in the city! Will definitely come back again!"</p>
+                    <small class="text-muted fw-bold">— Emily R.</small>
                 </div>
             </div>
 
@@ -82,4 +206,53 @@
     </div>
 </section>
 
+<!-- OPERATING HOURS & CONTACT -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm p-4">
+                    <h4 class="fw-bold mb-4">⏰ Operating Hours</h4>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Monday - Thursday</span>
+                            <span class="fw-bold">11:00 AM - 10:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Friday - Saturday</span>
+                            <span class="fw-bold">11:00 AM - 11:00 PM</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>Sunday</span>
+                            <span class="fw-bold">12:00 PM - 9:00 PM</span>
+                        </div>
+                    </div>
+                    <hr>
+                    <p class="text-muted small">Closed on major holidays. Call ahead for special events.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm p-4">
+                    <h4 class="fw-bold mb-4">📞 Contact Us</h4>
+                    <p class="mb-2">
+                        <strong>Phone:</strong> <a href="tel:+1234567890" class="text-decoration-none">(123) 456-7890</a>
+                    </p>
+                    <p class="mb-2">
+                        <strong>Email:</strong> <a href="mailto:info@restro.com" class="text-decoration-none">info@restro.com</a>
+                    </p>
+                    <p class="mb-3">
+                        <strong>Address:</strong> 123 Main Street, Your City, ST 12345
+                    </p>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'booking_page' %}" class="btn btn-dark btn-sm">Book a Table</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

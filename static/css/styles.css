@@ -115,3 +115,308 @@ footer {
 .card img:hover {
     transform: scale(1.03);
 }
+/* User Profile Page */
+.profile-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #212529;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.profile-card {
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.profile-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+.profile-info-label {
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    margin-bottom: 0.25rem;
+}
+
+.booking-table {
+    font-size: 0.95rem;
+}
+
+.booking-table tbody tr {
+    border-bottom: 1px solid #e9ecef;
+    transition: background-color 0.2s ease;
+}
+
+.booking-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.booking-table thead {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    border-top: 1px solid #dee2e6;
+}
+
+.badge {
+    font-weight: 500;
+    padding: 0.4rem 0.8rem;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+/* Booking Page */
+.booking-hero {
+    margin: -5rem -9999px 0 -9999px;
+    padding: 5rem 9999px 3rem 9999px;
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+        url('https://images.unsplash.com/photo-1517521172259-ce42db520913') center/cover no-repeat;
+    background-attachment: fixed;
+}
+
+.booking-overlay {
+    padding: 5rem 2rem;
+    text-align: center;
+}
+
+.booking-form-card {
+    border-radius: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.booking-form-card:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12) !important;
+}
+
+.booking-form-card .form-control,
+.booking-form-card .form-select {
+    border: 1px solid #e0e0e0;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    transition: all 0.2s ease;
+}
+
+.booking-form-card .form-control:focus,
+.booking-form-card .form-select:focus {
+    border-color: #212529;
+    box-shadow: 0 0 0 0.2rem rgba(33, 37, 41, 0.15);
+    background-color: #fff;
+}
+
+.booking-form-card .form-label {
+    color: #212529;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.booking-form-card .form-control-lg,
+.booking-form-card .form-select-lg {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+}
+
+.info-card {
+    padding: 2rem 1.5rem;
+    background: white;
+    border-radius: 0.75rem;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-color: #212529;
+}
+
+.info-icon {
+    font-size: 2.5rem;
+    line-height: 1;
+}
+
+.info-card h6 {
+    color: #212529;
+    font-size: 1rem;
+}
+
+.btn-lg {
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-dark.btn-lg:hover {
+    background-color: #424242;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-outline-dark.btn-lg:hover {
+    background-color: #212529;
+    border-color: #212529;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.alert-warning {
+    background-color: #fff8e1;
+    border-color: #ffc107;
+}
+
+/* Homepage Featured Dishes & Features */
+.featured-dish-card {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.featured-dish-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15) !important;
+}
+
+.featured-dish-card img {
+    transition: transform 0.3s ease;
+}
+
+.featured-dish-card:hover img {
+    transform: scale(1.08);
+}
+
+.feature-card {
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.feature-card .fs-1 {
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover .fs-1 {
+    transform: scale(1.2) rotate(5deg);
+}
+
+.testimonial-card {
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+    border-color: #ffc107;
+}
+
+.testimonial-card img {
+    border: 3px solid #e9ecef;
+    transition: border-color 0.3s ease;
+}
+
+.testimonial-card:hover img {
+    border-color: #ffc107;
+}
+
+/* Newsletter Section */
+.bg-dark form input {
+    border-radius: 0.5rem;
+    border: none;
+}
+
+.bg-dark form input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+    border-color: #ffc107;
+}
+
+/* About Page Styles */
+.rounded-lg {
+    border-radius: 1rem;
+}
+
+.team-member-card {
+    transition: all 0.3s ease;
+}
+
+.team-member-card:hover {
+    transform: translateY(-10px);
+}
+
+.team-member-card img {
+    transition: transform 0.3s ease;
+}
+
+.team-member-card:hover img {
+    transform: scale(1.05);
+}
+
+/* Timeline or Recognition */
+.recognition-item {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background: white;
+    border: 1px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.recognition-item:hover {
+    border-color: #212529;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Social Media Buttons */
+.btn-outline-dark.rounded-circle {
+    border: 2px solid #212529;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-dark.rounded-circle:hover {
+    background-color: #212529;
+    border-color: #212529;
+    color: white;
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Contact/Map Placeholder */
+.map-placeholder {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 0.5rem;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .featured-dish-card {
+        margin-bottom: 1rem;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .rounded-lg {
+        border-radius: 0.5rem;
+    }
+}
+
