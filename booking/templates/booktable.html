@@ -8,14 +8,16 @@
     <form class="col-md-6 mx-auto" method="post">
         {% csrf_token %}
         <input type="text" name="username" class="form-control mb-3" placeholder="Your Name" value="{{ username }}" readonly>
+        <input type="tel" name="phone_number" class="form-control mb-3" placeholder="Phone Number">
+        <input type="email" name="email" class="form-control mb-3" placeholder="Email Address">
+        <input type="number" name="person_count" class="form-control mb-3" placeholder="Number of People">
         <input type="date" name="date" class="form-control mb-3">
         <select name="time_slot" class="form-control mb-3">
             <option value="">Select Time</option>
             {% for slot in time_slots %}
-                <option value="{{ slot.time }}">{{ slot.time|time:"H:i" }}</option>
+                <option value="{{ slot.time }}">{{ slot.time|time:"h:i A" }}</option>
             {% endfor %}
         </select>
-        <input type="number" name="table_count" class="form-control mb-3" placeholder="Number of Tables">
         <button class="btn btn-warning w-100">Reserve Now</button>
     </form>
     {% else %}

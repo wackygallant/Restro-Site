@@ -11,14 +11,15 @@ class TimeSlot(models.Model):
         return self.time.strftime("%I:%M %p")
 
 class Booking(models.Model):
-    # Name of the user booking
     user = models.CharField(max_length=100)
-    # Booking date
+    phone_number = models.CharField(max_length=15, default='0000000000')
+    email = models.EmailField(default='blank@example.com')
     date = models.DateField()
-    # Which time slot is booked
     time_slot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE)
-    # How many tables this user books
-    table_count = models.PositiveIntegerField()
+    person_count = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"Booking for {self.user} on {self.date} at {self.time_slot} for {self.person_count} people."
 
 
 

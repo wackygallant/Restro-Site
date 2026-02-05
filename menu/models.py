@@ -5,6 +5,9 @@ from utils.models import BaseModel, CommonModel
 class MenuCategories(BaseModel):
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name = "Menu Category"
         verbose_name_plural = "Menu Categories"

@@ -33,10 +33,10 @@
 
         <div class="img-wrapper">
           <img src="{{ menu_item.image.url }}" class="card-img-top" alt="{{ menu_item.name }}">
-          <span class="price-badge">${{ menu_item.price }}</span>
         </div>
-
+        
         <div class="card-body text-center">
+          <span class="price-badge">${{ menu_item.price }}</span>
           <h5 class="card-title fw-semibold">{{ menu_item.name }}</h5>
           <a href="{% url 'menu_item_detail' menu_item.slug %}" class="btn btn-dark btn-sm mt-2 px-3">
             View Details
