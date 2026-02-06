@@ -1,39 +1,45 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.views import View
 
-from .models import Booking, TimeSlot
+import booking
+from booking.forms import BookingForm
 
 from utils import _utils
 
-from datetime import datetime
-
-class BookingPage(View):
+class BookTableView(View):
     def get(self, request):
-        username = _utils.get_username(request)
-        time_slots = TimeSlot.objects.all().order_by('time')
-        return render(request, "booktable.html", {'username': username, 'time_slots': time_slots})
+        form = BookingForm()
+        return render(request, "booktable.html", {
+            "form": form,
+            "username": _utils.get_username(request)
+        })
 
     def post(self, request):
-        # Handle booking form submission
-        username = request.POST.get('username')
-        phone_number = request.POST.get('phone_number')
-        email = request.POST.get('email')
-        person_count = request.POST.get('person_count')
-        date = request.POST.get('date')
-        # Format to HH:MM
-        time_str = request.POST.get('time_slot')
-        time_str = time_str.replace("a.m.", "AM").replace("p.m.", "PM").upper()
-        t = datetime.strptime(time_str, "%I %p")
-        time_slot = t.strftime("%H:%M")
+        form = BookingForm(request.POST)
         
-        # Create a new booking instance
-        Booking.objects.create(
-            user=username,
-            phone_number=phone_number,
-            email=email,
-            date=date,
-            time_slot=TimeSlot.objects.get(time=time_slot),
-            person_count=person_count
-        )
-        # Process booking data here (not implemented)
-        return redirect('booking_page')
+        # 1. Check validity FIRST
+        if form.is_valid():
+            # 2. Create the object but don't hit the database yet (commit=False)
+            booking = form.save(commit=False)
+            
+            # 3. Manually set the user (or any other fields not in the form)
+            # Note: If using standard Django auth, use request.user
+            booking.user = _utils.get_username(request) 
+            
+            # 4. Now save to the database
+            booking.save()
+            
+            return render(request, "booktable.html", {
+                "form": BookingForm(), # Reset with a fresh form    
+                "message": "Booking confirmed successfully!",
+                "username": _utils.get_username(request),
+            })
+        
+        else:
+            # If form is invalid, Django automatically populates form.errors
+            print("Form errors:", form.errors)
+            
+            return render(request, "booktable.html", {
+                "form": form, # Send the form back with error messages
+                "username": _utils.get_username(request)
+            })

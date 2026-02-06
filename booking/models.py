@@ -12,8 +12,8 @@ class TimeSlot(models.Model):
 
 class Booking(models.Model):
     user = models.CharField(max_length=100)
-    phone_number = models.CharField(max_length=15, default='0000000000')
-    email = models.EmailField(default='blank@example.com')
+    phone_number = models.CharField(max_length=15, default='')
+    email = models.EmailField(default='')
     date = models.DateField()
     time_slot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE)
     person_count = models.PositiveIntegerField(default=1)

@@ -2,19 +2,17 @@
 {% block content %}
 
 <!-- HERO SECTION -->
-<section class="position-relative text-white text-center">
-    <div class="hero-overlay d-flex align-items-center">
-        <div class="container py-5">
-            <h1 class="display-2 fw-bold">Welcome to Restro</h1>
-            <p class="lead fs-4">Experience the finest dining in town</p>
-            <div class="mt-4">
-                <a href="{% url 'menu' %}" class="btn btn-warning btn-lg px-4 shadow me-3">
-                    Explore Menu
-                </a>
-                <a href="{% url 'booking_page' %}" class="btn btn-light btn-lg px-4 shadow">
-                    Reserve Table
-                </a>
-            </div>
+<section class="about-hero position-relative text-white text-center">
+    <div class="container py-5">
+        <h1 class="display-3 fw-bold">Welcome to Restro</h1>
+        <p class="lead fs-5">Experience the finest dining in town</p>
+        <div class="mt-4">
+            <a href="{% url 'menu' %}" class="btn btn-warning btn-lg px-4 shadow me-3">
+                Explore Menu
+            </a>
+            <a href="{% url 'booking_page' %}" class="btn btn-light btn-lg px-4 shadow">
+                Reserve Table
+            </a>
         </div>
     </div>
 </section>
@@ -37,14 +35,14 @@
 <!-- FEATURED DISHES -->
 <section class="py-5 bg-light">
     <div class="container">
-        <h2 class="fw-bold text-center mb-5">Chef's Featured Dishes</h2>
+        <h2 class="fw-bold text-center mb-5">Featured Dishes</h2>
         <div class="row g-4">
             <!-- Featured Dish 1 -->
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
                     <div class="position-relative">
-                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" class="card-img-top" 
-                             alt="Signature Pasta" style="height: 250px; object-fit: cover;">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" class="card-img-top"
+                            alt="Signature Pasta" style="height: 250px; object-fit: cover;">
                         <span class="badge bg-danger position-absolute top-0 end-0 m-3">Chef's Pick</span>
                     </div>
                     <div class="card-body">
@@ -62,8 +60,8 @@
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
                     <div class="position-relative">
-                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" class="card-img-top" 
-                             alt="Grilled Salmon" style="height: 250px; object-fit: cover;">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" class="card-img-top"
+                            alt="Grilled Salmon" style="height: 250px; object-fit: cover;">
                         <span class="badge bg-success position-absolute top-0 end-0 m-3">New</span>
                     </div>
                     <div class="card-body">
@@ -81,8 +79,8 @@
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
                     <div class="position-relative">
-                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" class="card-img-top" 
-                             alt="Ribeye Steak" style="height: 250px; object-fit: cover;">
+                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" class="card-img-top"
+                            alt="Ribeye Steak" style="height: 250px; object-fit: cover;">
                         <span class="badge bg-warning position-absolute top-0 end-0 m-3">Popular</span>
                     </div>
                     <div class="card-body">
@@ -112,7 +110,8 @@
                 <div class="card border-0 shadow-sm p-4 h-100 feature-card">
                     <div class="fs-1 mb-3">🥗</div>
                     <h4 class="fw-semibold">Fresh Ingredients</h4>
-                    <p class="text-muted">Only locally sourced, high-quality ingredients sourced from trusted suppliers.</p>
+                    <p class="text-muted">Only locally sourced, high-quality ingredients sourced from trusted suppliers.
+                    </p>
                 </div>
             </div>
 
@@ -169,8 +168,8 @@
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm p-4 h-100 testimonial-card">
                     <div class="mb-3">
-                        <img src="{{ testimonial.image.url }}" 
-                             alt="Guest" class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
+                        <img src="{{ testimonial.image.url }}" alt="Guest" class="rounded-circle"
+                            style="width: 60px; height: 60px; object-fit: cover;">
                     </div>
                     <!-- <div class="text-warning fs-5 mb-2">★★★★★</div> -->
                     <div class="text-warning fs-5 mb-2">{{ testimonial.rating }}★</div>
@@ -179,19 +178,6 @@
                 </div>
             </div>
             {% endfor %}
-
-            <!-- <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 h-100 testimonial-card">
-                    <div class="mb-3">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d" 
-                             alt="Guest" class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
-                    </div>
-                    <div class="text-warning fs-5 mb-2">★★★★★</div>
-                    <p class="fst-italic mb-3">"A truly delightful dining experience from start to finish. Everything was perfect!"</p>
-                    <small class="text-muted fw-bold">— John D.</small>
-                </div>
-            </div> -->
-
         </div>
     </div>
 </section>
@@ -229,10 +215,12 @@
                 <div class="card border-0 shadow-sm p-4">
                     <h4 class="fw-bold mb-4">📞 Contact Us</h4>
                     <p class="mb-2">
-                        <strong>Phone:</strong> <a href="tel:+1234567890" class="text-decoration-none">(123) 456-7890</a>
+                        <strong>Phone:</strong> <a href="tel:+1234567890" class="text-decoration-none">(123)
+                            456-7890</a>
                     </p>
                     <p class="mb-2">
-                        <strong>Email:</strong> <a href="mailto:info@restro.com" class="text-decoration-none">info@restro.com</a>
+                        <strong>Email:</strong> <a href="mailto:info@restro.com"
+                            class="text-decoration-none">info@restro.com</a>
                     </p>
                     <p class="mb-3">
                         <strong>Address:</strong> 123 Main Street, Your City, ST 12345

@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="about-hero position-relative text-white text-center">
+    <div class="container py-5">
+        <h1 class="display-3 fw-bold">Your Orders</h1>
+        <p class="lead fs-5">View and manage your orders.</p>
+    </div>
+</section>
+
+<div class="container py-5">
+    {% if user.is_authenticated %}
+    <div class="row justify-content-center">
+        <p>Order Content</p>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Handle</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td>John</td>
+                <td>Doe</td>
+                <td>@social</td>
+            </tr>
+        </tbody>
+    </table>
+    {% else %}
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="alert alert-warning shadow-lg border-0 rounded-lg py-5" role="alert">
+                <div class="text-center">
+                    <h4 class="fw-bold mb-3">🔐 Login Required</h4>
+                    <p class="fs-5 mb-4">To order, you need to be logged in. Please create an account or sign in to
+                        continue.</p>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <a href="{% url 'login' %}" class="btn btn-dark btn-lg">
+                            Sign In
+                        </a>
+                        <a href="{% url 'register' %}" class="btn btn-outline-dark btn-lg">
+                            Create Account
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
