@@ -165,20 +165,22 @@
     <div class="container text-center">
         <h2 class="fw-bold mb-5">What Our Guests Say</h2>
         <div class="row g-4">
-
+            {% for testimonial in testimonials %}
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm p-4 h-100 testimonial-card">
                     <div class="mb-3">
-                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330" 
+                        <img src="{{ testimonial.image.url }}" 
                              alt="Guest" class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
                     </div>
-                    <div class="text-warning fs-5 mb-2">★★★★★</div>
-                    <p class="fst-italic mb-3">"Amazing food and exceptional service! The atmosphere is perfect for a romantic dinner."</p>
-                    <small class="text-muted fw-bold">— Sarah K.</small>
+                    <!-- <div class="text-warning fs-5 mb-2">★★★★★</div> -->
+                    <div class="text-warning fs-5 mb-2">{{ testimonial.rating }}★</div>
+                    <p class="fst-italic mb-3">"{{ testimonial.review }}"</p>
+                    <small class="text-muted fw-bold">— {{ testimonial.name }}</small>
                 </div>
             </div>
+            {% endfor %}
 
-            <div class="col-md-4">
+            <!-- <div class="col-md-4">
                 <div class="card border-0 shadow-sm p-4 h-100 testimonial-card">
                     <div class="mb-3">
                         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d" 
@@ -188,19 +190,7 @@
                     <p class="fst-italic mb-3">"A truly delightful dining experience from start to finish. Everything was perfect!"</p>
                     <small class="text-muted fw-bold">— John D.</small>
                 </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 h-100 testimonial-card">
-                    <div class="mb-3">
-                        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80" 
-                             alt="Guest" class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
-                    </div>
-                    <div class="text-warning fs-5 mb-2">★★★★★</div>
-                    <p class="fst-italic mb-3">"Hands down the best restaurant in the city! Will definitely come back again!"</p>
-                    <small class="text-muted fw-bold">— Emily R.</small>
-                </div>
-            </div>
+            </div> -->
 
         </div>
     </div>

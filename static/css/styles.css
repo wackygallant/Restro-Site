@@ -85,6 +85,7 @@ footer {
     background-color: #212529;
     border: none;
 }
+
 .btn-primary:hover,
 .btn-dark:hover {
     background-color: #424242;
@@ -115,6 +116,7 @@ footer {
 .card img:hover {
     transform: scale(1.03);
 }
+
 /* User Profile Page */
 .profile-avatar {
     width: 80px;
@@ -420,3 +422,10 @@ footer {
     }
 }
 
+.about-hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+        url('https://images.unsplash.com/photo-1555992336-03a23c7b20ee') center/cover no-repeat;
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+}

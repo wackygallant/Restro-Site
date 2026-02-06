@@ -29,16 +29,24 @@
     {% if filtered_menu_items %}
     {% for menu_item in filtered_menu_items %}
     <div class="col-lg-3 col-md-6 col-sm-12">
-      <div class="card h-100 border-0 shadow-sm menu-card">
-
-        <div class="img-wrapper">
-          <img src="{{ menu_item.image.url }}" class="card-img-top" alt="{{ menu_item.name }}">
+      <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
+        <div class="position-relative">
+          <img src="{{ menu_item.image.url }}" class="card-img-top" alt="{{ menu_item.name }}"
+            style="height: 250px; object-fit: cover;">
         </div>
-        
-        <div class="card-body text-center">
-          <span class="price-badge">${{ menu_item.price }}</span>
-          <h5 class="card-title fw-semibold">{{ menu_item.name }}</h5>
-          <a href="{% url 'menu_item_detail' menu_item.slug %}" class="btn btn-dark btn-sm mt-2 px-3">
+
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title fw-bold">{{ menu_item.name }}</h5>
+          <p class="card-text text-muted small flex-grow-1">
+            {{ menu_item.description }}
+          </p>
+
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <span class="text-warning">★★★★★</span>
+            <span class="fw-bold">${{ menu_item.price }}</span>
+          </div>
+
+          <a href="{% url 'menu_item_detail' menu_item.slug %}" class="btn btn-dark btn-sm mt-3 w-100">
             View Details
           </a>
         </div>
