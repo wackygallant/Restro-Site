@@ -9,6 +9,7 @@ class MenuCategories(BaseModel):
         return self.name
 
     class Meta:
+        db_table = 'menu_categories'
         verbose_name = "Menu Category"
         verbose_name_plural = "Menu Categories"
 
@@ -26,5 +27,6 @@ class MenuItems(CommonModel):
         return self.name
     
     class Meta:
+        db_table = 'menu_items'
         verbose_name = "Menu Item"
         verbose_name_plural = "Menu Items"

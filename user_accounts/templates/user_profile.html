@@ -39,13 +39,12 @@
                     </div>
                     
                     <hr>
-                    
                     <div class="d-grid gap-2">
                         <a href="#" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal">
-                            ✏️ Edit Profile
+                            Edit Profile
                         </a>
                         <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">
-                            🚪 Logout
+                            Logout
                         </a>
                     </div>
                 </div>
@@ -56,7 +55,7 @@
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-dark text-white border-0 rounded-top">
-                    <h5 class="mb-0 fw-bold">📅 Your Bookings</h5>
+                    <h5 class="mb-0 fw-bold">Your Orders</h5>
                 </div>
                 
                 <div class="card-body">
@@ -142,9 +141,99 @@
                     {% endif %}
                 </div>
             </div>
+            
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-dark text-white border-0 rounded-top">
+                    <h5 class="mb-0 fw-bold">Your Bookings</h5>
+                </div>
+                
+                <div class="card-body">
+                    {% if bookings %}
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead>
+                                    <tr class="border-bottom">
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Guests</th>
+                                        <th>Phone</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for booking in bookings %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ booking.date|date:"M d, Y" }}</strong>
+                                        </td>
+                                        <td>{{ booking.time_slot }}</td>
+                                        <td>
+                                            <span class="badge bg-info">{{ booking.person_count }} {{ booking.person_count|pluralize:"person,people" }}</span>
+                                        </td>
+                                        <td>{{ booking.phone_number }}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-secondary" 
+                                                    type="button"
+                                                    data-bs-toggle="modal" 
+                                                    data-bs-target="#bookingModal{{ booking.id }}"
+                                                    title="View booking details">
+                                                View
+                                            </button>
+                                            
+                                            <!-- Booking Details Modal -->
+                                            <div class="modal fade" id="bookingModal{{ booking.id }}" tabindex="-1">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header border-bottom">
+                                                            <h5 class="modal-title fw-bold">Booking</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="mb-3">
+                                                                <small class="text-muted fw-bold">DATE</small>
+                                                                <p class="mb-0">{{ booking.date|date:"M d, Y" }}</p>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <small class="text-muted fw-bold">TIME</small>
+                                                                <p class="mb-0">{{ booking.time_slot }}</p>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <small class="text-muted fw-bold">GUESTS</small>
+                                                                <p class="mb-0">{{ booking.person_count }} {{ booking.person_count|pluralize:"person,people" }}</p>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <small class="text-muted fw-bold">EMAIL</small>
+                                                                <p class="mb-0">{{ booking.email }}</p>
+                                                            </div>
+                                                            <div class="mb-0">
+                                                                <small class="text-muted fw-bold">PHONE</small>
+                                                                <p class="mb-0">{{ booking.phone_number }}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer border-top">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-info mb-0" role="alert">
+                            <strong>No bookings yet!</strong> <br>
+                            <p class="mb-0">You haven't made any table reservations. <a href="{% url 'booking_page' %}" class="alert-link fw-bold">Book a table now</a> to enjoy our delicious food.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
 
             <!-- Quick Actions -->
-            <div class="row g-3 mt-3">
+            <!-- <div class="row g-3 mt-3">
                 <div class="col-md-6">
                     <a href="{% url 'menu' %}" class="btn btn-outline-dark w-100 py-2">
                         🍽️ View Menu
@@ -155,7 +244,7 @@
                         📅 Book a Table
                     </a>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

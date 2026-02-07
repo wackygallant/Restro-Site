@@ -37,26 +37,29 @@
     <div class="container">
         <h2 class="fw-bold text-center mb-5">Featured Dishes</h2>
         <div class="row g-4">
-            <!-- Featured Dish 1 -->
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
-                    <div class="position-relative">
-                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" class="card-img-top"
-                            alt="Signature Pasta" style="height: 250px; object-fit: cover;">
-                        <span class="badge bg-danger position-absolute top-0 end-0 m-3">Chef's Pick</span>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">Signature Pasta Carbonara</h5>
-                        <p class="card-text text-muted small">Creamy perfection with pancetta and aged Parmesan</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-warning fs-5">★★★★★</span>
-                            <span class="fw-bold">$16.99</span>
+            <!-- Featured Dish -->
+            {% for menu_item in menu_items %}
+                {% if menu_item.is_on_special %}
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
+                            <div class="position-relative">
+                                <img src="{{ menu_item.image.url }}" class="card-img-top"
+                                    alt="{{ menu_item.name }}" style="height: 250px; object-fit: cover;">
+                                <span class="badge bg-danger position-absolute top-0 end-0 m-3">On Special!!!</span>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold">{{ menu_item.name }}</h5>
+                                <p class="card-text text-muted small">{{ menu_item.description }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-warning fs-5">★★★★★</span>
+                                    <span class="fw-bold">$ <s>{{ menu_item.price }} </s> {{ menu_item.special_price }}</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- Featured Dish 2 -->
+                {% endif %}
+            {% endfor %}
+            <!-- Featured Dish 2
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
                     <div class="position-relative">
@@ -73,26 +76,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Featured Dish 3 -->
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
-                    <div class="position-relative">
-                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" class="card-img-top"
-                            alt="Ribeye Steak" style="height: 250px; object-fit: cover;">
-                        <span class="badge bg-warning position-absolute top-0 end-0 m-3">Popular</span>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">Prime Ribeye Steak</h5>
-                        <p class="card-text text-muted small">Juicy 14oz cut with chimichurri and truffle potatoes</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-warning fs-5">★★★★★</span>
-                            <span class="fw-bold">$32.99</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </div> -->
         </div>
         <div class="text-center mt-5">
             <a href="{% url 'menu' %}" class="btn btn-dark btn-lg">View Full Menu</a>
