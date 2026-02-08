@@ -3,7 +3,7 @@ from django.db import models
 from utils.models import CommonModel
 
 
-class Chefs(CommonModel):
+class Teams(CommonModel):
     name = models.CharField(max_length=100)
     role = models.CharField(max_length=100)
     bio = models.TextField()

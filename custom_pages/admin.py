@@ -1,8 +1,8 @@
 from django.contrib import admin
-from custom_pages.models import Chefs, Testimonials
+from custom_pages.models import Teams, Testimonials
 
-@admin.register(Chefs)
-class ChefAdmin(admin.ModelAdmin):
+@admin.register(Teams)
+class TeamsAdmin(admin.ModelAdmin):
     list_display = ('name', 'role')
     search_fields = ('name', 'role')
 

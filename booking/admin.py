@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import TimeSlot, Booking
+from booking.models import TimeSlot, Booking
 
 @admin.register(TimeSlot)
 class TimeSlotAdmin(admin.ModelAdmin):
@@ -10,3 +10,4 @@ class TimeSlotAdmin(admin.ModelAdmin):
 class BookingAdmin(admin.ModelAdmin):
     list_display = ('user', 'date', 'time_slot', 'person_count')
     list_filter = ('date', 'time_slot', 'user')
+    search_fields = ('user__username', 'user__email')

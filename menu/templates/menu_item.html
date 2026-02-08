@@ -1,57 +1,109 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- PAGE HEADER (Matches site style) -->
-
+{% if menu_item.is_on_special %}
+<div class="bg-dark text-white py-5 text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold">{{ menu_item.name }}</h1>
+        <p class="lead mb-0">
+            <span class="text-muted text-decoration-line-through me-2">${{ menu_item.price }}</span>
+            <span class="text-warning fw-bold">$ <s>{{ menu_item.price }} </s> {{ menu_item.special_price }}</span>
+        </p>
+    </div>
+</div>
+{% else %}
 <div class="bg-dark text-white py-5 text-center">
     <div class="container">
         <h1 class="display-4 fw-bold">{{ menu_item.name }}</h1>
         <p class="lead text-warning mb-0">${{ menu_item.price }}</p>
     </div>
 </div>
-
+{% endif %}
 
 <div class="container my-5">
     <div class="card border-0 shadow-lg overflow-hidden">
-
         <div class="row g-0">
 
-            <!-- IMAGE SIDE -->
-            <div class="col-lg-5">
-                <div class="h-100">
-                    <img src="{{ menu_item.image.url }}"
-                         class="w-100 h-100"
-                         alt="{{ menu_item.name }}"
-                         style="object-fit: cover; min-height: 350px;">
+            <div class="col-lg-5 position-relative">
+                <img src="{{ menu_item.image.url }}" class="w-100 h-100" alt="{{ menu_item.name }}"
+                    style="object-fit: cover; min-height: 400px;">
+                {% if menu_item.is_on_special %}
+                <div class="badge bg-danger position-absolute top-0 end-0 m-3 px-3 py-2 shadow">
+                    On Special !!!
                 </div>
+                {% endif %}
             </div>
 
-            <!-- DETAILS SIDE -->
             <div class="col-lg-7">
                 <div class="card-body p-4 p-lg-5 d-flex flex-column h-100">
-
                     <h4 class="fw-bold mb-3">About this dish</h4>
 
                     <p class="text-muted mb-3">
-                        <strong>Category:</strong> {{ menu_item.category }}
+                        <span>
+                            <strong>Category:</strong> {{ menu_item.category }}
+                        </span>
                     </p>
 
-                    <p class="card-text flex-grow-1">
+                    <p class="card-text flex-grow-1 lh-lg">
                         {{ menu_item.description }}
                     </p>
 
-                    <!-- BUTTONS -->
-                    <div class="mt-4">
-                        <a href="{% url 'menu' %}" class="btn btn-outline-dark">
-                            ← Back to Menu
-                        </a>
-                    </div>
+                    <form method="POST" action="#" class="mt-4">
+                        {% csrf_token %}
+                        <div class="d-flex align-items-center flex-wrap gap-3">
 
+                            <a href="{% url 'menu' %}" class="btn btn-outline-dark">
+                                Back
+                            </a>
+
+                            <div class="input-group shadow-sm" style="width: 140px;">
+                                <button class="btn btn-outline-secondary" type="button" id="btn-minus">
+                                    <strong> - </strong>
+                                </button>
+
+                                <input type="number" name="quantity" id="quantity-input"
+                                    class="form-control text-center border-secondary fw-bold" value="   1" min="1"
+                                    readonly>
+
+                                <button class="btn btn-outline-secondary" type="button" id="btn-plus">
+                                    <strong> + </strong>
+                                </button>
+
+                            </div>
+                            <button type="submit" class="btn btn-dark px-4 flex-grow-2 flex-md-grow-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-cart-plus-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M9 5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 1 0" />
+                                </svg>
+                            </button>
+
+                        </div>
+                    </form>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const minusBtn = document.getElementById('btn-minus');
+        const plusBtn = document.getElementById('btn-plus');
+        const qtyInput = document.getElementById('quantity-input');
+
+        minusBtn.addEventListener('click', () => {
+            let currentValue = parseInt(qtyInput.value);
+            if (currentValue > 1) {
+                qtyInput.value = currentValue - 1;
+            }
+        });
+
+        plusBtn.addEventListener('click', () => {
+            let currentValue = parseInt(qtyInput.value);
+            qtyInput.value = currentValue + 1;
+        });
+    });
+</script>
 
 {% endblock %}

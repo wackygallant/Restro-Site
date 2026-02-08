@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <section class="about-hero position-relative text-white text-center">
   <div class="container py-5">
     <h1 class="display-3 fw-bold">Our Menu</h1>
@@ -39,7 +40,7 @@
         <div class="position-relative">
           <img src="{{ menu_item.image.url }}" class="card-img-top" alt="{{ menu_item.name }}"
             style="height: 250px; object-fit: cover;">
-          <span class="badge bg-danger position-absolute top-0 end-0 m-3">On Special!!!</span>
+          <span class="badge bg-danger position-absolute top-0 end-0 m-3">On Special!</span>
         </div>
 
         <div class="card-body d-flex flex-column">
@@ -52,7 +53,6 @@
             <span class="text-warning">★★★★★</span>
             <span class="fw-bold">$ <s>{{ menu_item.price }}</s> {{ menu_item.special_price }}</span>
           </div>
-
           <a href="{% url 'menu_item_detail' menu_item.slug %}" class="btn btn-dark btn-sm mt-3 w-100">
             View Details
           </a>

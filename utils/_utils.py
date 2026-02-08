@@ -4,5 +4,5 @@ def get_username(request):
     else:
         return "Guest"
     
-    def order_number_generator(prefix, number):
+def order_number_generator(prefix, number):
         return f"{prefix}-{str(number).zfill(6)}"

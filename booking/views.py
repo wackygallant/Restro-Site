@@ -1,17 +1,16 @@
 from django.shortcuts import render
 from django.views import View
 
-import booking
 from booking.forms import BookingForm
 
-from utils import _utils
+from utils._utils import get_username
 
 class BookTableView(View):
     def get(self, request):
         form = BookingForm()
         return render(request, "booktable.html", {
             "form": form,
-            "username": _utils.get_username(request)
+            "username": get_username(request)
         })
 
     def post(self, request):
@@ -24,7 +23,7 @@ class BookTableView(View):
             
             # 3. Manually set the user (or any other fields not in the form)
             # Note: If using standard Django auth, use request.user
-            booking.user = _utils.get_username(request) 
+            booking.user = get_username(request) 
             
             # 4. Now save to the database
             booking.save()
@@ -32,7 +31,7 @@ class BookTableView(View):
             return render(request, "booktable.html", {
                 "form": BookingForm(), # Reset with a fresh form    
                 "message": "Booking confirmed successfully!",
-                "username": _utils.get_username(request),
+                "username": get_username(request),
             })
         
         else:
@@ -41,5 +40,5 @@ class BookTableView(View):
             
             return render(request, "booktable.html", {
                 "form": form, # Send the form back with error messages
-                "username": _utils.get_username(request)
+                "username": get_username(request)
             })

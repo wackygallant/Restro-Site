@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.views import View
-from .models import Order
+from order.models import OrderItems
+from utils._utils import get_username
 
 class OrderListView(View):
     def get(self, request):
-        # orders = Order.objects.all()
-        # username = get_username(request)
-        return render(request, 'orders.html', {})
+        orders = OrderItems.objects.all()
+        username = get_username(request)
+        return render(request, 'orders.html', {'orders': orders, 'username': username})

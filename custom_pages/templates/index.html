@@ -39,25 +39,28 @@
         <div class="row g-4">
             <!-- Featured Dish -->
             {% for menu_item in menu_items %}
-                {% if menu_item.is_on_special %}
-                    <div class="col-md-4">
-                        <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
-                            <div class="position-relative">
-                                <img src="{{ menu_item.image.url }}" class="card-img-top"
-                                    alt="{{ menu_item.name }}" style="height: 250px; object-fit: cover;">
-                                <span class="badge bg-danger position-absolute top-0 end-0 m-3">On Special!!!</span>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title fw-bold">{{ menu_item.name }}</h5>
-                                <p class="card-text text-muted small">{{ menu_item.description }}</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-warning fs-5">★★★★★</span>
-                                    <span class="fw-bold">$ <s>{{ menu_item.price }} </s> {{ menu_item.special_price }}</span>
-                                </div>
-                            </div>
-                        </div>
+            {% if menu_item.is_on_special %}
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
+                    <div class="position-relative">
+                        <img src="{{ menu_item.image.url }}" class="card-img-top" alt="{{ menu_item.name }}"
+                            style="height: 250px; object-fit: cover;">
+                        <span class="badge bg-danger position-absolute top-0 end-0 m-3">On Special !!!</span>
                     </div>
-                {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">{{ menu_item.name }}</h5>
+                        <p class="card-text text-muted small">{{ menu_item.description }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="text-warning fs-5">★★★★★</span>
+                            <span class="fw-bold">$ <s>{{ menu_item.price }} </s> {{ menu_item.special_price }}</span>
+                        </div>
+                        <a href="{% url 'menu_item_detail' menu_item.slug %}" class="btn btn-dark btn-sm mt-3 w-100">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
             {% endfor %}
             <!-- Featured Dish 2
             <div class="col-md-4">
