@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from django.views import View
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 from booking.forms import BookingForm
 
 from utils._utils import get_username
 
+@method_decorator(login_required, name='dispatch')
 class BookTableView(View):
     def get(self, request):
         form = BookingForm()
@@ -21,9 +24,8 @@ class BookTableView(View):
             # 2. Create the object but don't hit the database yet (commit=False)
             booking = form.save(commit=False)
             
-            # 3. Manually set the user (or any other fields not in the form)
-            # Note: If using standard Django auth, use request.user
-            booking.user = get_username(request) 
+            # 3. Manually set the user to the authenticated user
+            booking.user = request.user
             
             # 4. Now save to the database
             booking.save()

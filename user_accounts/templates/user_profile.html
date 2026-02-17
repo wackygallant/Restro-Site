@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <!-- Bookings Section -->
+        <!-- Orders Section -->
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-dark text-white border-0 rounded-top">
@@ -59,29 +59,25 @@
                 </div>
                 
                 <div class="card-body">
-                    {% if bookings %}
+                    {% if orders %}
                         <div class="table-responsive">
                             <table class="table table-hover mb-0">
                                 <thead>
                                     <tr class="border-bottom">
                                         <th>Date</th>
-                                        <th>Time</th>
-                                        <th>Guests</th>
-                                        <th>Phone</th>
+                                        <th>Total Amount</th>
+                                        <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for booking in bookings %}
+                                    {% for order in orders %}
                                     <tr>
                                         <td>
-                                            <strong>{{ booking.date|date:"M d, Y" }}</strong>
+                                            <strong>{{ order.order_date|date:"M d, Y" }}</strong>
                                         </td>
-                                        <td>{{ booking.time_slot }}</td>
-                                        <td>
-                                            <span class="badge bg-info">{{ booking.person_count }} {{ booking.person_count|pluralize:"person,people" }}</span>
-                                        </td>
-                                        <td>{{ booking.phone_number }}</td>
+                                        <td> {{ order.total_amount }} </td>
+                                        <td>{{ order.status }}</td>
                                         <td>
                                             <button class="btn btn-sm btn-outline-secondary" 
                                                     type="button"
@@ -135,13 +131,15 @@
                         </div>
                     {% else %}
                         <div class="alert alert-info mb-0" role="alert">
-                            <strong>No bookings yet!</strong> <br>
-                            <p class="mb-0">You haven't made any table reservations. <a href="{% url 'booking_page' %}" class="alert-link fw-bold">Book a table now</a> to enjoy our delicious food.</p>
+                            <strong>No orders yet!</strong> <br>
+                            <p class="mb-0">You haven't made any orders. <a href="{% url 'menu' %}" class="alert-link fw-bold">Order now</a> to enjoy our delicious food.</p>
                         </div>
                     {% endif %}
                 </div>
             </div>
-            
+            <!-- Orders Section End-->
+
+            <!-- Booking Section Start-->
             <div class="card border-0 shadow-sm">
                 <div class="card-header bg-dark text-white border-0 rounded-top">
                     <h5 class="mb-0 fw-bold">Your Bookings</h5>
@@ -230,21 +228,7 @@
                     {% endif %}
                 </div>
             </div>
-            
-
-            <!-- Quick Actions -->
-            <!-- <div class="row g-3 mt-3">
-                <div class="col-md-6">
-                    <a href="{% url 'menu' %}" class="btn btn-outline-dark w-100 py-2">
-                        🍽️ View Menu
-                    </a>
-                </div>
-                <div class="col-md-6">
-                    <a href="{% url 'booking_page' %}" class="btn btn-dark w-100 py-2">
-                        📅 Book a Table
-                    </a>
-                </div>
-            </div> -->
+            <!-- Booking Section End-->
         </div>
     </div>
 </div>

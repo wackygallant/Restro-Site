@@ -4,43 +4,79 @@
 <!-- Hero Section -->
 <section class="about-hero position-relative text-white text-center">
     <div class="container py-5">
-        <h1 class="display-3 fw-bold">Your Orders</h1>
-        <p class="lead fs-5">View and manage your orders.</p>
+        <h1 class="display-3 fw-bold"> Your Orders </h1>
+        <p class="lead fs-5">Review and manage your order items.</p>
     </div>
 </section>
 
 <div class="container py-5">
     {% if user.is_authenticated %}
-    {% if orders %}
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th scope="col">Serial No. </th>
-                <th scope="col">Order Name</th>
-                <th scope="col">Order Quantity</th>
-                <th scope="col">Amount</th>
-            </tr>
-        </thead>
-            <tbody>
-                {% for order in orders %}
+    {% if cart_items %}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-dark">
                 <tr>
-                    <th scope="row">{{ forloop.counter }}</th>
-                    <td>{{ order.menu_item_name }}</td>
-                    <td>{{ order.quantity }}</td>
-                    <td>{{ order.price }}</td>
+                    <th scope="col">Item</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col">Action</th>
                 </tr>
-                {% endfor %}    
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
                 <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    <td>{{ item.menu_item.name }}</td>
+                    <td>${{ item.menu_item.special_price|default:item.menu_item.price }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'update-cart-item' item.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <div class="input-group input-group-sm" style="width: 120px;">
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control text-center">
+                                <button type="submit" class="btn btn-outline-secondary">Update</button>
+                            </div>
+                        </form>
+                    </td>
+                    <td>${{ item.get_total }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'remove-from-cart' item.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr class="table-light">
+                    <th colspan="3" class="text-end">Total:</th>
+                    <th colspan="2" class="text-start">${{ total_price }}</th>
                 </tr>
             </tbody>
         </table>
+    </div>
+
+    <div class="d-flex gap-3 mt-4">
+        <a href="{% url 'menu' %}" class="btn btn-outline-dark">
+            Add More Items
+        </a>
+        <form method="POST" action="{% url 'checkout' %}" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-dark px-5">
+                Proceed to Checkout
+            </button>
+        </form>
+    </div>
     {% else %}
-        <p class="text-center"><strong>No Orders Added Yet!!!</strong></p>
-        <a href="{% url 'menu' %}">Menu</a> 
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="alert alert-info shadow-lg border-0 rounded-lg py-5" role="alert">
+                <div class="text-center">
+                    <h4 class="fw-bold mb-3">Your cart is empty!</h4>
+                    <p class="mb-0">Browse our menu and add delicious items to your cart.</p>
+                    <a href="{% url 'menu' %}" class="btn btn-dark mt-3">View Menu</a>
+                </div>
+            </div>
+        </div>
+    </div>
     {% endif %}
     {% else %}
     <div class="row justify-content-center">

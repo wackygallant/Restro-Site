@@ -5,7 +5,6 @@ from django.contrib import messages
 from utils._utils import get_username
 
 from menu.models import MenuCategories, MenuItems
-from order.models import Orders, OrderItems
 
 
 class Menu_Page(View):
@@ -37,18 +36,28 @@ class Menu_Item_Detail(View):
         return render(request, "menu_item.html", context)
     
     def post(self, request, item_slug):
+        if not request.user.is_authenticated:
+            messages.error(request, "Please log in to add items to cart.")
+            return redirect('login')
+        
         item = MenuItems.objects.get(slug=item_slug)
-        quantity = int(request.POST.get('quantity', 1))
-        calculated_price = item.price * quantity
+        quantity_str = request.POST.get('quantity', '1').strip()
+        quantity = int(quantity_str) if quantity_str else 1
 
-        OrderItems.objects.create(
-            menu_item_name=item.name,
-            quantity=quantity,
-            price=calculated_price
+        # Add to cart instead of creating an order item
+        from order.models import Cart, CartItem
+        cart, created = Cart.objects.get_or_create(user=request.user)
+        
+        cart_item, created = CartItem.objects.get_or_create(
+            cart=cart,
+            menu_item=item,
+            defaults={'quantity': quantity}
         )
+        
+        if not created:
+            # Item already in cart, increase quantity
+            cart_item.quantity += quantity
+            cart_item.save()
 
-        # 1. Add the success message
-        messages.success(request, f"Added {quantity}x {item.name} to your order!")
-
-        # 2. Redirect to avoid duplicate submissions on refresh
-        return redirect('order-list')    
+        messages.success(request, f"Added {quantity}x {item.name} to your cart!")
+        return redirect('orders')   

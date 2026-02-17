@@ -1,12 +1,9 @@
 from django.shortcuts import redirect, render
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
 from user_accounts.forms import SignUpForm
-from utils import _utils
 from booking.models import Booking
-
+from order.models import Order, OrderItem
 
 class LoginView(View):
     def get(self, request):
@@ -56,6 +53,8 @@ class ProfileView(View):
         
         user = request.user
         bookings = Booking.objects.filter(user=user.username).order_by('-date')
+        orders = Order.objects.all()
+        order_items = OrderItem.objects.filter()
         
         context = {
             'user': user,
@@ -63,5 +62,7 @@ class ProfileView(View):
             'email': user.email,
             'date_joined': user.date_joined,
             'bookings': bookings,
+            'orders' : orders,
+            'order_items' : order_items,
         }
         return render(request, 'user_profile.html', context)

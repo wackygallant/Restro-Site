@@ -29,11 +29,13 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'menu' %}">Menu</a></li>
+                    {% if user.is_authenticated %}
                     <li class="nav-item"><a class="nav-link" href="{% url 'booking_page' %}">Book Table</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'order-list' %}">Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'orders' %}"> Your Orders </a></li>
+                    {% endif %}
 
                     <li class="nav-item dropdown ms-lg-3">
-                        <a class="nav-link dropdown-toggle fw-semibold" data-bs-toggle="dropdown" href="#">
+                        <a class="nav-link dropdown-toggle fw-semibold" data-bs-toggle="dropdown" href="#"> 
                             {% if user.is_authenticated %}
                             👤 {{ user.username }}
                             {% else %}
