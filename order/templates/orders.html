@@ -11,7 +11,7 @@
 
 <div class="container py-5">
     {% if user.is_authenticated %}
-    {% if cart_items %}
+    {% if order_cart_items %}
     <div class="table-responsive">
         <table class="table table-hover">
             <thead class="table-dark">
@@ -24,22 +24,23 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in cart_items %}
+                {% for item in order_cart_items %}
                 <tr>
                     <td>{{ item.menu_item.name }}</td>
                     <td>${{ item.menu_item.special_price|default:item.menu_item.price }}</td>
                     <td>
-                        <form method="POST" action="{% url 'update-cart-item' item.id %}" class="d-inline">
+                        <form method="POST" action="{% url 'update-order-cart-item' item.id %}" class="d-inline">
                             {% csrf_token %}
                             <div class="input-group input-group-sm" style="width: 120px;">
-                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control text-center">
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1"
+                                    class="form-control text-center">
                                 <button type="submit" class="btn btn-outline-secondary">Update</button>
                             </div>
                         </form>
                     </td>
                     <td>${{ item.get_total }}</td>
                     <td>
-                        <form method="POST" action="{% url 'remove-from-cart' item.id %}" class="d-inline">
+                        <form method="POST" action="{% url 'remove-from-order-cart' item.id %}" class="d-inline">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
                         </form>
@@ -60,9 +61,31 @@
         </a>
         <form method="POST" action="{% url 'checkout' %}" class="d-inline">
             {% csrf_token %}
-            <button type="submit" class="btn btn-dark px-5">
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-dark px-5" data-bs-toggle="modal" data-bs-target="#checkout">
                 Proceed to Checkout
             </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="checkout" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Shipping</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary"> Confirm </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </form>
     </div>
     {% else %}
@@ -70,8 +93,8 @@
         <div class="col-lg-7">
             <div class="alert alert-info shadow-lg border-0 rounded-lg py-5" role="alert">
                 <div class="text-center">
-                    <h4 class="fw-bold mb-3">Your cart is empty!</h4>
-                    <p class="mb-0">Browse our menu and add delicious items to your cart.</p>
+                    <h4 class="fw-bold mb-3">Your order cart is empty!</h4>
+                    <p class="mb-0">Browse our menu and add delicious items to your order cart.</p>
                     <a href="{% url 'menu' %}" class="btn btn-dark mt-3">View Menu</a>
                 </div>
             </div>

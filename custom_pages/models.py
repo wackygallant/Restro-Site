@@ -7,15 +7,15 @@ class Teams(CommonModel):
     name = models.CharField(max_length=100)
     role = models.CharField(max_length=100)
     bio = models.TextField()
-    image = models.ImageField(upload_to='chefs/')
+    image = models.ImageField(upload_to='teams/')
 
     def __str__(self):
         return self.name
     
     class Meta:
-        db_table = 'chef'
-        verbose_name = 'Chef'
-        verbose_name_plural = 'Chefs'
+        db_table = 'teams'
+        verbose_name = 'Team'
+        verbose_name_plural = 'Teams'
 
 
 class Testimonials(CommonModel):

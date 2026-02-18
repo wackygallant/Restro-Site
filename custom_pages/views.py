@@ -1,4 +1,3 @@
-from urllib import request
 from django.shortcuts import render
 from django.views import View
 from custom_pages.models import Teams, Testimonials
