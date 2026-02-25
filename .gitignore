@@ -9,6 +9,5 @@
 __pycache__/
 /venv/
 .env
-Django_Backend_Project_Plan.pdf
 media
 db.sqlite3

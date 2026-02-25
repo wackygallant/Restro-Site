@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from user_accounts.models import ShippingAddress
 
 class SignUpForm(UserCreationForm):
     # Adding extra fields not in the default UserCreationForm
@@ -27,3 +28,8 @@ class SignUpForm(UserCreationForm):
         
         self.fields['password2'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Confirm Password'})
         self.fields['password2'].label = ''
+
+class ShippingAddressForm(forms.ModelForm):
+    class Meta:
+        model = ShippingAddress
+        fields = ['contact_no', 'address', 'city']

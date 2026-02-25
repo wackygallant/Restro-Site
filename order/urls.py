@@ -5,7 +5,8 @@ from order.views import (
     AddToOrderCartView,
     RemoveFromOrderCartView,
     UpdateOrderCartItemView,
-    CheckoutView
+    CheckoutView,
+    KhaltiPaymentVerificationView
 )
 
 urlpatterns = [
@@ -15,4 +16,5 @@ urlpatterns = [
     path('order_cart/remove/<int:order_cart_item_id>/', RemoveFromOrderCartView.as_view(), name='remove-from-order-cart'),
     path('order_cart/update/<int:order_cart_item_id>/', UpdateOrderCartItemView.as_view(), name='update-order-cart-item'),
     path('checkout/', CheckoutView.as_view(), name='checkout'),
+    path('payment/khalti/verify/', KhaltiPaymentVerificationView.as_view(), name='khalti-payment-verify'),
 ]

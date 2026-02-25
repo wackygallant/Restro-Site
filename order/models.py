@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from menu.models import MenuItems
+from django.db import models
+import datetime
 
 class OrderCart(models.Model):
     """Shopping cart for users before checkout"""
@@ -26,6 +28,7 @@ class OrderCart(models.Model):
 
 class OrderCartItem(models.Model):
     """Items in the shopping cart"""
+    #
     order_cart = models.ForeignKey(OrderCart, on_delete=models.CASCADE, related_name='order_cart_items')
     menu_item = models.ForeignKey(MenuItems, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
@@ -49,22 +52,20 @@ class OrderCartItem(models.Model):
 
 class Order(models.Model):
     """Orders for users"""
+    order_id = models.CharField(max_length=100, unique=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
     order_date = models.DateTimeField(auto_now_add=True)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     
     STATUS_CHOICES = [
-        ('pending', 'Pending'),
-        ('confirmed', 'Confirmed'),
-        ('preparing', 'Preparing'),
-        ('ready', 'Ready for Pickup'),
         ('completed', 'Completed'),
         ('cancelled', 'Cancelled'),
     ]
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    shippingaddress = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
-        return f"Order by {self.user.username} - {self.get_status_display()}"
+        return f"{self.order_id} - {self.get_status_display()}"
     
     def calculate_total(self):
         """Calculate total price for this order"""
@@ -72,6 +73,28 @@ class Order(models.Model):
         self.total_amount = total
         self.save()
         return total
+
+    def create_order_id(self):
+        """Create a unique order ID in format ORD-YYYY-NNNN"""
+        
+        # Get current year
+        current_year = datetime.datetime.now().year
+        
+        # Get the last order for this year to determine the next sequence number
+        last_order = Order.objects.filter(
+            order_id__startswith=f'ORD-{current_year}-'
+        ).order_by('-order_id').first()
+        
+        if last_order:
+            # Extract the sequence number from the last order ID
+            last_sequence = int(last_order.order_id.split('-')[-1])
+            next_sequence = last_sequence + 1
+        else:
+            next_sequence = 1
+        
+        # Format with leading zeros (4 digits)
+        self.order_id = f'ORD-{current_year}-{next_sequence:04d}'
+        return self.order_id
 
     class Meta:
         db_table = 'orders'
@@ -96,5 +119,46 @@ class OrderItem(models.Model):
         db_table = 'order_items'
         verbose_name = 'Order Item'
         verbose_name_plural = 'Order Items'
+
+
+class Payment(models.Model):
+    """Payment records for orders"""
+    PAYMENT_METHODS = [
+        ('cash_on_delivery', 'Cash on Delivery'),
+        ('esewa', 'eSewa'),
+        ('khalti', 'Khalti'),
+    ]
+    
+    PAYMENT_STATUS = [
+        ('pending', 'Pending'),
+        ('initiated', 'Initiated'),
+        ('paid', 'Paid'),
+        ('failed', 'Failed'),
+        ('cancelled', 'Cancelled'),
+        ('expired', 'Expired'),
+    ]
+    
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='payments')
+    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHODS)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, choices=PAYMENT_STATUS, default='pending')
+    transaction_id = models.CharField(max_length=100, null=True, blank=True)
+    pidx = models.CharField(max_length=100, null=True, blank=True)  # Khalti payment identifier
+    payment_url = models.URLField(null=True, blank=True)  # For redirect URLs
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    @property
+    def order_id(self):
+        """Get order_id from related order"""
+        return self.order.order_id
+    
+    def __str__(self):
+        return f"Payment for {self.order_id} - {self.get_status_display()}"
+    
+    class Meta:
+        db_table = 'payments'
+        verbose_name = 'Payment'
+        verbose_name_plural = 'Payments'
 
 

@@ -140,3 +140,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Login redirect
 LOGIN_URL = 'login'
+
+
+# Khalti Configuration
+KHALTI_SECRET_KEY = os.getenv('KHALTI_LIVE_SECRET_KEY')
+KHALTI_PUBLIC_KEY = os.getenv('KHALTI_LIVE_PUBLIC_KEY')
+
+KHALTI_API_URL = os.getenv('KHALTI_API_URL')
+
+
