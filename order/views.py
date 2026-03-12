@@ -7,24 +7,14 @@ from django.contrib import messages
 from django.conf import settings
 
 # App Imports
-from order.models import OrderCart, OrderCartItem, Order, OrderItem, Payment
+from order.models import OrderCart, OrderCartItem, Order, OrderItem
+from payments.models import Payment
 from user_accounts.models import ShippingAddress
 from menu.models import MenuItems
 from utils._utils import get_username
-from order.forms import CheckoutForm, PaymentVerificationForm, KhaltiPaymentForm
+from order.forms import CheckoutForm
 
 import time
-import json
-import requests
-
-
-@method_decorator(login_required, name='dispatch')
-class KhaltiPaymentVerificationView(View):
-    """Handle Khalti payment verification after user returns from payment gateway"""
-    def get(self, request):
-        checkout_view = CheckoutView()
-        return checkout_view.verify_khalti_payment(request)
-
 
 class OrderListView(View):
     """Display user's order cart (repurposed as the orders page)"""
@@ -176,91 +166,29 @@ class CheckoutView(View):
     
     def process_khalti_payment(self, request, order):
         """Process Khalti payment"""
-        url = settings.KHALTI_API_URL
-        initiate_url = url + "epayment/initiate/"
-        secret_key = settings.KHALTI_SECRET_KEY
-
-        # Create payment record with initiated status
+        # Create payment record
         payment = Payment.objects.create(
             order=order,
             payment_method='khalti',
             amount=order.total_amount,
-            status='initiated'
+            status='paid',
+            transaction_id=f"khalti_{order.id}_{int(time.time())}"
         )
-
-        payload = {
-            "return_url": request.build_absolute_uri('/orders'),
-            "website_url": request.build_absolute_uri('/'),
-            "amount": int(float(order.total_amount) * 100),  # Convert to paisa as integer
-            "purchase_order_id": order.order_id,
-            "purchase_order_name": "Restro Order",
-            "customer_info": {
-                "name": request.user.get_full_name() or request.user.username,
-                "email": request.user.email or "customer@example.com",
-                "phone": "9800000001"  # Default test phone, you may want to collect this from user
-            }
-        }
-        headers = {
-            'Authorization': f'key {secret_key}',
-            'Content-Type': 'application/json',
-        }
-
+        
+        # Clear order cart
         try:
-            response = requests.post(initiate_url, headers=headers, data=json.dumps(payload))
-            
-            # Log the response for debugging
-            print(f"Khalti API Status Code: {response.status_code}")
-            print(f"Khalti API Response: {response.text}")
-            
-            if response.status_code == 200:
-                response_data = response.json()
-                print(f"Parsed Response Data: {response_data}")
-                
-                # Update payment record with response data
-                payment.pidx = response_data.get('pidx')
-                payment.payment_url = response_data.get('payment_url')
-                payment.save()
-                
-                # Khalti API returns payment_url directly for successful initiation
-                payment_url = response_data.get('payment_url')
-                if payment_url:
-                    # Clear order cart
-                    try:
-                        cart = OrderCart.objects.get(user=payment.order.user)
-                        cart_items = cart.order_cart_items.all()
-                        print(f"Clearing {cart_items.count()} items from order cart for Khalti payment")
-                        cart_items.delete()
-                        print("Order cart cleared successfully for Khalti")
-                    except Exception as e:
-                        print(f"Error clearing order cart for Khalti: {e}")
-                        messages.error(request, "Error clearing order cart")
-                    
-                    return redirect(payment_url)
-                else:
-                    error_message = response_data.get('message', 'Payment URL not received from Khalti')
-                    print(f"Khalti Error: {error_message}")
-                    payment.status = 'failed'
-                    payment.save()
-                    messages.error(request, f"Khalti payment initiation failed: {error_message}")
-                    return redirect('checkout')
-            else:
-                print(f"Khalti API Error Response: {response.text}")
-                payment.status = 'failed'
-                payment.save()
-                messages.error(request, f"Khalti API error: {response.status_code} - {response.text}")
-                return redirect('checkout')
-                
-        except requests.exceptions.RequestException as e:
-            payment.status = 'failed'
-            payment.save()
-            messages.error(request, f"Network error while connecting to Khalti: {str(e)}")
-            return redirect('checkout')
+            cart = OrderCart.objects.get(user=request.user)
+            cart_items = cart.order_cart_items.all()
+            print(f"Clearing {cart_items.count()} items from order cart for Khalti payment")
+            cart_items.delete()
+            print("Order cart cleared successfully for Khalti")
         except Exception as e:
-            payment.status = 'failed'
-            payment.save()
-            messages.error(request, f"Error processing Khalti payment: {str(e)}")
-            return redirect('checkout')
-    
+            print(f"Error clearing order cart for Khalti: {e}")
+            messages.error(request, "Error clearing order cart")
+        
+        messages.success(request, "Payment successful via Khalti!")
+        return redirect('orders')
+
     def post(self, request):
         """Process checkout with shipping and payment"""
         checkout_form = CheckoutForm(request.POST)

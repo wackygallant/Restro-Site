@@ -1,5 +1,5 @@
 from django.contrib import admin
-from order.models import OrderCart, OrderCartItem, Order, OrderItem, Payment
+from order.models import OrderCart, OrderCartItem, Order, OrderItem
 
 @admin.register(OrderCart)
 class OrderCartAdmin(admin.ModelAdmin):
@@ -30,12 +30,3 @@ class OrderItemAdmin(admin.ModelAdmin):
     search_fields = ('order__user__username', 'menu_item__name')
     list_filter = ('order',)
 
-@admin.register(Payment)
-class PaymentAdmin(admin.ModelAdmin):
-    list_display = ('order_id', 'order', 'payment_method', 'amount', 'status', 'transaction_id', 'created_at')
-    search_fields = ('order_id', 'order__user__username', 'transaction_id', 'pidx')
-    list_filter = ('payment_method', 'status', 'created_at')
-    readonly_fields = ('order_id', 'order', 'payment_method', 'amount', 'created_at', 'updated_at')
-    
-    def get_queryset(self, request):
-        return super().get_queryset(request).select_related('order', 'order__user')
