@@ -28,7 +28,7 @@ class OrderListView(View):
             order_cart_items = order_cart.order_cart_items.all()
             total_price = order_cart.get_total_price()
         
-        return render(request, 'orders.html', {
+        return render(request, 'cart.html', {
             'order_cart_items': order_cart_items,
             'total_price': total_price,
             'username': username
@@ -43,7 +43,7 @@ class OrderCartView(View):
         total_items = order_cart.get_total_items()
         total_price = order_cart.get_total_price()
         
-        return render(request, 'orders.html', {
+        return render(request, 'cart.html', {
             'order_cart': order_cart,
             'order_cart_items': order_cart_items,
             'total_items': total_items,
@@ -138,8 +138,31 @@ class CheckoutView(View):
         except OrderCart.DoesNotExist:
             messages.error(request, "Order cart not found!")
             return redirect('order_cart')
+        
+    def process_cod(self, request, order):
+        # Create cash on delivery payment record
+        Payment.objects.create(
+            order=order,
+            payment_method='cash_on_delivery',
+            amount=order.total_amount,
+            status='pending'
+        )
 
-    def process_esewa_payment(self, request, order):
+        # Clear order cart
+        try:
+            cart = OrderCart.objects.get(user=request.user)
+            cart_items = cart.order_cart_items.all()
+            print(f"Clearing {cart_items.count()} items from order cart for eSewa payment")
+            cart_items.delete()
+            print("Order cart cleared successfully.")
+        except Exception as e:
+            print(f"Error clearing order cart: {e}")
+            messages.error(request, "Error clearing order cart")
+        
+        messages.success(request, "Order placed successfully! Pay on delivery.")
+        return redirect('orders')
+
+    def initiate_esewa_payment(self, request, order):
         """Process eSewa payment"""
         # Create payment record
         payment = Payment.objects.create(
@@ -158,13 +181,13 @@ class CheckoutView(View):
             cart_items.delete()
             print("Order cart cleared successfully for eSewa")
         except Exception as e:
-            print(f"Error clearing order cart for eSewa: {e}")
+            print(f"Error clearing order cart: {e}")
             messages.error(request, "Error clearing order cart")
         
         messages.success(request, "Payment successful via eSewa!")
         return redirect('orders')
     
-    def process_khalti_payment(self, request, order):
+    def initiate_khalti_payment(self, request, order):
         """Process Khalti payment"""
         # Create payment record
         payment = Payment.objects.create(
@@ -181,9 +204,9 @@ class CheckoutView(View):
             cart_items = cart.order_cart_items.all()
             print(f"Clearing {cart_items.count()} items from order cart for Khalti payment")
             cart_items.delete()
-            print("Order cart cleared successfully for Khalti")
+            print("Order cart cleared successfully.")
         except Exception as e:
-            print(f"Error clearing order cart for Khalti: {e}")
+            print(f"Error clearing order cart: {e}")
             messages.error(request, "Error clearing order cart")
         
         messages.success(request, "Payment successful via Khalti!")
@@ -221,7 +244,7 @@ class CheckoutView(View):
             order = Order(
                 user=request.user, 
                 shippingaddress=shipping_address,
-                status='completed'
+                status='pending'
             )
             order.create_order_id()
             order.save()
@@ -242,31 +265,11 @@ class CheckoutView(View):
             
             # Handle payment based on method
             if payment_method == 'cash_on_delivery':
-                # Create cash on delivery payment record
-                Payment.objects.create(
-                    order=order,
-                    payment_method='cash_on_delivery',
-                    amount=order.total_amount,
-                    status='pending'
-                )
-                messages.success(request, "Order placed successfully! Pay on delivery.")
+                return self.process_cod(request, order)
             elif payment_method == 'esewa':
-                return self.process_esewa_payment(request, order)
+                return self.initiate_esewa_payment(request, order)
             elif payment_method == 'khalti':
-                return self.process_khalti_payment(request, order)
-            
-            # Clear order cart for cash on delivery (eSewa and Khalti clear in their methods)
-            if payment_method == 'cash_on_delivery':
-                try:
-                    cart_items = order_cart.order_cart_items.all()
-                    print(f"Clearing {cart_items.count()} items from order cart for user {request.user.username}")
-                    cart_items.delete()
-                    print("Order cart cleared successfully")
-                except Exception as e:
-                    print(f"Error clearing order cart: {e}")
-                    messages.error(request, "Error clearing order cart")
-            
-            return redirect('orders')
+                return self.initiate_khalti_payment(request, order)
         
         except OrderCart.DoesNotExist:
             messages.error(request, "Order cart not found!")

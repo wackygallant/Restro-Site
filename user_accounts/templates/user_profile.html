@@ -15,35 +15,37 @@
             <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
                     <div class="text-center mb-4">
-                        <div class="rounded-circle bg-dark text-white d-inline-flex align-items-center justify-content-center" 
-                             style="width: 80px; height: 80px; font-size: 2rem;">
+                        <div class="rounded-circle bg-dark text-white d-inline-flex align-items-center justify-content-center"
+                            style="width: 80px; height: 80px; font-size: 2rem;">
                             {{ username|first|upper }}
                         </div>
                     </div>
-                    
+
                     <h5 class="card-title text-center fw-bold">{{ username }}</h5>
-                    
+
                     <div class="mb-3">
                         <small class="text-muted">Email Address</small>
                         <p class="mb-0">{{ email }}</p>
                     </div>
-                    
+
                     <div class="mb-3">
                         <small class="text-muted">Member Since</small>
                         <p class="mb-0">{{ date_joined|date:"M d, Y" }}</p>
                     </div>
-                    
+
                     <div class="mb-3">
                         <small class="text-muted">Total Bookings</small>
                         <p class="mb-0">{{ bookings.count }}</p>
                     </div>
-                    
+
                     <hr>
                     <div class="d-grid gap-2">
-                        <a href="#" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                        <a href="#" class="btn btn-dark btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#editProfileModal">
                             Edit Profile
                         </a>
-                        <a href="#" class="btn btn-dark btn-sm" data-bs-toggle="modal" data-bs-target="#addShippingAddressModal">
+                        <a href="#" class="btn btn-dark btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#addShippingAddressModal">
                             Shipping Address
                         </a>
                         <a href="{% url 'logout' %}" class="btn btn-outline-danger btn-sm">
@@ -57,88 +59,92 @@
         <!-- Orders Section -->
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm">
-                <div class="card-header bg-dark text-white border-0 rounded-top">
+                <div
+                    class="card-header bg-dark text-white border-0 rounded-top d-flex justify-content-between align-items-center">
                     <h5 class="mb-0 fw-bold">Your Orders</h5>
+                    <a href="#" class="btn btn-sm btn-outline-secondary fw-bold">View All</a>
                 </div>
-                
+
                 <div class="card-body">
                     {% if orders %}
-                        <div class="table-responsive">
-                            <table class="table table-hover mb-0">
-                                <thead>
-                                    <tr class="border-bottom">
-                                        <th>Date</th>
-                                        <th>Order</th>
-                                        <th>Total Amount</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for order in orders %}
-                                    <tr>
-                                        <td>
-                                            <strong>{{ order.order_date|date:"M d, Y" }}</strong>
-                                        </td>
-                                        <td>{{ order.id }}</td>
-                                        <td> {{ order.total_amount }} </td>
-                                        <td>{{ order.status }}</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-secondary" 
-                                                    type="button"
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#bookingModal{{ booking.id }}"
-                                                    title="View booking details">
-                                                View
-                                            </button>
-                                            
-                                            <!-- Booking Details Modal -->
-                                            <div class="modal fade" id="bookingModal{{ booking.id }}" tabindex="-1">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header border-bottom">
-                                                            <h5 class="modal-title fw-bold">Orders</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr class="border-bottom">
+                                    <th>Date</th>
+                                    <th>Order Id</th>
+                                    <th>Total Amount</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ order.order_date|date:"M d, Y" }}</strong>
+                                    </td>
+                                    <td>{{ order.order_id }}</td>
+                                    <td> {{ order.total_amount }} </td>
+                                    <td>{{ order.status }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-secondary" type="button"
+                                            data-bs-toggle="modal" data-bs-target="#bookingModal{{ booking.id }}"
+                                            title="View booking details">
+                                            View
+                                        </button>
+
+                                        <!-- Order Details Modal -->
+                                        <div class="modal fade" id="bookingModal{{ booking.id }}" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header border-bottom">
+                                                        <h5 class="modal-title fw-bold">Orders</h5>
+                                                        <button type="button" class="btn-close"
+                                                            data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <small class="text-muted fw-bold">DATE</small>
+                                                            <p class="mb-0">{{ booking.date|date:"M d, Y" }}</p>
                                                         </div>
-                                                        <div class="modal-body">
-                                                            <div class="mb-3">
-                                                                <small class="text-muted fw-bold">DATE</small>
-                                                                <p class="mb-0">{{ booking.date|date:"M d, Y" }}</p>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <small class="text-muted fw-bold">TIME</small>
-                                                                <p class="mb-0">{{ booking.time_slot }}</p>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <small class="text-muted fw-bold">GUESTS</small>
-                                                                <p class="mb-0">{{ booking.person_count }} {{ booking.person_count|pluralize:"person,people" }}</p>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <small class="text-muted fw-bold">EMAIL</small>
-                                                                <p class="mb-0">{{ booking.email }}</p>
-                                                            </div>
-                                                            <div class="mb-0">
-                                                                <small class="text-muted fw-bold">PHONE</small>
-                                                                <p class="mb-0">{{ booking.phone_number }}</p>
-                                                            </div>
+                                                        <div class="mb-3">
+                                                            <small class="text-muted fw-bold">TIME</small>
+                                                            <p class="mb-0">{{ booking.time_slot }}</p>
                                                         </div>
-                                                        <div class="modal-footer border-top">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <div class="mb-3">
+                                                            <small class="text-muted fw-bold">GUESTS</small>
+                                                            <p class="mb-0">{{ booking.person_count }} {{
+                                                                booking.person_count|pluralize:"person,people" }}</p>
                                                         </div>
+                                                        <div class="mb-3">
+                                                            <small class="text-muted fw-bold">EMAIL</small>
+                                                            <p class="mb-0">{{ booking.email }}</p>
+                                                        </div>
+                                                        <div class="mb-0">
+                                                            <small class="text-muted fw-bold">PHONE</small>
+                                                            <p class="mb-0">{{ booking.phone_number }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer border-top">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                     {% else %}
-                        <div class="alert alert-info mb-0" role="alert">
-                            <strong>No orders yet!</strong> <br>
-                            <p class="mb-0">You haven't made any orders. <a href="{% url 'menu' %}" class="alert-link fw-bold">Order now</a> to enjoy our delicious food.</p>
-                        </div>
+                    <div class="alert alert-info mb-0" role="alert">
+                        <strong>No orders yet!</strong> <br>
+                        <p class="mb-0">You haven't made any orders. <a href="{% url 'menu' %}"
+                                class="alert-link fw-bold">Order now</a> to enjoy our delicious food.</p>
+                    </div>
                     {% endif %}
                 </div>
             </div>
@@ -146,90 +152,96 @@
 
             <!-- Booking Section Start-->
             <div class="card border-0 shadow-sm">
-                <div class="card-header bg-dark text-white border-0 rounded-top">
+                <div
+                    class="card-header bg-dark text-white border-0 rounded-top d-flex justify-content-between align-items-center">
                     <h5 class="mb-0 fw-bold">Your Bookings</h5>
+                    <a href="#" class="btn btn-sm btn-outline-secondary fw-bold">View All</a>
                 </div>
-                
+
                 <div class="card-body">
                     {% if bookings %}
-                        <div class="table-responsive">
-                            <table class="table table-hover mb-0">
-                                <thead>
-                                    <tr class="border-bottom">
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th>Guests</th>
-                                        <th>Phone</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for booking in bookings %}
-                                    <tr>
-                                        <td>
-                                            <strong>{{ booking.date|date:"M d, Y" }}</strong>
-                                        </td>
-                                        <td>{{ booking.time_slot }}</td>
-                                        <td>
-                                            <span class="badge bg-info">{{ booking.person_count }} {{ booking.person_count|pluralize:"person,people" }}</span>
-                                        </td>
-                                        <td>{{ booking.phone_number }}</td>
-                                        <td>
-                                            <button class="btn btn-sm btn-outline-secondary" 
-                                                    type="button"
-                                                    data-bs-toggle="modal" 
-                                                    data-bs-target="#bookingModal{{ booking.id }}"
-                                                    title="View booking details">
-                                                View
-                                            </button>
-                                            
-                                            <!-- Booking Details Modal -->
-                                            <div class="modal fade" id="bookingModal{{ booking.id }}" tabindex="-1">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header border-bottom">
-                                                            <h5 class="modal-title fw-bold">Booking</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr class="border-bottom">
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Guests</th>
+                                    <th>Phone</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in bookings %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ booking.date|date:"M d, Y" }}</strong>
+                                    </td>
+                                    <td>{{ booking.time_slot }}</td>
+                                    <td>
+                                        <span class="badge bg-info">{{ booking.person_count }} 
+                                            {{booking.person_count|pluralize:"person,people" }}
+                                        </span>
+                                    </td>
+                                    <td>{{ booking.phone_number }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-secondary" type="button"
+                                            data-bs-toggle="modal" data-bs-target="#bookingModal{{ booking.id }}"
+                                            title="View booking details">
+                                            View
+                                        </button>
+
+                                        <!-- Booking Details Modal -->
+                                        <div class="modal fade" id="bookingModal{{ booking.id }}" tabindex="-1">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header border-bottom">
+                                                        <h5 class="modal-title fw-bold">Booking</h5>
+                                                        <button type="button" class="btn-close"
+                                                            data-bs-dismiss="modal"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <small class="text-muted fw-bold">DATE</small>
+                                                            <p class="mb-0">{{ booking.date|date:"M d, Y" }}</p>
                                                         </div>
-                                                        <div class="modal-body">
-                                                            <div class="mb-3">
-                                                                <small class="text-muted fw-bold">DATE</small>
-                                                                <p class="mb-0">{{ booking.date|date:"M d, Y" }}</p>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <small class="text-muted fw-bold">TIME</small>
-                                                                <p class="mb-0">{{ booking.time_slot }}</p>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <small class="text-muted fw-bold">GUESTS</small>
-                                                                <p class="mb-0">{{ booking.person_count }} {{ booking.person_count|pluralize:"person,people" }}</p>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <small class="text-muted fw-bold">EMAIL</small>
-                                                                <p class="mb-0">{{ booking.email }}</p>
-                                                            </div>
-                                                            <div class="mb-0">
-                                                                <small class="text-muted fw-bold">PHONE</small>
-                                                                <p class="mb-0">{{ booking.phone_number }}</p>
-                                                            </div>
+                                                        <div class="mb-3">
+                                                            <small class="text-muted fw-bold">TIME</small>
+                                                            <p class="mb-0">{{ booking.time_slot }}</p>
                                                         </div>
-                                                        <div class="modal-footer border-top">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <div class="mb-3">
+                                                            <small class="text-muted fw-bold">GUESTS</small>
+                                                            <p class="mb-0">{{ booking.person_count }} {{
+                                                                booking.person_count|pluralize:"person,people" }}</p>
                                                         </div>
+                                                        <div class="mb-3">
+                                                            <small class="text-muted fw-bold">EMAIL</small>
+                                                            <p class="mb-0">{{ booking.email }}</p>
+                                                        </div>
+                                                        <div class="mb-0">
+                                                            <small class="text-muted fw-bold">PHONE</small>
+                                                            <p class="mb-0">{{ booking.phone_number }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer border-top">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                     {% else %}
-                        <div class="alert alert-info mb-0" role="alert">
-                            <strong>No bookings yet!</strong> <br>
-                            <p class="mb-0">You haven't made any table reservations. <a href="{% url 'booking_page' %}" class="alert-link fw-bold">Book a table now</a> to enjoy our delicious food.</p>
-                        </div>
+                    <div class="alert alert-info mb-0" role="alert">
+                        <strong>No bookings yet!</strong> <br>
+                        <p class="mb-0">You haven't made any table reservations. <a href="{% url 'booking_page' %}"
+                                class="alert-link fw-bold">Book a table now</a> to enjoy our delicious food.</p>
+                    </div>
                     {% endif %}
                 </div>
             </div>
@@ -260,7 +272,8 @@
                     </div>
                     <div class="mb-0">
                         <label class="form-label fw-bold">Password</label>
-                        <input type="password" class="form-control" name="password" placeholder="Leave blank to keep current password">
+                        <input type="password" class="form-control" name="password"
+                            placeholder="Leave blank to keep current password">
                         <small class="text-muted">Enter a new password only if you want to change it</small>
                     </div>
                 </form>
@@ -284,56 +297,62 @@
             <div class="modal-body">
                 <!-- Saved Shipping Addresses -->
                 {% if shipping_addresses %}
-                    <div class="mb-4">
-                        <h6 class="fw-bold mb-3">Saved Addresses</h6>
-                        <div class="row">
-                            {% for address in shipping_addresses %}
-                                <div class="col-md-6 mb-3">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                                <h6 class="card-title mb-0">{{ address.city }}</h6>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><a class="dropdown-item" href="{% url 'edit_shipping_address' address.pk %}">Edit</a></li>
-                                                        <li>
-                                                            <form method="post" action="{% url 'delete_shipping_address' %}" style="display: inline;">
-                                                                {% csrf_token %}
-                                                                <input type="hidden" name="address_id" value="{{ address.pk }}">
-                                                                <button type="submit" class="dropdown-item text-danger" onclick="return confirm('Are you sure you want to delete this address?')">Delete</button>
-                                                            </form>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <p class="card-text text-muted small mb-2">
-                                                <i class="fas fa-phone me-1"></i>{{ address.contact_no }}<br>
-                                                <i class="fas fa-map-marker-alt me-1"></i>{{ address.address }}
-                                            </p>
+                <div class="mb-4">
+                    <h6 class="fw-bold mb-3">Saved Addresses</h6>
+                    <div class="row">
+                        {% for address in shipping_addresses %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h6 class="card-title mb-0">{{ address.city }}</h6>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                                                type="button" data-bs-toggle="dropdown">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a class="dropdown-item"
+                                                        href="{% url 'edit_shipping_address' address.pk %}">Edit</a>
+                                                </li>
+                                                <li>
+                                                    <form method="post" action="{% url 'delete_shipping_address' %}"
+                                                        style="display: inline;">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="address_id" value="{{ address.pk }}">
+                                                        <button type="submit" class="dropdown-item text-danger"
+                                                            onclick="return confirm('Are you sure you want to delete this address?')">Delete</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
+                                    <p class="card-text text-muted small mb-2">
+                                        <i class="fas fa-phone me-1"></i>{{ address.contact_no }}<br>
+                                        <i class="fas fa-map-marker-alt me-1"></i>{{ address.address }}
+                                    </p>
                                 </div>
-                            {% endfor %}
+                            </div>
                         </div>
-                        <hr class="my-4">
+                        {% endfor %}
                     </div>
+                    <hr class="my-4">
+                </div>
                 {% else %}
-                    <div class="alert alert-info mb-4">
-                        <i class="fas fa-info-circle me-2"></i>
-                        No shipping addresses saved yet. Add your first address below.
-                    </div>
+                <div class="alert alert-info mb-4">
+                    <i class="fas fa-info-circle me-2"></i>
+                    No shipping addresses saved yet. Add your first address below.
+                </div>
                 {% endif %}
-                
+
                 <!-- Add New Address Form -->
                 <h6 class="fw-bold mb-3">Add New Address</h6>
                 <form method="post" action="{% url 'add_shipping_address' %}">
                     {% csrf_token %}
                     <div class="mb-3">
                         <label class="form-label fw-bold">Contact No.</label>
-                        <input type="text" class="form-control" name="contact_no" placeholder="Enter your contact number">
+                        <input type="text" class="form-control" name="contact_no"
+                            placeholder="Enter your contact number">
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-bold">Address</label>

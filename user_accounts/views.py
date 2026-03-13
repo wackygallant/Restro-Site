@@ -54,8 +54,8 @@ class ProfileView(View):
             return redirect('login')
         
         user = request.user
-        bookings = Booking.objects.filter(user=user.username).order_by('-date')
-        orders = Order.objects.all()
+        bookings = Booking.objects.filter(user=user.username).order_by('-id')[:3]
+        orders = Order.objects.filter(user=user.id).order_by('-id')[:3]
         shipping_addresses = ShippingAddress.objects.filter(username=user)
 
         
