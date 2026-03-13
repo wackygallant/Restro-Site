@@ -4,12 +4,12 @@ from menu.models import MenuItems
 from django.db import models
 import datetime
 
-class OrderCart(models.Model):
+from utils.models import BaseModel
+
+class OrderCart(BaseModel):
     """Shopping cart for users before checkout"""
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='order_cart')
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
+    
     def __str__(self):
         return f"OrderCart for {self.user.username}"
     
@@ -26,14 +26,11 @@ class OrderCart(models.Model):
         verbose_name = 'Order Cart'
         verbose_name_plural = 'Order Carts'
 
-class OrderCartItem(models.Model):
+class OrderCartItem(BaseModel):
     """Items in the shopping cart"""
-    #
     order_cart = models.ForeignKey(OrderCart, on_delete=models.CASCADE, related_name='order_cart_items')
     menu_item = models.ForeignKey(MenuItems, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"{self.quantity} x {self.menu_item.name}"

@@ -1,8 +1,8 @@
 from django.db import models
 
-from utils.models import BaseModel, CommonModel
+from utils.models import CommonModel
 
-class MenuCategories(BaseModel):
+class MenuCategories(CommonModel):
     name = models.CharField(max_length=100)
 
     def __str__(self):
