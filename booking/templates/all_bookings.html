@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="about-hero position-relative text-white text-center">
+    <div class="container py-5">
+        <h1 class="display-3 fw-bold">Booking History</h1>
+        <p class="lead fs-5">All of your magical moments with us</p>
+    </div>
+</section>
+
+<section>
+    <div class="container py-5">
+        {% if bookings %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Contact No.</th>
+                    <th scope="col">Time Slot</th>
+                    <th scope="col">Total Pax.</th>
+                    <th scope="col">Booking Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                <tr>
+                    <th scope="row">{{ booking.date }}</th>
+                    <td>{{ booking.email }}</td>
+                    <td>{{ booking.phone_number }}</td>
+                    <td>{{ booking.time_slot }}</td>
+                    <td>{{ booking.person_count }}</td>
+                    <td>{{ booking.booking_status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="alert alert-info mb-0" role="alert">
+            <strong>No bookings yet!</strong> <br>
+            <p class="mb-0">You haven't made any table reservations. <a href="{% url 'booking_page' %}"
+                    class="alert-link fw-bold">Book a table now</a> to enjoy our delicious food.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

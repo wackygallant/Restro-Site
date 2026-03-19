@@ -2,7 +2,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.views import View
+from django.views import View, generic
 from django.contrib import messages
 from django.conf import settings
 
@@ -15,6 +15,15 @@ from utils._utils import get_username
 from order.forms import CheckoutForm
 
 import time
+
+class AllOrdersView(generic.TemplateView):
+    template_name="all_orders.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context['orders'] = Order.objects.order_by('-order_date')
+        return context
 
 class OrderListView(View):
     """Display user's order cart (repurposed as the orders page)"""

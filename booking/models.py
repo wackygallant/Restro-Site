@@ -17,6 +17,12 @@ class Booking(models.Model):
     date = models.DateField()
     time_slot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE)
     person_count = models.PositiveIntegerField(default=1)
+    STATUS_CHOICES = {
+        ('ended', 'Ended'),
+        ('confirmed', 'Confirmed'),
+        ('pending', 'Pending')
+    }
+    booking_status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 
     def __str__(self):
         return f"Booking for {self.user} on {self.date} at {self.time_slot} for {self.person_count} people."

@@ -37,7 +37,6 @@ class Menu_Item_Detail(View):
     
     def post(self, request, item_slug):
         if not request.user.is_authenticated:
-            messages.error(request, "Please log in to add items to order cart.")
             return redirect('login')
         
         item = MenuItems.objects.get(slug=item_slug)

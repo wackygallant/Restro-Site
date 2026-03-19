@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="about-hero position-relative text-white text-center">
+    <div class="container py-5">
+        <h1 class="display-3 fw-bold">Order History</h1>
+        <p class="lead fs-5">All of your orders</p>
+    </div>
+</section>
+
+<section>
+    <div class="container py-5">
+        {% if orders %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Order Id</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total Amount</th>
+                    <th scope="col">Shipping Address</th>
+                    <th scope="col">Order Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <th scope="row">{{ order.order_date }}</th>
+                    <td>{{ order.order_id }}</td>
+                    <td>{{ order. }}</td>
+                    <td>{{ order.total_amount }}</td>
+                    <td>{{ order.shippingaddress }}</td>
+                    <td>{{ order.order_status }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="alert alert-info mb-0" role="alert">
+            <strong>No orders yet!</strong> <br>
+            <p class="mb-0">You haven't made any orders. <a href="{% url 'menu' %}" class="alert-link fw-bold">Order
+                    now</a> to enjoy our delicious food.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

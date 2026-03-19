@@ -16,9 +16,9 @@ class OrderCartItemAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('order_id', 'user', 'order_date', 'total_amount', 'shippingaddress', 'status')
+    list_display = ('order_id', 'user', 'order_date', 'total_amount', 'shippingaddress', 'order_status')
     search_fields = ('user__username', 'order_id')
-    list_filter = ('status', 'order_date')
+    list_filter = ('order_status', 'order_date')
     readonly_fields = ('user', 'order_date', 'order_id')
     
     def get_queryset(self, request):
