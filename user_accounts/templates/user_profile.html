@@ -70,9 +70,9 @@
                 <div
                     class="card-header bg-dark text-white border-0 rounded-top d-flex justify-content-between align-items-center">
                     <h5 class="mb-0 fw-bold">Your Bookings</h5>
-                    <a href="{% url 'all_bookings_page' %}" class="btn btn-sm btn-outline-secondary fw-bold">View All</a>
+                    <a href="{% url 'all_bookings_page' %}" class="btn btn-sm btn-outline-secondary fw-bold">View
+                        All</a>
                 </div>
-
                 <div class="card-body">
                     {% if bookings %}
                     <div class="table-responsive">
@@ -82,7 +82,7 @@
                                     <th>Date</th>
                                     <th>Time</th>
                                     <th>Guests</th>
-                                    <th>Phone</th>
+                                    <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -94,11 +94,14 @@
                                     </td>
                                     <td>{{ booking.time_slot }}</td>
                                     <td>
-                                        <span class="badge bg-info">{{ booking.person_count }}
-                                            {{ booking.person_count|pluralize:"person,people" }}
+                                        {{ booking.person_count }}
+                                        {{ booking.person_count|pluralize:"person,people" }}
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-info">
+                                            {{ booking.booking_status }}
                                         </span>
                                     </td>
-                                    <td>{{ booking.phone_number }}</td>
                                     <td>
                                         <button class="btn btn-sm btn-outline-secondary" type="button"
                                             data-bs-toggle="modal" data-bs-target="#bookingModal{{ booking.id }}"
@@ -126,7 +129,7 @@
                                                         </div>
                                                         <div class="mb-3">
                                                             <small class="text-muted fw-bold">GUESTS</small>
-                                                            <p class="mb-0">{{ booking.person_count }} 
+                                                            <p class="mb-0">{{ booking.person_count }}
                                                                 {{ booking.person_count|pluralize:"person,people" }}</p>
                                                         </div>
                                                         <div class="mb-3">
@@ -178,7 +181,7 @@
                                 <tr class="border-bottom">
                                     <th>Date</th>
                                     <th>Order Id</th>
-                                    <th>Total Amount</th>
+                                    <th>Amount</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -190,8 +193,12 @@
                                         <strong>{{ order.order_date|date:"M d, Y" }}</strong>
                                     </td>
                                     <td>{{ order.order_id }}</td>
-                                    <td> {{ order.total_amount }} </td>
-                                    <td>{{ order.status }}</td>
+                                    <td> Rs. {{ order.total_amount }} </td>
+                                    <td>
+                                        <span class="badge bg-info">
+                                        {{ order.order_status }}
+                                        </span>
+                                    </td>
                                     <td>
                                         <button class="btn btn-sm btn-outline-secondary" type="button"
                                             data-bs-toggle="modal" data-bs-target="#bookingModal{{ booking.id }}"
@@ -219,8 +226,10 @@
                                                         </div>
                                                         <div class="mb-3">
                                                             <small class="text-muted fw-bold">GUESTS</small>
-                                                            <p class="mb-0">{{ booking.person_count }} {{
-                                                                booking.person_count|pluralize:"person,people" }}</p>
+                                                            <p class="mb-0">
+                                                                {{ booking.person_count }} 
+                                                                {{ booking.person_count|pluralize:"person,people" }}
+                                                            </p>
                                                         </div>
                                                         <div class="mb-3">
                                                             <small class="text-muted fw-bold">EMAIL</small>
@@ -255,8 +264,6 @@
             </div>
             <!-- Orders Section End-->
         </div>
-        <!-- Booking and Order Section End -->
-
     </div>
 </div>
 

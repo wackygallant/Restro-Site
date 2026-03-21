@@ -20,15 +20,9 @@ class BookTableView(View):#
     def post(self, request):
         form = BookingForm(request.POST)
         
-        # 1. Check validity FIRST
         if form.is_valid():
-            # 2. Create the object but don't hit the database yet (commit=False)
             booking = form.save(commit=False)
-            
-            # 3. Manually set the user to the authenticated user
             booking.user = request.user
-            
-            # 4. Now save to the database
             booking.save()
             
             return render(request, "booktable.html", {
@@ -38,11 +32,10 @@ class BookTableView(View):#
             })
         
         else:
-            # If form is invalid, Django automatically populates form.errors
             print("Form errors:", form.errors)
             
             return render(request, "booktable.html", {
-                "form": form, # Send the form back with error messages
+                "form": form,
                 "username": get_username(request)
             })
 

@@ -1,11 +1,13 @@
 from django.shortcuts import redirect, render
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+
 from user_accounts.forms import SignUpForm, ShippingAddressForm
+
 from booking.models import Booking
 from order.models import Order
 from user_accounts.models import ShippingAddress
-from django.contrib import messages
 
 class LoginView(View):
     def get(self, request):
@@ -54,8 +56,8 @@ class ProfileView(View):
             return redirect('login')
         
         user = request.user
-        bookings = Booking.objects.filter(user=user.username).order_by('-id')[:3]
-        orders = Order.objects.filter(user=user.id).order_by('-id')[:3]
+        bookings = Booking.objects.filter(user=user.username).order_by('-date')[:3]
+        orders = Order.objects.filter(user=user.id).order_by('-order_date')[:3]
         shipping_addresses = ShippingAddress.objects.filter(username=user)
 
         

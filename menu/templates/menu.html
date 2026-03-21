@@ -51,7 +51,7 @@
 
           <div class="d-flex justify-content-between align-items-center mt-2">
             <span class="text-warning">★★★★★</span>
-            <span class="fw-bold">$ <s>{{ menu_item.price }}</s> {{ menu_item.special_price }}</span>
+            <span class="fw-bold">Rs. {{ menu_item.special_price }} <s>{{ menu_item.price }}</s> </span>
           </div>
           <a href="{% url 'menu_item_detail' menu_item.slug %}" class="btn btn-dark btn-sm mt-3 w-100">
             View Details
@@ -75,7 +75,7 @@
 
           <div class="d-flex justify-content-between align-items-center mt-2">
             <span class="text-warning">★★★★★</span>
-            <span class="fw-bold">${{ menu_item.price }}</span>
+            <span class="fw-bold">Rs. {{ menu_item.price }}</span>
           </div>
 
           <a href="{% url 'menu_item_detail' menu_item.slug %}" class="btn btn-dark btn-sm mt-3 w-100">

@@ -6,8 +6,8 @@
     <div class="container">
         <h1 class="display-4 fw-bold">{{ menu_item.name }}</h1>
         <p class="lead mb-0">
-            <span class="text-muted text-decoration-line-through me-2">${{ menu_item.price }}</span>
-            <span class="text-warning fw-bold">$ <s>{{ menu_item.price }} </s> {{ menu_item.special_price }}</span>
+            <span class="text-muted text-decoration-line-through me-2">Rs. {{ menu_item.price }}</span>
+            <span class="text-warning fw-bold">Rs. {{ menu_item.special_price }} <s>{{ menu_item.price }} </s> </span>
         </p>
     </div>
 </div>
@@ -48,7 +48,7 @@
                         {{ menu_item.description }}
                     </p>
 
-                    <form method="POST" action="#" class="mt-4">
+                    <form method="POST" class="mt-4">
                         {% csrf_token %}
                         <div class="d-flex align-items-center flex-wrap gap-3">
 
