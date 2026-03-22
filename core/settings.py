@@ -19,8 +19,6 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# settings.py
-
 # Session expires after 30 minutes of inactivity
 SESSION_COOKIE_AGE = 1800 
 
@@ -48,7 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'custom_pages',
+    'customer_panel',
     'menu',
     'booking',
     'user_accounts',
@@ -142,12 +140,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Login redirect
 LOGIN_URL = 'login'
-
-
-# Khalti Configuration
-KHALTI_SECRET_KEY = os.getenv('KHALTI_LIVE_SECRET_KEY')
-KHALTI_PUBLIC_KEY = os.getenv('KHALTI_LIVE_PUBLIC_KEY')
-
-KHALTI_API_URL = os.getenv('KHALTI_API_URL')
 
 

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from custom_pages.models import Teams, Testimonials
+from customer_panel.models import Teams, Testimonials
 from menu.models import MenuItems
 
 from utils import _utils

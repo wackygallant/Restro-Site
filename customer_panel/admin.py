@@ -1,5 +1,5 @@
 from django.contrib import admin
-from custom_pages.models import Teams, Testimonials
+from customer_panel.models import Teams, Testimonials
 
 @admin.register(Teams)
 class TeamsAdmin(admin.ModelAdmin):
