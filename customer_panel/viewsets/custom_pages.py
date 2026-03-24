@@ -1,6 +1,6 @@
 # Django Modules Imports
 from django.shortcuts import render
-from django.views import View, generic
+from django.views import generic
 
 # App Imports
 from customer_panel.models import Teams, Testimonials

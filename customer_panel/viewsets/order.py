@@ -12,7 +12,7 @@ from payments.models import Payment
 from user_accounts.models import ShippingAddress
 from menu.models import MenuItems
 from utils._utils import get_username
-from order.forms import CheckoutForm
+from customer_panel.formsets.orderform import CheckoutForm
 
 import time
 
@@ -21,7 +21,6 @@ class AllOrdersView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         context['orders'] = Order.objects.order_by('-order_date')
         return context
 
@@ -37,7 +36,7 @@ class OrderListView(View):
             order_cart_items = order_cart.order_cart_items.all()
             total_price = order_cart.get_total_price()
         
-        return render(request, 'cart.html', {
+        return render(request, 'customer_panel/cart.html', {
             'order_cart_items': order_cart_items,
             'total_price': total_price,
             'username': username
@@ -52,7 +51,7 @@ class OrderCartView(View):
         total_items = order_cart.get_total_items()
         total_price = order_cart.get_total_price()
         
-        return render(request, 'cart.html', {
+        return render(request, 'customer_panel/cart.html', {
             'order_cart': order_cart,
             'order_cart_items': order_cart_items,
             'total_items': total_items,
@@ -113,41 +112,7 @@ class UpdateOrderCartItemView(View):
         return redirect('order_cart')
 
 @method_decorator(login_required, name='dispatch')
-class CheckoutView(View):
-    """Convert order cart to order"""
-    def get(self, request):
-        """Display checkout page with shipping and payment options"""
-        checkout_form = CheckoutForm()
-        
-        try:
-            order_cart = OrderCart.objects.get(user=request.user)
-            order_cart_items = order_cart.order_cart_items.all()
-            shipping_addresses = ShippingAddress.objects.filter(username=request.user)
-            
-            if not order_cart_items.exists():
-                messages.error(request, "Your order cart is empty!")
-                return redirect('order_cart')
-            
-            if not shipping_addresses.exists():
-                messages.error(request, "Please add a shipping address first!")
-                return redirect('profile')
-            
-            # Populate shipping address choices
-            shipping_choices = [(addr.id, addr) for addr in shipping_addresses]
-            checkout_form.fields['shipping_address'].choices = shipping_choices
-            
-            context = {
-                'form': checkout_form,
-                'order_cart_items': order_cart_items,
-                'shipping_addresses': shipping_addresses,
-                'total_price': order_cart.get_total_price(),
-            }
-            return render(request, 'checkout.html', context)
-            
-        except OrderCart.DoesNotExist:
-            messages.error(request, "Order cart not found!")
-            return redirect('order_cart')
-        
+class CheckoutView(View):        
     def process_cod(self, request, order):
         # Create cash on delivery payment record
         Payment.objects.create(
@@ -221,6 +186,40 @@ class CheckoutView(View):
         messages.success(request, "Payment successful via Khalti!")
         return redirect('orders')
 
+    """Convert order cart to order"""
+    def get(self, request):
+        """Display checkout page with shipping and payment options"""
+        checkout_form = CheckoutForm()
+        
+        try:
+            order_cart = OrderCart.objects.get(user=request.user)
+            order_cart_items = order_cart.order_cart_items.all()
+            shipping_addresses = ShippingAddress.objects.filter(username=request.user)
+            
+            if not order_cart_items.exists():
+                messages.error(request, "Your order cart is empty!")
+                return redirect('order_cart')
+            
+            if not shipping_addresses.exists():
+                messages.error(request, "Please add a shipping address first!")
+                return redirect('profile')
+            
+            # Populate shipping address choices
+            shipping_choices = [(addr.id, addr) for addr in shipping_addresses]
+            checkout_form.fields['shipping_address'].choices = shipping_choices
+            
+            context = {
+                'form': checkout_form,
+                'order_cart_items': order_cart_items,
+                'shipping_addresses': shipping_addresses,
+                'total_price': order_cart.get_total_price(),
+            }
+            return render(request, 'customer_panel/checkout.html', context)
+            
+        except OrderCart.DoesNotExist:
+            messages.error(request, "Order cart not found!")
+            return redirect('order_cart')
+
     def post(self, request):
         """Process checkout with shipping and payment"""
         checkout_form = CheckoutForm(request.POST)
@@ -253,7 +252,7 @@ class CheckoutView(View):
             order = Order(
                 user=request.user, 
                 shippingaddress=shipping_address,
-                status='pending'
+                order_status='pending'
             )
             order.create_order_id()
             order.save()

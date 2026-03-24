@@ -1,20 +1,21 @@
+# Django Modules Imports
 from django.views import View
 from django.shortcuts import redirect, render
 from django.contrib import messages
 
-from utils._utils import get_username
-
+# App Imports
+from order.models import OrderCart, OrderCartItem
 from menu.models import MenuCategories, MenuItems
 
+# Custom Util Imports
+from utils._utils import get_username
 
 class Menu_Page(View):
     def get(self, request, category_slug=None):
         username = get_username(request)
         categories = MenuCategories.objects.all().order_by('priority')
         if category_slug:  # If user clicked a category
-            filtered_menu_items = MenuItems.objects.filter(
-            category__slug=category_slug
-            )
+            filtered_menu_items = MenuItems.objects.filter(category__slug=category_slug)
         else:
             filtered_menu_items = MenuItems.objects.all()
         context = {
@@ -23,7 +24,6 @@ class Menu_Page(View):
             "username": username
         }
         return render(request, "customer_panel/menu.html", context)
-
     
 class Menu_Item_Detail(View):
     def get(self, request, item_slug):
@@ -44,7 +44,6 @@ class Menu_Item_Detail(View):
         quantity = int(quantity_str) if quantity_str else 1
 
         # Add to order cart instead of creating an order item
-        from order.models import OrderCart, OrderCartItem
         order_cart, created = OrderCart.objects.get_or_create(user=request.user)
         
         order_cart_item, created = OrderCartItem.objects.get_or_create(
@@ -59,4 +58,4 @@ class Menu_Item_Detail(View):
             order_cart_item.save()
 
         messages.success(request, f"Added {quantity}x {item.name} to your cart!")
-        return redirect('orders')   
+        return redirect('orders')

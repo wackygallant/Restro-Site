@@ -1,10 +1,11 @@
 from django.urls import path
 
 from customer_panel.viewsets.custom_pages import HomePage, AboutPage
+from customer_panel.viewsets.auth import LoginView, LogoutView, RegisterView
 from customer_panel.viewsets.booking import BookTableView
 from customer_panel.viewsets.menu import Menu_Page, Menu_Item_Detail
 from customer_panel.viewsets.order import OrderListView, OrderCartView, AddToOrderCartView, RemoveFromOrderCartView, UpdateOrderCartItemView, CheckoutView
-from customer_panel.viewsets.user_accounts import LoginView, LogoutView, RegisterView, ProfileView, AddShippingAddressView, EditShippingAddressView, DeleteShippingAddressView
+from customer_panel.viewsets.user_accounts import ProfileView, AddShippingAddressView, EditShippingAddressView, DeleteShippingAddressView
 from customer_panel.viewsets.booking import AllBookingsView
 from customer_panel.viewsets.order import AllOrdersView
 
@@ -13,10 +14,12 @@ urlpatterns = [
     path('', HomePage.as_view(), name='home'),
     path('about/', AboutPage.as_view(), name='about'),
 
-    # User Accounts
+    # Authentication
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('register/', RegisterView.as_view(), name='register'),
+
+    # User Accounts
     path('user/', ProfileView.as_view(), name='profile'),
     path('user/all-bookings/', AllBookingsView.as_view(), name="all_bookings_page"),
     path('user/all-orders/', AllOrdersView.as_view(), name='all_orders' ),
@@ -26,10 +29,12 @@ urlpatterns = [
 
     # Booking
     path('booking/', BookTableView.as_view(), name='booking_page'),
+
     # Menu
     path('menu/', Menu_Page.as_view(), name='menu'),
     path('menu/category/<slug:category_slug>/', Menu_Page.as_view(), name='category_filter'),
     path('menu/item/<slug:item_slug>/', Menu_Item_Detail.as_view(), name='menu_item_detail'),
+    
     # Orders
     path('orders/', OrderListView.as_view(), name='orders'),
     path('orders/order_cart/', OrderCartView.as_view(), name='order_cart'),

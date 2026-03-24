@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
 # Forms Import
-from booking.forms import BookingForm
+from customer_panel.formsets.bookingform import BookingForm
 
 # App Imports
 from booking.models import Booking

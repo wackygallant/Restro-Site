@@ -31,8 +31,3 @@ class SignUpForm(UserCreationForm):
         
         self.fields['password2'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Confirm Password'})
         self.fields['password2'].label = ''
-
-class ShippingAddressForm(forms.ModelForm):
-    class Meta:
-        model = ShippingAddress
-        fields = ['contact_no', 'address', 'city']

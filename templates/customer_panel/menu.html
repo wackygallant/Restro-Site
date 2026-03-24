@@ -3,96 +3,118 @@
 {% block content %}
 
 <section class="about-hero position-relative text-white text-center">
-  <div class="container py-5">
-    <h1 class="display-3 fw-bold">Our Menu</h1>
-    <p class="lead fs-5">Explore our delicious selection of dishes crafted with passion and quality ingredients.</p>
-  </div>
+    <div class="container py-5">
+        <h1 class="display-3 fw-bold">Our Menu</h1>
+        <p class="lead fs-5">Explore our delicious selection of dishes crafted with passion and quality ingredients.</p>
+    </div>
 </section>
 
-<section class="container py-5">
-  <!-- CATEGORY FILTER -->
-  <ul class="nav menu-categories justify-content-center mb-5 flex-wrap gap-2">
-    <li class="nav-item">
-      <a class="nav-link px-4 py-2 rounded-pill {% if not request.resolver_match.kwargs.category_slug %}active-category{% endif %}"
-        href="{% url 'menu' %}">
-        All
-      </a>
-    </li>
+<section>
+    <div class="container py-5">
+        <!-- CATEGORY FILTER -->
+        <ul class="nav menu-categories justify-content-center mb-5 flex-wrap gap-2">
+            <li class="nav-item">
+                <a class="nav-link px-4 py-2 rounded-pill {% if not request.resolver_match.kwargs.category_slug %}active-category{% endif %}"
+                    href="{% url 'menu' %}">
+                    All
+                </a>
+            </li>
 
-    {% for category in options %}
-    <li class="nav-item">
-      <a class="nav-link px-4 py-2 rounded-pill 
-         {% if request.resolver_match.kwargs.category_slug == category.slug %}active-category{% endif %}"
-        href="{% url 'category_filter' category.slug %}">
-        {{ category.name }}
-      </a>
-    </li>
-    {% endfor %}
-  </ul>
-
-  <!-- MENU ITEMS -->
-  <div class="row g-4">
-    {% if filtered_menu_items %}
-    {% for menu_item in filtered_menu_items %}
-    {% if menu_item.is_on_special %}
-    <div class="col-lg-3 col-md-6 col-sm-12">
-      <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
-        <div class="position-relative">
-          <img src="{{ menu_item.image.url }}" class="card-img-top" alt="{{ menu_item.name }}"
-            style="height: 250px; object-fit: cover;">
-          <span class="badge bg-danger position-absolute top-0 end-0 m-3">On Special!</span>
-        </div>
-
-        <div class="card-body d-flex flex-column">
-          <h5 class="card-title fw-bold">{{ menu_item.name }}</h5>
-          <p class="card-text text-muted small flex-grow-1">
-            {{ menu_item.description }}
-          </p>
-
-          <div class="d-flex justify-content-between align-items-center mt-2">
-            <span class="text-warning">★★★★★</span>
-            <span class="fw-bold">Rs. {{ menu_item.special_price }} <s>{{ menu_item.price }}</s> </span>
-          </div>
-          <a href="{% url 'menu_item_detail' menu_item.slug %}" class="btn btn-dark btn-sm mt-3 w-100">
-            View Details
-          </a>
-        </div>
-      </div>
+            {% for category in options %}
+            <li class="nav-item">
+                <a class="nav-link px-4 py-2 rounded-pill 
+{% if request.resolver_match.kwargs.category_slug == category.slug %}active-category{% endif %}"
+                    href="{% url 'category_filter' category.slug %}">
+                    {{ category.name }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
-    {% else %}
-    <div class="col-lg-3 col-md-6 col-sm-12">
-      <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
-        <div class="position-relative">
-          <img src="{{ menu_item.image.url }}" class="card-img-top" alt="{{ menu_item.name }}"
-            style="height: 250px; object-fit: cover;">
-        </div>
-
-        <div class="card-body d-flex flex-column">
-          <h5 class="card-title fw-bold">{{ menu_item.name }}</h5>
-          <p class="card-text text-muted small flex-grow-1">
-            {{ menu_item.description }}
-          </p>
-
-          <div class="d-flex justify-content-between align-items-center mt-2">
-            <span class="text-warning">★★★★★</span>
-            <span class="fw-bold">Rs. {{ menu_item.price }}</span>
-          </div>
-
-          <a href="{% url 'menu_item_detail' menu_item.slug %}" class="btn btn-dark btn-sm mt-3 w-100">
-            View Details
-          </a>
-        </div>
-      </div>
-    </div>
-    {% endif %}
-    {% endfor %}
-    {% else %}
-    <div class="col-12">
-      <div class="alert alert-warning text-center shadow-sm">
-        No items found in this category.
-      </div>
-    </div>
-    {% endif %}
-  </div>
 </section>
+
+<!-- MENU ITEMS -->
+<section id="menu-items">
+    <div class="row g-4">
+        {% if filtered_menu_items %}
+        {% for menu_item in filtered_menu_items %}
+        {% if menu_item.is_on_special %}
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
+                <div class="position-relative">
+                    <img src="{{ menu_item.image.url }}" class="card-img-top" alt="{{ menu_item.name }}"
+                        style="height: 250px; object-fit: cover;">
+                    <span class="badge bg-danger position-absolute top-0 end-0 m-3">On Special!</span>
+                </div>
+
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">{{ menu_item.name }}</h5>
+                    <p class="card-text text-muted small flex-grow-1">
+                        {{ menu_item.description }}
+                    </p>
+
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <span class="text-warning">★★★★★</span>
+                        <span class="fw-bold">Rs. {{ menu_item.special_price }} <s>{{ menu_item.price }}</s> </span>
+                    </div>
+                    <a href="{% url 'menu_item_detail' menu_item.slug %}" class="btn btn-dark btn-sm mt-3 w-100">
+                        View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
+                <div class="position-relative">
+                    <img src="{{ menu_item.image.url }}" class="card-img-top" alt="{{ menu_item.name }}"
+                        style="height: 250px; object-fit: cover;">
+                </div>
+
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fw-bold">{{ menu_item.name }}</h5>
+                    <p class="card-text text-muted small flex-grow-1">
+                        {{ menu_item.description }}
+                    </p>
+
+                    <div class="d-flex justify-content-between align-items-center mt-2">
+                        <span class="text-warning">★★★★★</span>
+                        <span class="fw-bold">Rs. {{ menu_item.price }}</span>
+                    </div>
+
+                    <a href="{% url 'menu_item_detail' menu_item.slug %}" class="btn btn-dark btn-sm mt-3 w-100">
+                        View Details
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <div class="col-12">
+            <div class="alert alert-warning text-center shadow-sm">
+                No items found in this category.
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<script>
+    // Save the scroll position before the page unloads
+    window.addEventListener('beforeunload', () => {
+        sessionStorage.setItem('scrollPosition', window.scrollY);
+    });
+
+    // Restore the scroll position when the page loads
+    window.addEventListener('load', () => {
+        const scrollPos = sessionStorage.getItem('scrollPosition');
+        if (scrollPos) {
+            window.scrollTo(0, parseInt(scrollPos));
+            sessionStorage.removeItem('scrollPosition'); // Clear it after use
+        }
+    });
+</script>
+
 {% endblock %}
+

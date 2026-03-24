@@ -49,21 +49,22 @@ class OrderCartItem(BaseModel):
 
 class Order(models.Model):
     """Orders for users"""
-    order_id = models.CharField(max_length=100, unique=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
-    order_date = models.DateTimeField(auto_now_add=True)
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    
     STATUS_CHOICES = {
         ('completed', 'Completed'),
         ('cancelled', 'Cancelled'),
         ('pending', 'Pending')
     }
+    
+    order_id = models.CharField(max_length=100, unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
+    order_date = models.DateTimeField(auto_now_add=True)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    
     order_status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     shippingaddress = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.order_id} - {self.get_status_display()}"
+        return f"{self.order_id} - {self.order_status}"
     
     def calculate_total(self):
         """Calculate total price for this order"""

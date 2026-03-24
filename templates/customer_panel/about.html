@@ -1,7 +1,6 @@
 {% extends "customer_panel/base.html" %}
 
 {% block content %}
-
 <!-- About Hero Section -->
 <section class="about-hero position-relative text-white text-center">
     <div class="container py-5">
@@ -51,22 +50,50 @@
 
     <!-- Our Team -->
     <section class="mb-5">
-        <h2 class="fw-bold text-center mb-5">Meet Our Team</h2>
-        <div class="row g-4">
-            <!-- Team Member 1 -->
-            {% for team in teams %}
-            <div class="col-md-6 col-lg-3">
-                <div class="card border-0 shadow-sm text-center h-100">
-                    <img src="{{ team.image.url }}" class="card-img-top" alt="Head Chef"
-                        style="height: 250px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">{{ team.name }}</h5>
-                        <p class="card-text text-muted small">{{ team.role }}</p>
-                        <p class="small text-muted">{{ team.bio }}</p>
+        <div class="container py-5">
+            <h2 class="fw-bold text-center mb-5">Meet Our Team</h2>
+
+            <div id="teamCarousel" class="carousel slide mx-auto" data-bs-ride="carousel" style="max-width: 1200px;">
+                <div class="carousel-inner">
+                    {% for team in teams %}
+                    {% if forloop.counter0|divisibleby:4 %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <div class="row g-4 px-5 justify-content-center">
+                            {% endif %}
+
+                            <div class="col-sm-6 col-lg-3">
+                                <div class="card border-0 shadow-sm text-center h-100">
+                                    <img src="{{ team.image.url }}" class="card-img-top" alt="{{ team.name }}"
+                                        style="height: 250px; object-fit: cover;">
+                                    <div class="card-body">
+                                        <h5 class="card-title fw-bold">{{ team.name }}</h5>
+                                        <p class="card-text text-muted small">{{ team.role }}</p>
+                                        <p class="small text-muted">{{ team.bio }}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% if forloop.counter|divisibleby:4 or forloop.last %}
+                        </div>
                     </div>
+                    {% endif %}
+                    {% endfor %}
                 </div>
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#teamCarousel" data-bs-slide="prev"
+                    style="width: 5%;">
+                    <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"
+                        style="width: 2rem; height: 2rem;"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#teamCarousel" data-bs-slide="next"
+                    style="width: 5%;">
+                    <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"
+                        style="width: 2rem; height: 2rem;"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
-            {% endfor %}
+        </div>
     </section>
 
     <!-- Awards & Recognition -->
@@ -177,7 +204,7 @@
                     <li class="mb-2">✓ Professional service staff included</li>
                     <li class="mb-2">✓ Flexible pricing for events of any size</li>
                 </ul>
-                <a href="#" class="btn btn-dark">Inquire About Events</a>
+                <a href="#contact-us" class="btn btn-dark">Inquire About Events</a>
             </div>
         </div>
     </section>
@@ -211,7 +238,7 @@
 
 
     <!-- Contact Section -->
-    <section class="mb-5">
+    <section class="mb-5" id="contact-us">
         <h2 class="fw-bold text-center mb-5"> Visit Us Today</h2>
         <div class="row g-4">
             <div class="col-md-6">

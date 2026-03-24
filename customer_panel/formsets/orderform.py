@@ -1,6 +1,5 @@
 from django import forms
 
-
 class CheckoutForm(forms.Form):
     """Form for checkout process"""
     shipping_address = forms.IntegerField(
