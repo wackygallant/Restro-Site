@@ -1,5 +1,5 @@
 from django import forms
-from django.utils import timezone 
+from django.utils import timezone
 # Better than standard datetime for Django
 from .models import Booking
 

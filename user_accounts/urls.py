@@ -1,6 +1,6 @@
 from django.urls import path
-from booking.views import AllBookingsView
-from order.views import AllOrdersView
+from customer_panel.viewsets.booking import AllBookingsView
+from customer_panel.viewsets.order import AllOrdersView
 from user_accounts.views import LoginView, LogoutView, RegisterView, ProfileView, AddShippingAddressView, EditShippingAddressView, DeleteShippingAddressView
 
 urlpatterns = [
