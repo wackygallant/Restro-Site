@@ -1,8 +1,9 @@
 /booking/migrations
 /core/migrations
 /menu/migrations/
-/orders/migrations/
+/order/migrations/
 /restro/migrations/
+/payments/migrations/
 *.pyc
 *.pyo
 *.pyd

@@ -22,7 +22,7 @@ class Menu_Page(View):
             "filtered_menu_items": filtered_menu_items,
             "username": username
         }
-        return render(request, "menu.html", context)
+        return render(request, "customer_panel/menu.html", context)
 
     
 class Menu_Item_Detail(View):
@@ -33,7 +33,7 @@ class Menu_Item_Detail(View):
             "menu_item": menu_item,
             "username": username
         }
-        return render(request, "menu_item.html", context)
+        return render(request, "customer_panel/menu_item.html", context)
     
     def post(self, request, item_slug):
         if not request.user.is_authenticated:

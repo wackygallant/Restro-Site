@@ -1,4 +1,4 @@
-# Django Modules
+# Django Modules Import
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -17,7 +17,7 @@ from order.forms import CheckoutForm
 import time
 
 class AllOrdersView(generic.TemplateView):
-    template_name="all_orders.html"
+    template_name="customer_panel/all_orders.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

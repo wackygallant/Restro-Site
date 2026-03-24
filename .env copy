@@ -1,5 +1,4 @@
 SECRET_KEY=jgyk)rf_6s)t7za2o$uh#a**g3ngitftv1fhv9gcq@-zfz++zd
-
 DEBUG=True
 DB_ENGINE=django.db.backends.sqlite3
 DB_NAME=db.sqlite3

@@ -13,7 +13,7 @@ class LoginView(View):
     def get(self, request):
         if request.user.is_authenticated:
             return redirect('home')
-        return render(request, 'login.html',{})
+        return render(request, 'customer_panel/login.html',{})
     
     def post(self, request):
         username = request.POST.get('username')
@@ -23,7 +23,7 @@ class LoginView(View):
             login(request, user)
             return redirect('home')
         else:
-            return render(request, 'login.html', {'message': 'Invalid credentials'})
+            return render(request, 'customer_panel/login.html', {'message': 'Invalid credentials'})
     
 class LogoutView(View):
     def get(self, request):
@@ -33,7 +33,7 @@ class LogoutView(View):
 class RegisterView(View):
     def get(self, request):
         form = SignUpForm()
-        return render(request, 'register.html', {'form' : form })
+        return render(request, 'customer_panel/register.html', {'form' : form })
     
     def post(self, request):
         form = SignUpForm(request.POST)
@@ -48,7 +48,7 @@ class RegisterView(View):
             return redirect('home')
         else:
             message = 'Please correct the error below.'
-        return render(request, 'register.html', {'form': form, 'message': message})
+        return render(request, 'customer_panel/register.html', {'form': form, 'message': message})
     
 class ProfileView(View):
     def get(self, request):
@@ -70,7 +70,7 @@ class ProfileView(View):
             'orders' : orders,
             'shipping_addresses': shipping_addresses,
         }
-        return render(request, 'user_profile.html', context)
+        return render(request, 'customer_panel/user_profile.html', context)
 
 class AddShippingAddressView(View):
     def post(self, request):

@@ -1,13 +1,16 @@
+# Django Modules Imports
 from django.shortcuts import render
 from django.views import View, generic
 
+# App Imports
 from customer_panel.models import Teams, Testimonials
 from menu.models import MenuItems
 
+# Custom Util Imports
 from utils import _utils
 
 class HomePage(generic.TemplateView):
-    template_name = "customer_panel/home.html"
+    template_name = "customer_panel/index.html"
 
     def get_context_data(self, *args, **kwargs):
         context =  super().get_context_data(**kwargs)
@@ -16,7 +19,7 @@ class HomePage(generic.TemplateView):
         context["menu_items"] = MenuItems.objects.all()
         return context
     
-class AboutPage(View):
+class AboutPage(generic.TemplateView):
     template_name = "customer_panel/about.html"
 
     def get_context_data(self, *args, **kwargs):
