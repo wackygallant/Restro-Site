@@ -1,8 +1,8 @@
 from django.db import models
 
-from utils.models import CommonModel
+from utils.models import BaseModel
 
-class Teams(CommonModel):
+class Teams(BaseModel):
     name = models.CharField(max_length=100)
     role = models.CharField(max_length=100)
     bio = models.TextField()
@@ -17,7 +17,7 @@ class Teams(CommonModel):
         verbose_name_plural = 'Teams'
 
 
-class Testimonials(CommonModel):
+class Testimonials(BaseModel):
     name = models.CharField(max_length=100)
     review = models.TextField()
     rating = models.PositiveSmallIntegerField(choices=[(i, i) for i in range(1, 6)])

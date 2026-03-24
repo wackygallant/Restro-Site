@@ -3,18 +3,13 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-# App Models Imports
-from user_accounts.models import ShippingAddress
-
 class SignUpForm(UserCreationForm):
-    # Adding extra fields not in the default UserCreationForm
     email = forms.EmailField(label="", widget=forms.EmailInput(attrs={'class':'form-control', 'placeholder':'Email Address'}))
     first_name = forms.CharField(label="", max_length=100, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'First Name'}))
     last_name = forms.CharField(label="", max_length=100, widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Last Name'}))
 
     class Meta:
         model = User
-        # Order matters! This is the order they appear in the form loop
         fields = ('username', 'first_name', 'last_name', 'email')
 
     def __init__(self, *args, **kwargs):

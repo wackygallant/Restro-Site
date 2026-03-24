@@ -14,6 +14,16 @@ from booking.models import Booking
 from utils._utils import get_username
 
 @method_decorator(login_required, name='dispatch')
+class AllBookingsView(generic.TemplateView):
+    template_name="customer_panel/all_bookings.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["bookings"] = Booking.objects.filter(user=self.request.user).order_by("-date")
+        return context
+
+@method_decorator(login_required, name='dispatch')
 class BookTableView(View):
     def get(self, request):
         form = BookingForm()
@@ -43,13 +53,3 @@ class BookTableView(View):
                 "form": form,
                 "username": get_username(request)
             })
-
-@method_decorator(login_required, name='dispatch')
-class AllBookingsView(generic.TemplateView):
-    template_name="customer_panel/all_bookings.html"
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        context["bookings"] = Booking.objects.order_by("-date")
-        return context

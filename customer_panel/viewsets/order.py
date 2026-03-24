@@ -11,19 +11,24 @@ from order.models import OrderCart, OrderCartItem, Order, OrderItem
 from payments.models import Payment
 from user_accounts.models import ShippingAddress
 from menu.models import MenuItems
-from utils._utils import get_username
 from customer_panel.formsets.orderform import CheckoutForm
 
+# Custom Util Imports
+from utils._utils import get_username
+
+# Python Package Imports
 import time
 
+@method_decorator(login_required, name='dispatch')
 class AllOrdersView(generic.TemplateView):
     template_name="customer_panel/all_orders.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['orders'] = Order.objects.order_by('-order_date')
+        context['orders'] = Order.objects.filter(user=self.request.user).order_by('-order_date')
         return context
 
+@method_decorator(login_required, name='dispatch')
 class OrderListView(View):
     """Display user's order cart (repurposed as the orders page)"""
     def get(self, request):

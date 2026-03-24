@@ -55,10 +55,10 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a></li>
+                            <li><a class="dropdown-item text-danger" href="{% url 'logout-user' %}">Logout</a></li>
                             {% else %}
-                            <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
-                            <li><a class="dropdown-item" href="{% url 'register' %}">Register</a></li>
+                            <li><a class="dropdown-item" href="{% url 'login-user' %}">Login</a></li>
+                            <li><a class="dropdown-item" href="{% url 'register-user' %}">Register</a></li>
                             {% endif %}
                         </ul>
                     </li>
@@ -77,12 +77,14 @@
     </div>
     {% endif %}
 
+
     <!-- PAGE CONTENT -->
     <main class="container py-5">
         {% block content %}
         {% endblock %}
     </main>
 
+    
     <!-- FOOTER -->
     <footer class="text-center">
         © {% now "Y" %} Restro | Crafted using Django

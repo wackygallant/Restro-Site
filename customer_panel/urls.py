@@ -1,7 +1,7 @@
 from django.urls import path
 
 from customer_panel.viewsets.custom_pages import HomePage, AboutPage
-from customer_panel.viewsets.auth import LoginView, LogoutView, RegisterView
+from customer_panel.viewsets.auth import LoginView, LogoutView, RegisterView, PasswordResetView
 from customer_panel.viewsets.booking import BookTableView
 from customer_panel.viewsets.menu import Menu_Page, Menu_Item_Detail
 from customer_panel.viewsets.order import OrderListView, OrderCartView, AddToOrderCartView, RemoveFromOrderCartView, UpdateOrderCartItemView, CheckoutView
@@ -15,9 +15,10 @@ urlpatterns = [
     path('about/', AboutPage.as_view(), name='about'),
 
     # Authentication
-    path('login/', LoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
-    path('register/', RegisterView.as_view(), name='register'),
+    path('login/', LoginView.as_view(), name='login-user'),
+    path('logout/', LogoutView.as_view(), name='logout-user'),
+    path('register/', RegisterView.as_view(), name='register-user'),
+    path('reset-password/', PasswordResetView.as_view(), name='reset-password'),
 
     # User Accounts
     path('user/', ProfileView.as_view(), name='profile'),
