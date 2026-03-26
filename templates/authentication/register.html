@@ -21,10 +21,12 @@
                     <form method="post" novalidate>
                         {% csrf_token %}
 
-                        {% if form.errors %}
-                            <div class="alert alert-danger py-2 small">
-                                Please correct the errors below.
-                            </div>
+                        {% if form.errors or messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-danger py-2 small">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
                         {% endif %}
 
                         {% for field in form %}
@@ -50,7 +52,7 @@
                         </button>
 
                         <div class="text-center">
-                            <small class="text-muted">Already a member? <a href="{% url 'login' %}" class="text-decoration-none">Login here</a></small>
+                            <small class="text-muted">Already a member? <a href="{% url 'login-user' %}" class="text-decoration-none">Login here</a></small>
                         </div>
                     </form>
                 </div>

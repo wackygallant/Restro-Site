@@ -15,7 +15,6 @@
             <thead>
                 <tr>
                     <th scope="col">Date</th>
-                    <th scope="col">E-mail</th>
                     <th scope="col">Contact No.</th>
                     <th scope="col">Time Slot</th>
                     <th scope="col">Total Pax.</th>
@@ -25,8 +24,7 @@
             <tbody>
                 {% for booking in bookings %}
                 <tr>
-                    <th scope="row">{{ booking.date }}</th>
-                    <td>{{ booking.email }}</td>
+                    <th scope="row">{{ booking.booking_date }}</th>
                     <td>{{ booking.phone_number }}</td>
                     <td>{{ booking.time_slot }}</td>
                     <td>{{ booking.person_count }}</td>

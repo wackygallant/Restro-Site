@@ -2,6 +2,7 @@
 from django.shortcuts import render
 from django.views import View, generic
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.utils.decorators import method_decorator
 
 # Forms Import
@@ -20,7 +21,7 @@ class AllBookingsView(generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["bookings"] = Booking.objects.filter(user=self.request.user).order_by("-date")
+        context["bookings"] = Booking.objects.filter(user=self.request.user).order_by("-booking_date")
         return context
 
 @method_decorator(login_required, name='dispatch')
@@ -40,14 +41,14 @@ class BookTableView(View):
             booking.user = request.user
             booking.save()
             
+            messages.success(request, "Booking confirmed successfully!")
             return render(request, "customer_panel/booktable.html", {
-                "form": BookingForm(), # Reset with a fresh form    
-                "message": "Booking confirmed successfully!",
+                "form": BookingForm(),
                 "username": get_username(request),
             })
         
         else:
-            print("Form errors:", form.errors)
+            messages.error(request, "Form errors: " + str(form.errors))
             
             return render(request, "customer_panel/booktable.html", {
                 "form": form,

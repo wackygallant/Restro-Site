@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import F, Sum
+from django.contrib.auth.models import User
 
 class TimeSlot(models.Model):
     # Example: 10:00 AM, 12:00 PM etc.
@@ -11,10 +11,9 @@ class TimeSlot(models.Model):
         return self.time.strftime("%I:%M %p")
 
 class Booking(models.Model):
-    user = models.CharField(max_length=100)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookings')
     phone_number = models.CharField(max_length=15, default='')
-    email = models.EmailField(default='')
-    date = models.DateField()
+    booking_date = models.DateField()
     time_slot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE)
     person_count = models.PositiveIntegerField(default=1)
     STATUS_CHOICES = {
@@ -25,7 +24,7 @@ class Booking(models.Model):
     booking_status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 
     def __str__(self):
-        return f"Booking for {self.user} on {self.date} at {self.time_slot} for {self.person_count} people."
+        return f"Booking for {self.user} on {self.booking_date} at {self.time_slot} for {self.person_count} people."
 
 
 

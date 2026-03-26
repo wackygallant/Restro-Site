@@ -21,12 +21,12 @@ urlpatterns = [
     path('reset-password/', PasswordResetView.as_view(), name='reset-password'),
 
     # User Accounts
-    path('user/', ProfileView.as_view(), name='profile'),
-    path('user/all-bookings/', AllBookingsView.as_view(), name="all_bookings_page"),
-    path('user/all-orders/', AllOrdersView.as_view(), name='all_orders' ),
-    path('user/add-shipping-address/', AddShippingAddressView.as_view(), name='add_shipping_address'),
-    path('user/edit-shipping-address/<int:pk>/', EditShippingAddressView.as_view(), name='edit_shipping_address'),
-    path('user/delete-shipping-address/', DeleteShippingAddressView.as_view(), name='delete_shipping_address'),
+    path('user-profile/', ProfileView.as_view(), name='profile'),
+    path('user-profile/all-bookings/', AllBookingsView.as_view(), name="all_bookings_page"),
+    path('user-profile/all-orders/', AllOrdersView.as_view(), name='all_orders' ),
+    path('user-profile/add-shipping-address/', AddShippingAddressView.as_view(), name='add_shipping_address'),
+    path('user-profile/edit-shipping-address/<int:pk>/', EditShippingAddressView.as_view(), name='edit_shipping_address'),
+    path('user-profile/delete-shipping-address/', DeleteShippingAddressView.as_view(), name='delete_shipping_address'),
 
     # Booking
     path('booking/', BookTableView.as_view(), name='booking_page'),

@@ -35,12 +35,12 @@
 
                     <div class="mb-3">
                         <small class="text-muted">Total Bookings</small>
-                        <p class="mb-0">{{ bookings.count }}</p>
+                        <p class="mb-0">{{ booking_count }}</p>
                     </div>
 
                     <div class="mb-3">
                         <small class="text-muted">Total Orders</small>
-                        <p class="mb-0">{{ orders.count }}</p>
+                        <p class="mb-0">{{ order_count }}</p>
                     </div>
 
                     <hr>
@@ -90,7 +90,7 @@
                                 {% for booking in bookings %}
                                 <tr>
                                     <td>
-                                        <strong>{{ booking.date|date:"M d, Y" }}</strong>
+                                        <strong>{{ booking.booking_date|date:"M d, Y" }}</strong>
                                     </td>
                                     <td>{{ booking.time_slot }}</td>
                                     <td>

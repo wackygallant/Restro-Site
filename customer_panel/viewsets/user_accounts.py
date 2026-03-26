@@ -1,7 +1,9 @@
 # Django Modules Imports
 from django.shortcuts import redirect, render
-from django.views import View
+from django.views import View, generic
 from django.contrib import messages
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 # Form Imports
 from customer_panel.formsets.shippingaddform import ShippingAddressForm
@@ -10,29 +12,32 @@ from customer_panel.formsets.shippingaddform import ShippingAddressForm
 from booking.models import Booking
 from order.models import Order
 from user_accounts.models import ShippingAddress
-    
-class ProfileView(View):
-    def get(self, request):
-        if not request.user.is_authenticated:
-            return redirect('login')
-        
-        user = request.user
-        bookings = Booking.objects.filter(user=user.username).order_by('-date')[:3]
-        orders = Order.objects.filter(user=user.id).order_by('-order_date')[:3]
-        shipping_addresses = ShippingAddress.objects.filter(username=user)
 
-        
-        context = {
+@method_decorator(login_required, name='dispatch')
+class ProfileView(generic.TemplateView):
+    template_name = 'customer_panel/user_profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        bookings_qs = Booking.objects.filter(user=user.id).order_by('-booking_date')
+        orders_qs = Order.objects.filter(user=user.id).order_by('-order_date')
+
+        context.update({
             'user': user,
             'username': user.username,
             'email': user.email,
             'date_joined': user.date_joined,
-            'bookings': bookings,
-            'orders' : orders,
-            'shipping_addresses': shipping_addresses,
-        }
-        return render(request, 'customer_panel/user_profile.html', context)
+            'bookings': bookings_qs[:3],
+            'orders': orders_qs[:3],
+            'shipping_addresses': ShippingAddress.objects.filter(username=user),
+            'booking_count': bookings_qs.count(),
+            'order_count': orders_qs.count(),
+        })
+        return context
 
+@method_decorator(login_required, name='dispatch')
 class AddShippingAddressView(View):
     def post(self, request):
         form = ShippingAddressForm(request.POST)
@@ -45,6 +50,7 @@ class AddShippingAddressView(View):
             messages.error(request, 'Please correct the errors below')
         return redirect('profile')
 
+@method_decorator(login_required, name='dispatch')
 class EditShippingAddressView(View):
     def get(self, request, pk):
         address = ShippingAddress.objects.get(id=pk, username=request.user)
@@ -61,6 +67,7 @@ class EditShippingAddressView(View):
             messages.error(request, 'Please correct the errors below')
         return redirect('profile')
 
+@method_decorator(login_required, name='dispatch')
 class DeleteShippingAddressView(View):
     def post(self, request):
         address_id = request.POST.get('address_id')

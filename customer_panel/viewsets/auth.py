@@ -32,13 +32,16 @@ class LoginView(View):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            messages.success(request, 'Logged in successfully!')
             return redirect('home')
         else:
-            return render(request, self.template_name, {'message': 'Invalid credentials'})
+            messages.error(request, 'Invalid credentials')
+            return render(request, self.template_name, {})
     
 class LogoutView(View):
     def get(self, request):
         logout(request)
+        messages.success(request, 'Logged Out Successfully!')
         return redirect('home')
     
 class RegisterView(View):
@@ -57,11 +60,11 @@ class RegisterView(View):
             # Login the user after registration
             user = authenticate(username=username, password=password)
             login(request, user)
-            message = 'Account created successfully'
+            messages.success(request, 'Account created successfully') 
             return redirect('home')
         else:
-            message = 'Please correct the error below.'
-        return render(request, self.template_name, {'form': form, 'message': message})
+            messages.error(request, 'Please correct the error below.')
+        return render(request, self.template_name, {'form': form})
 
 class PasswordResetView(View):
     template_name = 'authentication/reset-password.html'
@@ -99,7 +102,6 @@ class PasswordResetView(View):
 
         elif step == 2:
             form = OTPVerificationForm(request.POST)
-    
             if form.is_valid():
         
                 otp_code = form.cleaned_data.get('otp')
@@ -111,17 +113,13 @@ class PasswordResetView(View):
                     messages.error(request, "Passwords do not match.")
                     return render(request, self.template_name, {'form': form, 'email': email, 'step': 2})
 
-        
-
                 otp_record = OTP.objects.filter(email=email, otp=otp_code).first()
-        
                 if otp_record and otp_record.is_active():
                     user = User.objects.get(email=email)
             
                     user.set_password(password)
                     user.save()
                     OTP.objects.filter(email=email).delete()
-            
                     messages.success(request, "Password reset successful!")
                     return redirect('login-user')
                 else:

@@ -10,6 +10,6 @@ class ShippingAddressAdmin(admin.ModelAdmin):
 
 @admin.register(OTP)
 class OTPAdmin(admin.ModelAdmin):
-    list_display = ('email', 'otp', 'created_at')
+    list_display = ('email', 'otp', 'created_at', 'updated_at')
     search_fields = ('email', 'otp')
-    list_filter = ('created_at',)
+    list_filter = ('created_at', 'updated_at')

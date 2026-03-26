@@ -30,7 +30,7 @@ class OTP(BaseModel):
 
     def is_active(self):
         # Valid for only 5 minutes
-        return timezone.now() < self.created_at + timedelta(minutes=5)
+        return timezone.now() < self.updated_at + timedelta(minutes=5)
     
     def __str__(self):
         return f"{self.email} - {self.otp}"

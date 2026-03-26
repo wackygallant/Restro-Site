@@ -22,10 +22,12 @@
                         <form method="post">
                             {% csrf_token %}
 
-                            {% if form.errors or message %}
-                                <div class="alert alert-danger py-2 small">
-                                    {{ message }}
-                                </div>
+                            {% if form.errors or messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-danger py-2 small">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
                             {% endif %}
 
                             <div class="form-floating mb-3">

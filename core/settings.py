@@ -19,12 +19,6 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Session expires after 30 minutes of inactivity
-SESSION_COOKIE_AGE = 1800 
-
-# This is the key: it saves the session and updates the cookie on every request
-SESSION_SAVE_EVERY_REQUEST = True
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -46,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Created Apps
     'customer_panel',
     'menu',
     'booking',
@@ -86,14 +81,22 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
+
+#     }
+# }
 
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DB_ENGINE'),
         'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
@@ -142,8 +145,14 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Login redirect
 LOGIN_URL = 'login'
 
+# Session expires after 30 minutes of inactivity
+SESSION_COOKIE_AGE = 1800 
 
-# To Send OTP via Email
+# This is the key: it saves the session and updates the cookie on every request
+SESSION_SAVE_EVERY_REQUEST = True
+
+
+# Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
