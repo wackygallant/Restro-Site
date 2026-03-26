@@ -25,10 +25,10 @@ A comprehensive restaurant management system built with Django, featuring online
 ### 💳 Payment Integration
 - **Multiple Payment Methods**: 
   - Cash on Delivery
-  - eSewa (Nepal)
-  - Khalti (Nepal)
-- **Payment Tracking**: Complete payment status management
-- **Transaction Records**: Detailed payment history and transaction IDs
+  - eSewa (Nepal) // UPDATE PENDING
+  - Khalti (Nepal) // UPDATE PENDING
+- **Payment Tracking**: Complete payment status management // UPDATE PENDING
+- **Transaction Records**: Detailed payment history and transaction IDs // UPDATE PENDING
 
 ### 👥 Customer Management
 - **User Registration & Authentication**: Secure user accounts
@@ -45,7 +45,7 @@ A comprehensive restaurant management system built with Django, featuring online
 
 - **Backend**: Django 6.0.1
 - **Database**: PostgreSQL (configurable)
-- **Frontend**: HTML5, CSS3, JavaScript
+- **Frontend**: HTML5, CSS3, JavaScript(VERY LESS)
 - **Authentication**: Django's built-in auth system
 - **File Upload**: Django's ImageField for menu items and team photos
 - **Email**: SMTP configuration for notifications
