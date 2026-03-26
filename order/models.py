@@ -108,7 +108,7 @@ class OrderItem(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)  # Price at time of order
 
     def __str__(self):
-        return f"{self.quantity} x {self.menu_item.name if self.menu_item else 'Deleted Item'}"
+        return f"{self.menu_item.name if self.menu_item else 'Deleted Item'} x {self.quantity} x Rs. {self.price}"
     
     def get_total(self):
         """Get total price for this order item"""

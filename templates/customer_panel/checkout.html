@@ -29,21 +29,24 @@
                                             <td>{{ item.menu_item.name }}</td>
                                             <td>
                                                 {% if item.menu_item.is_on_special and item.menu_item.special_price %}
-                                                    <span class="text-decoration-line-through text-muted">{{ item.menu_item.price }}</span>
-                                                    <span class="text-danger fw-bold">{{ item.menu_item.special_price }}</span>
+                                                    <span class="text-decoration-line-through text-muted">Rs. {{ item.menu_item.price }}</span>
+                                                    <span class="text-danger fw-bold">Rs. {{ item.menu_item.special_price }}</span>
                                                 {% else %}
                                                     {{ item.menu_item.price }}
                                                 {% endif %}
                                             </td>
-                                            <td>{{ item.quantity }}</td>
-                                            <td>{{ item.get_total }}</td>
+                                            <td>
+                                                {{ item.quantity}}
+                                                {{ item.quantity|pluralize:"pc., pcs." }}
+                                            </td>
+                                            <td>Rs. {{ item.get_total }}</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
                                 <tfoot>
                                     <tr class="table-primary">
                                         <th colspan="3">Total Amount:</th>
-                                        <th class="fw-bold">{{ total_price }}</th>
+                                        <th class="fw-bold">Rs. {{ total_price }}</th>
                                     </tr>
                                 </tfoot>
                             </table>

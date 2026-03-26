@@ -1,11 +1,12 @@
 from django.urls import path
 
+# View Imports
 from customer_panel.viewsets.custom_pages import HomePage, AboutPage
 from customer_panel.viewsets.auth import LoginView, LogoutView, RegisterView, PasswordResetView
 from customer_panel.viewsets.booking import BookTableView
 from customer_panel.viewsets.menu import Menu_Page, Menu_Item_Detail
 from customer_panel.viewsets.order import OrderListView, OrderCartView, AddToOrderCartView, RemoveFromOrderCartView, UpdateOrderCartItemView, CheckoutView
-from customer_panel.viewsets.user_accounts import ProfileView, AddShippingAddressView, EditShippingAddressView, DeleteShippingAddressView
+from customer_panel.viewsets.user_profile import ProfileView, AddShippingAddressView, EditShippingAddressView, DeleteShippingAddressView
 from customer_panel.viewsets.booking import AllBookingsView
 from customer_panel.viewsets.order import AllOrdersView
 

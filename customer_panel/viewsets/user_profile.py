@@ -10,7 +10,7 @@ from customer_panel.formsets.shippingaddform import ShippingAddressForm
 
 # App Imports
 from booking.models import Booking
-from order.models import Order
+from order.models import Order, OrderItem
 from user_accounts.models import ShippingAddress
 
 @method_decorator(login_required, name='dispatch')
@@ -21,17 +21,16 @@ class ProfileView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
 
-        bookings_qs = Booking.objects.filter(user=user.id).order_by('-booking_date')
-        orders_qs = Order.objects.filter(user=user.id).order_by('-order_date')
-
+        orders_qs = user.orders.all().order_by('-order_date').prefetch_related('order_items')
+        bookings_qs = user.bookings.order_by('-booking_date')
+        shipping_addresses = user.shipping_addresses.all()
+        # orders_qs = Order.objects.filter(user=user.id).order_by('-order_date').prefetch_related('order_items')
+    
         context.update({
             'user': user,
-            'username': user.username,
-            'email': user.email,
-            'date_joined': user.date_joined,
             'bookings': bookings_qs[:3],
             'orders': orders_qs[:3],
-            'shipping_addresses': ShippingAddress.objects.filter(username=user),
+            'shipping_addresses': shipping_addresses,
             'booking_count': bookings_qs.count(),
             'order_count': orders_qs.count(),
         })

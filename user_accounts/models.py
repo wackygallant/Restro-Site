@@ -1,6 +1,7 @@
 # Django Module Imports
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 # Python Package Imports
 from datetime import timedelta
@@ -9,7 +10,7 @@ from datetime import timedelta
 from utils.models import BaseModel
 
 class ShippingAddress(models.Model):
-    username = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    username = models.ForeignKey(User, on_delete=models.CASCADE, related_name='shipping_addresses')
     contact_no = models.CharField(max_length=15)
     address = models.CharField(max_length=255)
     city = models.CharField(max_length=100)
