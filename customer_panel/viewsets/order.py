@@ -20,17 +20,18 @@ from utils._utils import get_username
 import time
 
 @method_decorator(login_required, name='dispatch')
-class AllOrdersView(generic.TemplateView):
+class AllOrdersView(generic.ListView):
+    model = Order
     template_name="customer_panel/all_orders.html"
+    context_object_name = 'orders'
+    paginate_by = 10
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['orders'] = Order.objects.filter(user=self.request.user).order_by('-order_date')
-        return context
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user).order_by('-order_date')
 
 @method_decorator(login_required, name='dispatch')
 class OrderListView(View):
-    """Display user's order cart (repurposed as the orders page)"""
+    """Display user's order cart"""
     def get(self, request):
         username = get_username(request)
         order_cart_items = []
