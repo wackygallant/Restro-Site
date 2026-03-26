@@ -17,6 +17,7 @@ class HomePage(generic.TemplateView):
         context["username"] = _utils.get_username(self.request)
         context["testimonials"] = Testimonials.objects.all()
         context["menu_items"] = MenuItems.objects.all()
+        context["special_items"] = MenuItems.objects.filter(is_on_special=True)
         return context
     
 class AboutPage(generic.TemplateView):

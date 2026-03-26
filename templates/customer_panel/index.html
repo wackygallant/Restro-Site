@@ -36,33 +36,55 @@
 <section class="py-5 bg-light">
     <div class="container">
         <h2 class="fw-bold text-center mb-5">Featured Dishes</h2>
-        <div class="row g-4">
-            <!-- Featured Dish -->
-            {% for menu_item in menu_items %}
-            {% if menu_item.is_on_special %}
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
-                    <div class="position-relative">
-                        <img src="{{ menu_item.image.url }}" class="card-img-top" alt="{{ menu_item.name }}"
-                            style="height: 250px; object-fit: cover;">
-                        <span class="badge bg-danger position-absolute top-0 end-0 m-3">On Special !!!</span>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title fw-bold">{{ menu_item.name }}</h5>
-                        <p class="card-text text-muted small">{{ menu_item.description }}</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span class="text-warning fs-5">★★★★★</span>
-                            <span class="fw-bold">Rs. {{ menu_item.special_price }} <s>{{ menu_item.price }} </s> </span>
+        
+        <div id="featuredDishesCarousel" class="carousel slide px-md-5" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                
+                {% for menu_item in special_items %}
+                    {% if forloop.counter0|divisibleby:3 %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <div class="row g-4 justify-content-center">
+                    {% endif %}
+
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="position-relative">
+                                        <img src="{{ menu_item.image.url }}" class="card-img-top" alt="{{ menu_item.name }}" style="height: 250px; object-fit: cover;">
+                                        <span class="badge bg-danger position-absolute top-0 end-0 m-3">Special!</span>
+                                    </div>
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title fw-bold">{{ menu_item.name }}</h5>
+                                        <p class="card-text text-muted small">{{ menu_item.description|truncatechars:80 }}</p>
+                                        <div class="mt-auto">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="text-warning">★★★★★</span>
+                                                <span class="fw-bold">Rs. {{ menu_item.special_price }} <small class="text-decoration-line-through text-muted">{{ menu_item.price }}</small></span>
+                                            </div>
+                                            <a href="{% url 'menu_item_detail' menu_item.slug %}" class="btn btn-dark btn-sm mt-3 w-100">View Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                    {# Close the row and slide every 3 items OR at the very last item #}
+                    {% if forloop.counter|divisibleby:3 or forloop.last %}
                         </div>
-                        <a href="{% url 'menu_item_detail' menu_item.slug %}" class="btn btn-dark btn-sm mt-3 w-100">
-                            View Details
-                        </a>
                     </div>
-                </div>
+                    {% endif %}
+                {% endfor %}
+
             </div>
-            {% endif %}
-            {% endfor %}
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#featuredDishesCarousel" data-bs-slide="prev" style="width: 5%;">
+                <span class="carousel-control-prev-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#featuredDishesCarousel" data-bs-slide="next" style="width: 5%;">
+                <span class="carousel-control-next-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
+
         <div class="text-center mt-5">
             <a href="{% url 'menu' %}" class="btn btn-dark btn-lg">View Full Menu</a>
         </div>

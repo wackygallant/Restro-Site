@@ -49,10 +49,9 @@
     </section>
 
     <!-- Our Team -->
-    <section class="mb-5">
-        <div class="container py-5">
+    <section class="py-5 bg-light">
+        <div class="container">
             <h2 class="fw-bold text-center mb-5">Meet Our Team</h2>
-
             <div id="teamCarousel" class="carousel slide mx-auto" data-bs-ride="carousel" style="max-width: 1200px;">
                 <div class="carousel-inner">
                     {% for team in teams %}
@@ -60,11 +59,12 @@
                     <div class="carousel-item {% if forloop.first %}active{% endif %}">
                         <div class="row g-4 px-5 justify-content-center">
                             {% endif %}
-
-                            <div class="col-sm-4 col-lg-3">
-                                <div class="card border-0 shadow-sm text-center h-100">
-                                    <img src="{{ team.image.url }}" class="card-img-top" alt="{{ team.name }}"
-                                        style="height: 250px; object-fit: cover;">
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm overflow-hidden h-100 featured-dish-card">
+                                    <div class="position-relative">
+                                        <img src="{{ team.image.url }}" class="card-img-top" alt="{{ team.name }}"
+                                            style="height: 250px; object-fit: cover;">
+                                    </div>
                                     <div class="card-body">
                                         <h5 class="card-title fw-bold">{{ team.name }}</h5>
                                         <p class="card-text text-muted small">{{ team.role }}</p>
@@ -93,6 +93,7 @@
                 </button>
             </div>
         </div>
+
     </section>
 
     <!-- Awards & Recognition -->
@@ -276,7 +277,6 @@
             </div>
         </div>
     </section>
-
 </div>
 
 {% endblock %}
