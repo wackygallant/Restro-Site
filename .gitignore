@@ -1,14 +1,25 @@
-/booking/migrations
-/core/migrations
-/menu/migrations/
-/order/migrations/
-/restro/migrations/
-/payments/migrations/
+# --- Python environment ---
+venv/
+env/
+ENV/
+.venv/
 *.pyc
 *.pyo
 *.pyd
 __pycache__/
-/venv/
-.env
-media
+
+# --- Django Specifics ---
 db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+
+# --- Sensitive Info (CRITICAL) ---
+.env
+*.pot
+*.py[cod]
+
+# --- OS / IDE Specifics ---
+.DS_Store
+.vscode/
+.idea/
