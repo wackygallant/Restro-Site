@@ -1,16 +1,19 @@
-SECRET_KEY=jgyk)rf_6s)t7za2o$uh#a**g3ngitftv1fhv9gcq@-zfz++zd
+SECRET_KEY=your-secret-key-here
 
 DEBUG=True
 
+# Database Configuration
 DB_ENGINE=django.db.backends.postgresql
-DB_NAME=(Database Name)
-DB_USER=(Database User)
-DB_PASSWORD=(Database Password)
-DB_HOST=(Database Host)
-DB_PORT=(Database Port)
+DB_NAME=your_database_name
+DB_USER=your_database_user
+DB_PASSWORD=your_database_password
+DB_HOST=localhost
+DB_PORT=5432
 
-EMAIL_HOST=(Email Host)
+
+# Email Configuration (Optional)
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
 EMAIL_USE_TLS=True
-EMAIL_PORT=(Email Port)
-EMAIL_HOST_USER=(Sender Email)
-EMAIL_HOST_PASSWORD=(App Password)
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-app-password
