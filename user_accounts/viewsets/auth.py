@@ -48,6 +48,7 @@ class LogoutView(View):
     def get(self, request):
         logout(request)
         messages.success(request, 'Logged Out Successfully!')
+        request.session.flush()
         return redirect('home')
     
 class RegisterView(View):
