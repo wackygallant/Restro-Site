@@ -235,4 +235,3 @@ If you encounter any issues or have questions, please:
 
 ---
 
-**Built with ❤️ for the restaurant industry**

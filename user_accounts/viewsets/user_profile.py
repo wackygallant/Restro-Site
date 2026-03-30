@@ -1,17 +1,15 @@
 # Django Modules Imports
-from django.shortcuts import redirect, render
 from django.views import View, generic
-from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+from django.contrib import messages
+
+# Model Imports
+from user_accounts.models import ShippingAddress
 
 # Form Imports
-from customer_panel.formsets.shippingaddform import ShippingAddressForm
-
-# App Imports
-from booking.models import Booking
-from order.models import Order, OrderItem
-from user_accounts.models import ShippingAddress
+from user_accounts.formsets.shippingaddform import ShippingAddressForm
 
 @method_decorator(login_required, name='dispatch')
 class ProfileView(generic.TemplateView):

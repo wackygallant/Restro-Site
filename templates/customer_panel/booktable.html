@@ -49,6 +49,12 @@
 
                             <div class="row g-3">
                                 <div class="col-md-6">
+                                    <label class="form-label fw-bold">Email</label>
+                                    <input type="email" class="form-control form-control-lg bg-light"
+                                    value="{{ user.email }}" readonly>
+                                    <small class="text-muted">Automatically filled from your account</small>
+                                </div>
+                                <div class="col-md-6">
                                     <label class="form-label fw-bold">Phone Number</label>
                                     {{ form.phone_number }}
                                 </div>

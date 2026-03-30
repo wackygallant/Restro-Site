@@ -12,6 +12,7 @@ class TimeSlot(models.Model):
 
 class Booking(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookings')
+    email = models.EmailField(default='')
     phone_number = models.CharField(max_length=15, default='')
     booking_date = models.DateField()
     time_slot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE)

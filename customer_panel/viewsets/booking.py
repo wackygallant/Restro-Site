@@ -39,6 +39,7 @@ class BookTableView(View):
         if form.is_valid():
             booking = form.save(commit=False)
             booking.user = request.user
+            booking.email = request.user.email
             booking.save()
             
             messages.success(request, "Booking confirmed successfully!")

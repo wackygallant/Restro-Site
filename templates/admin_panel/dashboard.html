@@ -1,0 +1,262 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - Admin Panel{% endblock %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card">
+            <div class="stat-icon bg-primary bg-gradient">
+                <i class="bi bi-currency-dollar text-white"></i>
+            </div>
+            <h5 class="card-title mb-2">Total Revenue</h5>
+            <h3 class="text-primary mb-0">$12,458</h3>
+            <small class="text-success"><i class="bi bi-arrow-up"></i> +12.5% from last month</small>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card">
+            <div class="stat-icon bg-success bg-gradient">
+                <i class="bi bi-receipt text-white"></i>
+            </div>
+            <h5 class="card-title mb-2">Total Orders</h5>
+            <h3 class="text-success mb-0">348</h3>
+            <small class="text-success"><i class="bi bi-arrow-up"></i> +8.2% from last month</small>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card">
+            <div class="stat-icon bg-info bg-gradient">
+                <i class="bi bi-people text-white"></i>
+            </div>
+            <h5 class="card-title mb-2">Customers</h5>
+            <h3 class="text-info mb-0">1,284</h3>
+            <small class="text-success"><i class="bi bi-arrow-up"></i> +15.3% from last month</small>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stat-card">
+            <div class="stat-icon bg-warning bg-gradient">
+                <i class="bi bi-book text-white"></i>
+            </div>
+            <h5 class="card-title mb-2">Reservations</h5>
+            <h3 class="text-warning mb-0">89</h3>
+            <small class="text-danger"><i class="bi bi-arrow-down"></i> -2.1% from last month</small>
+        </div>
+    </div>
+</div>
+
+<!-- Charts and Tables Row -->
+<div class="row">
+    <!-- Revenue Chart -->
+    <div class="col-lg-8 mb-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 py-3">
+                <h5 class="card-title mb-0">Revenue Overview</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="revenueChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Recent Orders -->
+    <div class="col-lg-4 mb-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 py-3">
+                <h5 class="card-title mb-0">Recent Orders</h5>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item px-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Order #1234</h6>
+                                <small class="text-muted">John Doe</small>
+                            </div>
+                            <div class="text-end">
+                                <strong>$45.99</strong>
+                                <br><small class="text-success">Completed</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item px-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Order #1235</h6>
+                                <small class="text-muted">Jane Smith</small>
+                            </div>
+                            <div class="text-end">
+                                <strong>$32.50</strong>
+                                <br><small class="text-warning">Pending</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item px-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Order #1236</h6>
+                                <small class="text-muted">Mike Johnson</small>
+                            </div>
+                            <div class="text-end">
+                                <strong>$67.25</strong>
+                                <br><small class="text-info">Preparing</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-group-item px-0">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Order #1237</h6>
+                                <small class="text-muted">Sarah Wilson</small>
+                            </div>
+                            <div class="text-end">
+                                <strong>$28.75</strong>
+                                <br><small class="text-danger">Cancelled</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-3">
+                    <a href="#" class="btn btn-sm btn-outline-primary">View All Orders</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Additional Info Row -->
+<div class="row">
+    <!-- Popular Items -->
+    <div class="col-lg-6 mb-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 py-3">
+                <h5 class="card-title mb-0">Popular Menu Items</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Orders</th>
+                                <th>Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Margherita Pizza</td>
+                                <td>89</td>
+                                <td>$1,334</td>
+                            </tr>
+                            <tr>
+                                <td>Caesar Salad</td>
+                                <td>76</td>
+                                <td>$608</td>
+                            </tr>
+                            <tr>
+                                <td>Grilled Salmon</td>
+                                <td>54</td>
+                                <td>$1,620</td>
+                            </tr>
+                            <tr>
+                                <td>Pasta Carbonara</td>
+                                <td>48</td>
+                                <td>$576</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="col-lg-6 mb-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white border-0 py-3">
+                <h5 class="card-title mb-0">Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="d-grid">
+                            <button class="btn btn-primary">
+                                <i class="bi bi-plus-circle me-2"></i>Add Menu Item
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-grid">
+                            <button class="btn btn-success">
+                                <i class="bi bi-calendar-plus me-2"></i>New Reservation
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-grid">
+                            <button class="btn btn-info">
+                                <i class="bi bi-file-earmark-text me-2"></i>View Reports
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-grid">
+                            <button class="btn btn-warning">
+                                <i class="bi bi-bell me-2"></i>Send Notification
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Revenue Chart
+    const ctx = document.getElementById('revenueChart').getContext('2d');
+    const revenueChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+                label: 'Revenue',
+                data: [8000, 9200, 8800, 10500, 11200, 10800, 12458, 11800, 13200, 14500, 13800, 15200],
+                borderColor: 'rgb(102, 126, 234)',
+                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '$' + value.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

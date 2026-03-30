@@ -6,11 +6,11 @@ from customer_panel.formsets.resetpassform import EmailVerificationForm, OTPVeri
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.conf import settings
+from django.contrib.auth import get_user_model
 
 # Form Imports
-from customer_panel.formsets.registerform import SignUpForm
+from user_accounts.formsets.registerform import SignUpForm
 from user_accounts.models import OTP
-from django.contrib.auth import get_user_model
 
 # Custom Utils Imports
 from utils._utils import generate_otp
@@ -31,9 +31,15 @@ class LoginView(View):
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request, user)
-            messages.success(request, 'Logged in successfully!')
-            return redirect('home')
+            match user.is_staff:
+                case True:
+                    login(request, user)
+                    messages.success(request, 'Logged in successfully!')
+                    return redirect('admin_dashboard')
+                case False:
+                    login(request, user)
+                    messages.success(request, 'Logged in successfully!')
+                    return redirect('home')
         else:
             messages.error(request, 'Invalid credentials')
             return render(request, self.template_name, {})
