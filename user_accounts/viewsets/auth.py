@@ -128,7 +128,7 @@ class PasswordResetView(View):
                     user.save()
                     OTP.objects.filter(email=email).delete()
                     messages.success(request, "Password reset successful!")
-                    return redirect('login-user')
+                    return redirect('login')
                 else:
                     messages.error(request, "Invalid or expired OTP.")
             

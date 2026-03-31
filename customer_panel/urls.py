@@ -10,12 +10,13 @@ urlpatterns = [
     # Home Pages
     path('', HomePage.as_view(), name='home'),
     path('about/', AboutPage.as_view(), name='about'),
+
     # Booking
     path('booking/', BookTableView.as_view(), name='booking_page'),
     
     # Menu
-    path('menu/', Menu_Page.as_view(), name='menu'),
-    path('menu/category/<slug:category_slug>/', Menu_Page.as_view(), name='category_filter'),
+    path('menu/all/', Menu_Page.as_view(), name='menu'),
+    path('menu/<slug:category_slug>/', Menu_Page.as_view(), name='category_filter'),
     path('menu/item/<slug:item_slug>/', Menu_Item_Detail.as_view(), name='menu_item_detail'),
     
     # Orders

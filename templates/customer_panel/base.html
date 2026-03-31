@@ -55,10 +55,10 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item text-danger" href="{% url 'logout-user' %}">Logout</a></li>
+                            <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Logout</a></li>
                             {% else %}
-                            <li><a class="dropdown-item" href="{% url 'login-user' %}">Login</a></li>
-                            <li><a class="dropdown-item" href="{% url 'register-user' %}">Register</a></li>
+                            <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+                            <li><a class="dropdown-item" href="{% url 'register' %}">Register</a></li>
                             {% endif %}
                         </ul>
                     </li>

@@ -1,0 +1,48 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+
+{% block title %}Users - Admin Panel{% endblock %}
+
+{% block page_title %}Users{% endblock %}
+
+{% block content %}
+
+{% if users %}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th scope="col">Username</th>
+            <th scope="col">Password</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Is_SuperUser</th>
+            <th scope="col">Is_Active</th>
+            <th scope="col">Date Joined</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <th scope="row">{{ user.username }}</th>
+            <td>{{ user.password|truncatechars:10 }}</td>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.is_superuser }}</td>
+            <td>{{ user.is_active }}</td>
+            <td>{{ user.date_joined|date:"M d, Y" }}</td>
+            <td>
+                <a class="btn btn-primary" href="#"><i class="bi bi-pencil"></i></a>
+                <a class="btn btn-danger" href="#"><i class="bi bi-trash3"></i></a>
+            </td>
+        </tr>
+        {% endfor%}
+    </tbody>
+</table>
+{% else %}
+    No User Accounts Created
+{% endif %}
+
+{% endblock %}

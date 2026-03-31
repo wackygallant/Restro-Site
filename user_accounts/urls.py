@@ -7,9 +7,9 @@ from customer_panel.viewsets.order import AllOrdersView
 
 urlpatterns = [
     # Authentication
-    path('login/', LoginView.as_view(), name='login-user'),
-    path('logout/', LogoutView.as_view(), name='logout-user'),
-    path('register/', RegisterView.as_view(), name='register-user'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('register/', RegisterView.as_view(), name='register'),
     path('reset-password/', PasswordResetView.as_view(), name='reset-password'),
 
     # User Accounts
