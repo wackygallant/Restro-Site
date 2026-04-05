@@ -14,6 +14,7 @@
 <table class="table table-hover">
     <thead>
         <tr>
+            <th scope="col">Actions</th>
             <th scope="col">Username</th>
             <th scope="col">Password</th>
             <th scope="col">First Name</th>
@@ -23,13 +24,15 @@
             <th scope="col">Is_Staff</th>
             <th scope="col">Is_Active</th>
             <th scope="col">Date Joined</th>
-            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
         {% for user in users %}
         <tr>
-            <th scope="row">{{ user.username }}</th>
+            <th scope="row">
+                <a class="btn btn-primary" href="{% url 'admin_user_edit' user.pk %}">Edit</a>
+            </th>
+            <td>{{ user.username }}</td>
             <td>{{ user.password|truncatechars:10 }}</td>
             <td>{{ user.first_name }}</td>
             <td>{{ user.last_name }}</td>
@@ -38,16 +41,12 @@
             <td>{{ user.is_staff }}</td>
             <td>{{ user.is_active }}</td>
             <td>{{ user.date_joined|date:"M d, Y" }}</td>
-            <td>
-                <a class="btn btn-primary" href="#"><i class="bi bi-pencil"></i></a>
-                <a class="btn btn-danger" href="#"><i class="bi bi-trash3"></i></a>
-            </td>
         </tr>
         {% endfor%}
     </tbody>
 </table>
 {% else %}
-    No User Accounts Created
+No User Accounts Created
 {% endif %}
 
 {% endblock %}

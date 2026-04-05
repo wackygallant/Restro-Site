@@ -24,6 +24,7 @@ class UserCreateView(LoginRequiredMixin, View):
 
     def post(self, request):
         form = AdminUserCreationForm(request.POST)
+        breakpoint()
         if form.is_valid():
             form.save()
             messages.success(request, 'User created successfully!')
@@ -31,20 +32,31 @@ class UserCreateView(LoginRequiredMixin, View):
         return render(request, 'admin_panel/admin_user_create.html', {'form': form})
 
 
-# class UserEditView(LoginRequiredMixin, generic.TemplateView):
-#     template_name="admin_panel/admin_user_edit.html"
+class UserEditView(LoginRequiredMixin, View):
+    template_name="admin_panel/admin_user_edit.html"
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
+    def get(self, request, pk):
+        context = {
+            'user': User.objects.get(pk=pk),
+        }
+        return render(request, self.template_name, context)
 
-#         context.update({
-#             'user' : User.objects.get(pk=self.kwargs['pk']),
-#         })
-#         return context
+    def post(self, request, pk):
+        user = User.objects.get(pk=pk)
+        user.username = request.POST['username']
+        user.first_name = request.POST['first_name']
+        user.last_name = request.POST['last_name']
+        user.email = request.POST['email']
+        user.is_superuser = request.POST.get('is_superuser', False)
+        user.is_staff = request.POST.get('is_staff', False)
+        user.save()
+        messages.success(request, 'User updated successfully!')
+        return redirect('admin_users')
 
-# class UserDeleteView(LoginRequiredMixin, generic.View):
-#     def get(self, request, pk):
-#         user = User.objects.get(pk=pk)
-#         user.delete()
-#         return redirect('admin_user')
+class UserDeleteView(LoginRequiredMixin, View):
+    def get(self, request, pk):
+        user = User.objects.get(pk=pk)
+        user.delete()
+        messages.success(request, 'User deleted successfully!')
+        return redirect('admin_users')
 
