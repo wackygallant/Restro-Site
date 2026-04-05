@@ -1,0 +1,48 @@
+{% extends 'admin_panel/admin_base.html' %}
+
+{% block title %}Order Items{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="mb-1">Order Items</h2>
+                <p class="text-muted mb-0">Order items for order {{ order.order_id }}</p>
+            </div>
+            <a href="{% url 'admin_orders' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left"></i> Back to Orders
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+<table class="table table-hover fs-8">
+    <thead>
+        <tr>
+            <th scope="col">Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in order_items %}
+        <tr>
+            <th scope="row">{{ item.menu_item.name }}</th>
+            <td>{{ item.quantity }}</td>
+            <td>Rs. {{ item.price }}</td>
+            <td>Rs. {{ item.get_total }}</td>
+        </tr>
+        {% endfor%}
+        <tr>
+            <th scope="row" colspan="3">Total</th>
+            <td>Rs. {{ order.total_amount }}</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+{% endblock %}
