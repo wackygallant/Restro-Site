@@ -1,10 +1,8 @@
 # Django Modules Import
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 from django.views import View, generic
 from django.contrib import messages
-from django.conf import settings
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # App Imports
 from order.models import OrderCart, OrderCartItem, Order, OrderItem
@@ -19,8 +17,7 @@ from utils._utils import get_username
 # Python Package Imports
 import time
 
-@method_decorator(login_required, name='dispatch')
-class AllOrdersView(generic.ListView):
+class AllOrdersView(LoginRequiredMixin, generic.ListView):
     model = Order
     template_name="customer_panel/all_orders.html"
     context_object_name = 'orders'
@@ -29,8 +26,7 @@ class AllOrdersView(generic.ListView):
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user).order_by('-order_date')
 
-@method_decorator(login_required, name='dispatch')
-class OrderListView(View):
+class OrderListView(LoginRequiredMixin, View):
     """Display user's order cart"""
     def get(self, request):
         username = get_username(request)
@@ -48,8 +44,7 @@ class OrderListView(View):
             'username': username
         })
 
-@method_decorator(login_required, name='dispatch')
-class OrderCartView(View):
+class OrderCartView(LoginRequiredMixin, View):
     """Display user's shopping order cart"""
     def get(self, request):
         order_cart, created = OrderCart.objects.get_or_create(user=request.user)
@@ -64,8 +59,7 @@ class OrderCartView(View):
             'total_price': total_price
         })
 
-@method_decorator(login_required, name='dispatch')
-class AddToOrderCartView(View):
+class AddToOrderCartView(LoginRequiredMixin, View):
     """Add item to order cart"""
     def post(self, request):
         menu_item_id = request.POST.get('menu_item_id')
@@ -89,8 +83,7 @@ class AddToOrderCartView(View):
         messages.success(request, f"{menu_item.name} added to order cart!")
         return redirect('orders')
 
-@method_decorator(login_required, name='dispatch')
-class RemoveFromOrderCartView(View):
+class RemoveFromOrderCartView(LoginRequiredMixin, View):
     """Remove item from order cart"""
     def post(self, request, order_cart_item_id):
         order_cart_item = get_object_or_404(OrderCartItem, id=order_cart_item_id, order_cart__user=request.user)
@@ -99,8 +92,7 @@ class RemoveFromOrderCartView(View):
         messages.success(request, f"{menu_item_name} removed from order cart!")
         return redirect('order_cart')
 
-@method_decorator(login_required, name='dispatch')
-class UpdateOrderCartItemView(View):
+class UpdateOrderCartItemView(LoginRequiredMixin, View):
     """Update quantity of item in order cart"""
     def post(self, request, order_cart_item_id):
         quantity_str = request.POST.get('quantity', '1').strip()
@@ -117,8 +109,7 @@ class UpdateOrderCartItemView(View):
             
         return redirect('order_cart')
 
-@method_decorator(login_required, name='dispatch')
-class CheckoutView(View):        
+class CheckoutView(LoginRequiredMixin, View):        
     def process_cod(self, request, order):
         # Create cash on delivery payment record
         Payment.objects.create(

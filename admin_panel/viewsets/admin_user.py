@@ -8,23 +8,22 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from ..formsets.usercreationform import AdminUserCreationForm
 
-class UserAdminView(LoginRequiredMixin, generic.TemplateView):
+class UserAdminView(LoginRequiredMixin, generic.ListView):
     template_name="admin_panel/admin_all_user.html"
+    context_object_name = 'users'
+    model = User
+    paginate_by = 10
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_queryset(self):
+        return User.objects.all().order_by('date_joined')
 
-        context.update({
-            'users' : User.objects.all().order_by('date_joined'),
-        })
-        return context
+
 class UserCreateView(LoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'admin_panel/admin_user_create.html')
 
     def post(self, request):
         form = AdminUserCreationForm(request.POST)
-        breakpoint()
         if form.is_valid():
             form.save()
             messages.success(request, 'User created successfully!')
@@ -43,12 +42,13 @@ class UserEditView(LoginRequiredMixin, View):
 
     def post(self, request, pk):
         user = User.objects.get(pk=pk)
+        breakpoint()
         user.username = request.POST['username']
         user.first_name = request.POST['first_name']
         user.last_name = request.POST['last_name']
         user.email = request.POST['email']
-        user.is_superuser = request.POST.get('is_superuser', False)
-        user.is_staff = request.POST.get('is_staff', False)
+        user.is_superuser = True if request.POST.get('is_superuser') == 'on' else False
+        user.is_staff = True if request.POST.get('is_staff') == 'on' else False
         user.save()
         messages.success(request, 'User updated successfully!')
         return redirect('admin_users')
