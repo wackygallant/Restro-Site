@@ -23,7 +23,7 @@
             {% for category in options %}
             <li class="nav-item">
                 <a class="nav-link px-4 py-2 rounded-pill 
-{% if request.resolver_match.kwargs.category_slug == category.slug %}active-category{% endif %}"
+                    {% if request.resolver_match.kwargs.category_slug == category.slug %}active-category{% endif %}"
                     href="{% url 'category_filter' category.slug %}">
                     {{ category.name }}
                 </a>
