@@ -1,6 +1,10 @@
-from django.views import generic
-from order.models import Order
+# Django Module Imports
+from django.views import generic, View
+from django.shortcuts import redirect
+from django.contrib import messages
 
+# App Imports
+from order.models import Order
 
 class AdminOrderView(generic.ListView):
     template_name = "admin_panel/admin_all_order.html"
@@ -26,3 +30,11 @@ class AdminOrderItemsView(generic.TemplateView):
         })
         return context
 
+class StatusUpdate(View):
+    def get(self, request, *args, **kwargs):
+        order_id = self.kwargs.get('order_id')
+        order = Order.objects.get(id=order_id)
+        order.order_status = 'completed'
+        order.save()
+        messages.success(request, 'Order status updated successfully!')
+        return redirect('admin_orders')

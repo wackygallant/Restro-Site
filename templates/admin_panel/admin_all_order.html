@@ -62,7 +62,7 @@
             <td>{{ order.total_amount }}</td>
             <td>{{ order.shippingaddress }}</td>
             <td>
-                <a class="btn btn-primary mb-0" href="#"><i class="bi bi-check-square-fill"></i></a>
+                <a class="btn btn-primary mb-0" href="{% url 'admin_order_status' order.id %}"><i class="bi bi-check-square-fill"></i></a>
                 <a class="btn btn-primary mb-0" href="{% url 'admin_order_items' order.id %}"><i class="bi bi-backpack-fill"></i></a>
                 <a class="btn btn-danger mb-0" href="#"><i class="bi bi-trash"></i></a>
             </td>
