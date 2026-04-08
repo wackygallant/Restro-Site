@@ -1,17 +1,17 @@
 # Django Modules Import
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View, generic
 from django.contrib.auth import logout
 from django.shortcuts import redirect
 from django.contrib import messages
-from django.db.models import Sum, Count
+from django.db.models import Sum
 
-# Model Imports
+# App Imports
 from order.models import Order
 from booking.models import Booking
 from django.contrib.auth.models import User
+from user_accounts.viewsets.CustomMixin import AdminLoginRequiredMixin
 
-class DashboardView(LoginRequiredMixin, generic.TemplateView):
+class DashboardView(AdminLoginRequiredMixin, generic.TemplateView):
     template_name = 'admin_panel/admin_dashboard.html'
 
     def get_context_data(self, **kwargs):

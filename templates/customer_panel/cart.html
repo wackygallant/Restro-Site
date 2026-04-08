@@ -27,7 +27,7 @@
                 {% for item in order_cart_items %}
                 <tr>
                     <td>{{ item.menu_item.name }}</td>
-                    <td>${{ item.menu_item.special_price|default:item.menu_item.price }}</td>
+                    <td>Rs. {{ item.menu_item.special_price|default:item.menu_item.price }}</td>
                     <td>
                         <form method="POST" action="{% url 'update-order-cart-item' item.id %}" class="d-inline">
                             {% csrf_token %}
@@ -38,7 +38,7 @@
                             </div>
                         </form>
                     </td>
-                    <td>${{ item.get_total }}</td>
+                    <td>Rs.{{ item.get_total }}</td>
                     <td>
                         <form method="POST" action="{% url 'remove-from-order-cart' item.id %}" class="d-inline">
                             {% csrf_token %}

@@ -1,6 +1,5 @@
 # Django Module Imports
 from django.views import generic, View
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.mail import send_mail
@@ -8,9 +7,10 @@ from django.conf import settings
 
 # App Imports
 from django.contrib.auth.models import User
-from ..formsets.usercreationform import Admin_UserCreationForm
+from admin_panel.formsets.usercreationform import Admin_UserCreationForm
+from user_accounts.viewsets.CustomMixin import AdminLoginRequiredMixin
 
-class UserAdminView(LoginRequiredMixin, generic.ListView):
+class UserAdminView(AdminLoginRequiredMixin, generic.ListView):
     template_name="admin_panel/admin_all_user.html"
     context_object_name = 'users'
     model = User
@@ -35,7 +35,7 @@ class UserAdminView(LoginRequiredMixin, generic.ListView):
         return context
 
 
-class UserCreateView(LoginRequiredMixin, View):
+class UserCreateView(AdminLoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'admin_panel/admin_user_create.html')
 
@@ -50,7 +50,7 @@ class UserCreateView(LoginRequiredMixin, View):
         return render(request, 'admin_panel/admin_user_create.html', {'form': form})
 
 
-class UserEditView(LoginRequiredMixin, View):
+class UserEditView(AdminLoginRequiredMixin, View):
     template_name="admin_panel/admin_user_edit.html"
 
     def get(self, request, pk):
@@ -72,7 +72,7 @@ class UserEditView(LoginRequiredMixin, View):
         messages.success(request, 'User updated successfully!')
         return redirect('admin_users')
 
-class UserDeleteView(LoginRequiredMixin, View):
+class UserDeleteView(AdminLoginRequiredMixin, View):
     def get(self, request, pk):
         user = User.objects.get(pk=pk)
         user.delete()

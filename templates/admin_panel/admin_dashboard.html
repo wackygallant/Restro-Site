@@ -2,146 +2,150 @@
 {% load static %}
 
 {% block title %}Dashboard - Admin Panel{% endblock %}
-
-{% block page_title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard Overview{% endblock %}
 
 {% block content %}
-<!-- Statistics Cards -->
-<div class="row mb-4">
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="stat-card">
-            <div class="stat-icon bg-primary bg-gradient">
-                <i class="bi bi-currency-dollar text-white"></i>
+<div class="row g-4 mb-4">
+    <div class="col-xl-3 col-md-6">
+        <div class="card stat-card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="stat-icon bg-primary bg-gradient shadow-sm">
+                        <i class="bi bi-currency-dollar text-white fs-4"></i>
+                    </div>
+                    <!-- <span class="badge bg-success-subtle text-success rounded-pill">+12%</span> -->
+                </div>
+                <h6 class="card-subtitle mb-1 text-muted small fw-bold text-uppercase">Total Revenue</h6>
+                <h3 class="card-title mb-0 fw-bold">Rs. {{ total_revenue }}</h3>
             </div>
-            <h5 class="card-title mb-2">Total Revenue</h5>
-            <h3 class="text-primary mb-0">Rs. {{ total_revenue }}</h3>
-            <!-- <small class="text-success"><i class="bi bi-arrow-up"></i> +12.5% from last month</small> -->
         </div>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="stat-card">
-            <div class="stat-icon bg-success bg-gradient">
-                <i class="bi bi-receipt text-white"></i>
+    <div class="col-xl-3 col-md-6">
+        <div class="card stat-card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="stat-icon bg-success bg-gradient shadow-sm">
+                        <i class="bi bi-receipt text-white fs-4"></i>
+                    </div>
+                    <!-- <span class="badge bg-success-subtle text-success rounded-pill">+8%</span> -->
+                </div>
+                <h6 class="card-subtitle mb-1 text-muted small fw-bold text-uppercase">Total Orders</h6>
+                <h3 class="card-title mb-0 fw-bold">{{ total_orders }}</h3>
             </div>
-            <h5 class="card-title mb-2">Total Orders</h5>
-            <h3 class="text-success mb-0">{{ total_orders }}</h3>
-            <!-- <small class="text-success"><i class="bi bi-arrow-up"></i> +8.2% from last month</small> -->
         </div>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="stat-card">
-            <div class="stat-icon bg-info bg-gradient">
-                <i class="bi bi-people text-white"></i>
+    <div class="col-xl-3 col-md-6">
+        <div class="card stat-card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="stat-icon bg-info bg-gradient shadow-sm">
+                        <i class="bi bi-people text-white fs-4"></i>
+                    </div>
+                    <!-- <span class="badge bg-info-subtle text-info rounded-pill">+15%</span> -->
+                </div>
+                <h6 class="card-subtitle mb-1 text-muted small fw-bold text-uppercase">Total Customers</h6>
+                <h3 class="card-title mb-0 fw-bold">{{ total_users }}</h3>
             </div>
-            <h5 class="card-title mb-2">Customers</h5>
-            <h3 class="text-info mb-0">{{ total_users }}</h3>
-            <!-- <small class="text-success"><i class="bi bi-arrow-up"></i> +15.3% from last month</small> -->
         </div>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="stat-card">
-            <div class="stat-icon bg-warning bg-gradient">
-                <i class="bi bi-book text-white"></i>
+    <div class="col-xl-3 col-md-6">
+        <div class="card stat-card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="stat-icon bg-warning bg-gradient shadow-sm">
+                        <i class="bi bi-book text-white fs-4"></i>
+                    </div>
+                    <!-- <span class="badge bg-danger-subtle text-danger rounded-pill">-2%</span> -->
+                </div>
+                <h6 class="card-subtitle mb-1 text-muted small fw-bold text-uppercase">Reservations</h6>
+                <h3 class="card-title mb-0 fw-bold">{{ total_reservations }}</h3>
             </div>
-            <h5 class="card-title mb-2">Reservations</h5>
-            <h3 class="text-warning mb-0">{{ total_reservations }}</h3>
-            <!-- <small class="text-danger"><i class="bi bi-arrow-down"></i> -2.1% from last month</small> -->
         </div>
     </div>
 </div>
 
-<!-- Charts and Tables Row -->
-<div class="row">
-    <!-- Revenue Chart -->
-    <div class="col-lg-8 mb-4">
-        <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white border-0 py-3">
-                <h5 class="card-title mb-0">Revenue Overview</h5>
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0 fw-bold">Revenue Analytics</h5>
+                <button class="btn btn-sm btn-outline-secondary">Download Report</button>
             </div>
-            <div class="card-body">
-                <canvas id="revenueChart" height="100"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <!-- Recent Orders -->
-    <div class="col-lg-4 mb-4">
-        <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white border-0 py-3">
-                <h5 class="card-title mb-0">Recent Orders</h5>
-            </div>
-            <div class="card-body">
-                <div class="list-group list-group-flush">
-                    {% if orders %}
-                    <div class="list-group-item px-0">
-                        {% for order in orders %}
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="mb-1">{{ order.order_id }}</h6>
-                                <small class="text-muted">{{ order.user }}</small>
-                            </div>
-                            <div class="text-end">
-                                <strong>Rs. {{ order.total_amount }}</strong>
-                                <br><small class="text-success">{{ order.order_status }}</small>
-                            </div>
-                        </div>
-                        {% endfor %}
-                        {% else %}
-                        <div class="text-center mt-3">
-                            <p class="text-muted">No recent orders</p>
-                        </div>
-                        {% endif %}
-                    </div>
-                    <div class="text-center mt-3">
-                        <a href="{% url 'admin_orders' %}" class="btn btn-sm btn-outline-primary">View All Orders</a>
-                    </div>
+            <div class="card-body p-4">
+                <div class="bg-light rounded-3 d-flex align-items-center justify-content-center" style="min-height: 300px;">
+                    <canvas id="revenueChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-header bg-white border-0 py-3">
+                <h5 class="card-title mb-0 fw-bold">Recent Activity</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    {% if orders %}
+                        {% for order in orders %}
+                        <div class="list-group-item recent-order-item p-3 border-0 position-relative">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-0 fw-bold text-primary">#{{ order.order_id }}</h6>
+                                    <small class="text-muted">{{ order.user }}</small>
+                                </div>
+                                <div class="text-end">
+                                    <div class="fw-bold text-dark small">Rs. {{ order.total_amount }}</div>
+                                    <span class="badge bg-light text-success border">{{ order.order_status|title }}</span>
+                                </div>
+                            </div>
+                            <a href="{% url 'admin_orders' %}" class="stretched-link"></a>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="bi bi-inbox fs-2 text-muted"></i>
+                            <p class="text-muted small mt-2">No recent orders found</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-footer bg-white border-0 py-3 text-center">
+                <a href="{% url 'admin_orders' %}" class="btn btn-sm btn-primary rounded-pill px-4">View Full History</a>
+            </div>
+        </div>
+    </div>
 </div>
 
-<!-- Additional Info Row -->
-<div class="row">
-    <!-- Popular Items -->
-    <div class="col-lg-6 mb-4">
-        <div class="card border-0 shadow-sm">
+<div class="row g-4 mt-2">
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
             <div class="card-header bg-white border-0 py-3">
-                <h5 class="card-title mb-0">Popular Menu Items</h5>
+                <h5 class="card-title mb-0 fw-bold">Top Performing Dishes</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light small text-uppercase">
                             <tr>
-                                <th>Item</th>
-                                <th>Orders</th>
-                                <th>Revenue</th>
+                                <th class="ps-4">Item Name</th>
+                                <th class="text-center">Sales</th>
+                                <th class="text-end pe-4">Revenue</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Margherita Pizza</td>
-                                <td>89</td>
-                                <td>$1,334</td>
+                                <td class="ps-4 fw-bold">Margherita Pizza</td>
+                                <td class="text-center"><span class="badge bg-light text-dark">89</span></td>
+                                <td class="text-end pe-4 text-primary">Rs. 1,334</td>
                             </tr>
                             <tr>
-                                <td>Caesar Salad</td>
-                                <td>76</td>
-                                <td>$608</td>
-                            </tr>
-                            <tr>
-                                <td>Grilled Salmon</td>
-                                <td>54</td>
-                                <td>$1,620</td>
-                            </tr>
-                            <tr>
-                                <td>Pasta Carbonara</td>
-                                <td>48</td>
-                                <td>$576</td>
+                                <td class="ps-4 fw-bold">Grilled Salmon</td>
+                                <td class="text-center"><span class="badge bg-light text-dark">54</span></td>
+                                <td class="text-end pe-4 text-primary">Rs. 1,620</td>
                             </tr>
                         </tbody>
                     </table>
@@ -150,41 +154,48 @@
         </div>
     </div>
 
-    <!-- Quick Actions -->
-    <div class="col-lg-6 mb-4">
-        <div class="card border-0 shadow-sm">
+    <div class="col-lg-6">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
             <div class="card-header bg-white border-0 py-3">
-                <h5 class="card-title mb-0">Quick Actions</h5>
+                <h5 class="card-title mb-0 fw-bold">Admin Controls</h5>
             </div>
             <div class="card-body">
                 <div class="row g-3">
-                    <div class="col-md-6">
-                        <div class="d-grid">
-                            <button class="btn btn-primary">
-                                <i class="bi bi-plus-circle me-2"></i>Add Menu Item
-                            </button>
-                        </div>
+                    <div class="col-sm-6">
+                        <a href="#" class="btn btn-light border w-100 py-3 text-start shadow-sm d-flex align-items-center">
+                            <i class="bi bi-plus-circle-fill text-primary fs-3 me-3"></i>
+                            <div>
+                                <div class="fw-bold small">Add Menu Item</div>
+                                <div class="text-muted extra-small" style="font-size: 0.75rem;">Create new entry</div>
+                            </div>
+                        </a>
                     </div>
-                    <div class="col-md-6">
-                        <div class="d-grid">
-                            <button class="btn btn-success">
-                                <i class="bi bi-calendar-plus me-2"></i>New Reservation
-                            </button>
-                        </div>
+                    <div class="col-sm-6">
+                        <a href="#" class="btn btn-light border w-100 py-3 text-start shadow-sm d-flex align-items-center">
+                            <i class="bi bi-calendar-check-fill text-success fs-3 me-3"></i>
+                            <div>
+                                <div class="fw-bold small">Reservations</div>
+                                <div class="text-muted extra-small" style="font-size: 0.75rem;">Manage bookings</div>
+                            </div>
+                        </a>
                     </div>
-                    <div class="col-md-6">
-                        <div class="d-grid">
-                            <button class="btn btn-info">
-                                <i class="bi bi-file-earmark-text me-2"></i>View Reports
-                            </button>
-                        </div>
+                    <div class="col-sm-6">
+                        <a href="#" class="btn btn-light border w-100 py-3 text-start shadow-sm d-flex align-items-center">
+                            <i class="bi bi-graph-up-arrow text-info fs-3 me-3"></i>
+                            <div>
+                                <div class="fw-bold small">Sales Report</div>
+                                <div class="text-muted extra-small" style="font-size: 0.75rem;">Download PDF</div>
+                            </div>
+                        </a>
                     </div>
-                    <div class="col-md-6">
-                        <div class="d-grid">
-                            <button class="btn btn-warning">
-                                <i class="bi bi-bell me-2"></i>Send Notification
-                            </button>
-                        </div>
+                    <div class="col-sm-6">
+                        <a href="#" class="btn btn-light border w-100 py-3 text-start shadow-sm d-flex align-items-center">
+                            <i class="bi bi-megaphone-fill text-warning fs-3 me-3"></i>
+                            <div>
+                                <div class="fw-bold small">Announcements</div>
+                                <div class="text-muted extra-small" style="font-size: 0.75rem;">Alert customers</div>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -192,43 +203,5 @@
     </div>
 </div>
 
-<!-- Chart.js Script -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Revenue Chart
-    const ctx = document.getElementById('revenueChart').getContext('2d');
-    const revenueChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            datasets: [{
-                label: 'Revenue',
-                data: [8000, 9200, 8800, 10500, 11200, 10800, 12458, 11800, 13200, 14500, 13800, 15200],
-                borderColor: 'rgb(102, 126, 234)',
-                backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                tension: 0.4,
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: false
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function (value) {
-                            return '$' + value.toLocaleString();
-                        }
-                    }
-                }
-            }
-        }
-    });
-</script>
 {% endblock %}

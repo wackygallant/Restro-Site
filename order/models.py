@@ -1,9 +1,11 @@
+# Django Module Imports
 from django.db import models
 from django.contrib.auth.models import User
 from menu.models import MenuItems
 from django.db import models
 import datetime
 
+# Custom Util Imports
 from utils.models import BaseModel
 
 class OrderCart(BaseModel):
