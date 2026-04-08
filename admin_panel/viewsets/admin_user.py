@@ -3,6 +3,8 @@ from django.views import generic, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.core.mail import send_mail
+from django.conf import settings
 
 # App Imports
 from django.contrib.auth.models import User
@@ -40,8 +42,10 @@ class UserCreateView(LoginRequiredMixin, View):
     def post(self, request):
         form = Admin_UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
             messages.success(request, 'User created successfully!')
+            if request.POST.get('sendWelcomeEmail') == 'on':
+                send_mail(f'Welcome {user.username}', f'Your Account with username {user.username} has been created successfully.\nThank you for joining us.', settings.DEFAULT_FROM_EMAIL, [user.email])
             return redirect('admin_users')
         return render(request, 'admin_panel/admin_user_create.html', {'form': form})
 

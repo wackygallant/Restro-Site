@@ -1,7 +1,7 @@
 from django.urls import path
 from admin_panel.viewsets.admin_dashboard import DashboardView, LogoutView
 from admin_panel.viewsets.admin_user import UserAdminView, UserCreateView, UserEditView, UserDeleteView
-from admin_panel.viewsets.admin_order import AdminOrderView, AdminOrderItemsView, StatusUpdate
+from admin_panel.viewsets.admin_order import AdminOrderView, StatusUpdate
 
 urlpatterns = [
     path('', DashboardView.as_view(), name='admin_dashboard'),
@@ -11,6 +11,5 @@ urlpatterns = [
     path('users/edit/<int:pk>/', UserEditView.as_view(), name='admin_user_edit'),
     path('users/delete/<int:pk>/', UserDeleteView.as_view(), name='admin_user_delete'),
     path('orders/', AdminOrderView.as_view(), name='admin_orders'),
-    path('orders/<int:order_id>/', AdminOrderItemsView.as_view(), name='admin_order_items'),
     path('orders/status/<int:order_id>/', StatusUpdate.as_view(), name='admin_order_status'),
 ]

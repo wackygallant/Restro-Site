@@ -49,6 +49,9 @@
                             data-bs-target="#editProfileModal">
                             Edit Profile
                         </button>
+                        {% if user.is_staff %}
+                        <a href="{% url 'admin_dashboard' %}" class="btn btn-dark btn-sm">Admin Panel</a>
+                        {% endif %}
                         <button type="button" class="btn btn-dark btn-sm" data-bs-toggle="modal"
                             data-bs-target="#addShippingAddressModal">
                             Shipping Address
