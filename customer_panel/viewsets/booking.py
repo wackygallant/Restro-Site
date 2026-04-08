@@ -1,9 +1,8 @@
 # Django Modules Imports
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views import View, generic
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.utils.decorators import method_decorator
 
 # Forms Import
 from customer_panel.formsets.bookingform import BookingForm
@@ -14,8 +13,7 @@ from booking.models import Booking
 # Custom Util Imports
 from utils._utils import get_username
 
-@method_decorator(login_required, name='dispatch')
-class AllBookingsView(generic.ListView):
+class AllBookingsView(LoginRequiredMixin, generic.ListView):
     model = Booking
     template_name="customer_panel/all_bookings.html"
     context_object_name = 'bookings'
@@ -24,8 +22,7 @@ class AllBookingsView(generic.ListView):
     def get_queryset(self):
         return Booking.objects.filter(user=self.request.user).order_by('-booking_date')
 
-@method_decorator(login_required, name='dispatch')
-class BookTableView(View):
+class BookTableView(LoginRequiredMixin, View):
     def get(self, request):
         form = BookingForm()
         return render(request, "customer_panel/booktable.html", {

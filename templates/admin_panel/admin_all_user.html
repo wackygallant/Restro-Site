@@ -7,41 +7,71 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container-fluid">
     {% if users %}
-    <div class="d-flex justify-content-between">
+    <div class="d-flex justify-content-between align-items-center mb-3">
         <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-between align-items-center">
-                <div class="d-flex gap-2">
-                    {% if page_obj.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-                    </li>
-                    {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link">Previous</span>
-                    </li>
-                    {% endif %}
+            <ul class="pagination mb-0">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                </li>
+                {% endif %}
 
-                    {% for page_num in page_obj.paginator.page_range %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a></li>
-                    {% endfor %}
+                {% for page_num in page_obj.paginator.page_range %}
+                <li class="page-item {% if page_obj.number == page_num %}active{% endif %}">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+                {% endfor %}
 
-                    {% if page_obj.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-                    </li>
-                    {% else %}
-                    <li class="page-item disabled">
-                        <span class="page-link">Next</span>
-                    </li>
-                    {% endif %}
-                </div>
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <span class="page-link">Next</span>
+                </li>
+                {% endif %}
             </ul>
         </nav>
 
-        <div class="d-flex justify-content-end mb-3">
-            <a href="{% url 'admin_user_create' %}" class="btn btn-primary">Create User</a>
+        <div class="flex-grow-1 d-flex justify-content-end">
+            <form method="get" class="d-flex gap-2" style="max-width: 400px; width: 100%;">
+                <input class="form-control" type="text" name="search" placeholder="Search users..."
+                    value="{{ request.GET.search|default:'' }}">
+                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false" data-bs-auto-close="outside">
+                    Filters
+                </button>
+                <ul class="dropdown-menu p-3" style="min-width: 200px;">
+                    <h6 class="dropdown-header ps-0">User Status</h6>
+                    <li class="form-check">
+                        <input class="form-check-input" type="checkbox" name="status" value="active" id="checkActive" {% if 'active' in status_filters %}checked{% endif %}>
+                        <label class="form-check-label" for="checkActive">is_active</label>
+                    </li>
+                    <li class="form-check">
+                        <input class="form-check-input" type="checkbox" name="status" value="staff" id="checkStaff" {% if 'staff' in status_filters %}checked{% endif %}>
+                        <label class="form-check-label" for="checkStaff">is_staff</label>
+                    </li>
+                    <li class="form-check">
+                        <input class="form-check-input" type="checkbox" name="status" value="superuser" id="checkAdmin" {% if 'superuser' in status_filters %}checked{% endif %}>
+                        <label class="form-check-label" for="checkAdmin">is_superuser</label>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                </ul>
+                </button>
+                <button type="submit" class="btn btn-primary">Search</button>
+                {% if request.GET.search or request.GET.status %}
+                <a href="{% url 'admin_users' %}" class="btn btn-secondary">Clear</a>
+                {% endif %}
+            </form>
         </div>
     </div>
 
@@ -79,9 +109,18 @@
             {% endfor%}
         </tbody>
     </table>
-    <p class="text-center">
-        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-    </p>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="flex-1" style="flex-basis: 0; flex-grow: 1;">
+        </div>
+
+        <div class="text-center flex-grow-1">
+            <p class="mb-0">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+        </div>
+
+        <div class="d-flex justify-content-end flex-grow-1" style="flex-basis: 0;">
+            <a href="{% url 'admin_user_create' %}" class="btn btn-primary text-nowrap">Create User</a>
+        </div>
+    </div>
     {% else %}
     <p class="text-center">No User Accounts Created <a href="{% url 'admin_user_create' %}"
             class="btn btn-primary">Create

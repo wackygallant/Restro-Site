@@ -31,15 +31,12 @@ class LoginView(View):
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            breakpoint()
             match user.is_staff:
                 case True:
-                    breakpoint()
                     login(request, user)
                     messages.success(request, 'Logged in successfully!')
                     return redirect('admin_dashboard')
                 case False:
-                    breakpoint()
                     login(request, user)
                     messages.success(request, 'Logged in successfully!')
                     return redirect('home')
