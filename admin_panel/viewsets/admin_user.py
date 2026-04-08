@@ -18,15 +18,14 @@ class UserAdminView(LoginRequiredMixin, generic.ListView):
         search = self.request.GET.get('search')
         filters = self.request.GET.getlist('status')
         if search is not None or filters:
-            queryset = User.objects.all()
+            queryset = User.objects.exclude(is_superuser=True)
             if search:
                 queryset = queryset.filter(username__icontains=search)
             if filters:
                 queryset = queryset.filter(is_active=True) if 'active' in filters else queryset
                 queryset = queryset.filter(is_staff=True) if 'staff' in filters else queryset
-                queryset = queryset.filter(is_superuser=True) if 'superuser' in filters else queryset
             return queryset.order_by('date_joined')
-        return User.objects.all().order_by('date_joined')
+        return User.objects.exclude(is_superuser=True).order_by('date_joined')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
