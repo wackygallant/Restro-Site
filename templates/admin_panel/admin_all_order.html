@@ -97,11 +97,11 @@
                                     <button class="btn btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#details-{{ order.id }}" title="View Details">
                                         <i class="bi bi-eye-fill"></i>
                                     </button>
-                                    <a href="{% url 'admin_order_status' order.id %}" class="btn btn-outline-primary" title="Update Status">
-                                        <i class="bi bi-pencil-square"></i>
+                                    <a href="{% url 'admin_order_complete' order.id %}" class="btn btn-outline-primary" title="Complete">
+                                        <i class="bi bi-check-circle"></i>
                                     </a>
-                                    <a href="#" class="btn btn-outline-danger" title="Delete">
-                                        <i class="bi bi-trash"></i>
+                                    <a href="{% url 'admin_order_cancel' order.id %}" class="btn btn-outline-danger" title="Cancel">
+                                        <i class="bi bi-x-circle"></i>
                                     </a>
                                 </div>
                             </td>

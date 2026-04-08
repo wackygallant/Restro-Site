@@ -6,8 +6,9 @@ from django.contrib import messages
 
 # App Imports
 from order.models import Order
+from user_accounts.viewsets.CustomMixin import AdminLoginRequiredMixin
 
-class AdminOrderView(generic.ListView):
+class AdminOrderView(AdminLoginRequiredMixin, generic.ListView):
     model = Order
     template_name = "admin_panel/admin_all_order.html"
     context_object_name = "orders"
@@ -41,11 +42,20 @@ class AdminOrderView(generic.ListView):
         context['order_status_choices'] = Order.STATUS_CHOICES
         return context
 
-class StatusUpdate(View):
+class CompleteOrder(AdminLoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         order_id = self.kwargs.get('order_id')
         order = Order.objects.get(id=order_id)
         order.order_status = 'completed'
         order.save()
-        messages.success(request, 'Order status updated successfully!')
+        messages.success(request, 'Order completed successfully!')
+        return redirect('admin_orders')
+        
+class CancelOrder(AdminLoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        order_id = self.kwargs.get('order_id')
+        order = Order.objects.get(id=order_id)
+        order.order_status = 'cancelled'
+        order.save()
+        messages.success(request, 'Order cancelled successfully!')
         return redirect('admin_orders')
