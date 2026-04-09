@@ -80,7 +80,7 @@
                         {% for order in orders %}
                         <tr>
                             <td class="ps-3 fw-bold text-primary">#{{ order.order_id }}</td>
-                            <td><span class="text-muted small">{{ order.order_date|date:"M d, Y" }}</span></td>
+                            <td><span>{{ order.order_date|date:"M d, Y" }}</span></td>
                             <td>{{ order.user }}</td>
                             <td>
                                 <span class="badge rounded-pill 

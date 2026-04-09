@@ -69,12 +69,12 @@
         <thead>
             <tr>
                 <th scope="col">Actions</th>
-                <th scope="col">Username</th>
-                <th scope="col">Password</th>
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Is_Active</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Is_Active</th>
                 <th>Is_SuperUser</th>
                 <th>Is_Staff</th>
                 <th>Date Joined</th>
@@ -85,9 +85,7 @@
             {% for user in users %}
             <tr>
                 <th scope="row">
-                    <a class="btn btn-primary" href="{% url 'admin_user_edit' user.pk %}">
-                        <i class="bi bi-pencil-square"></i>
-                    </a>
+                    <a class="btn btn-primary" href="{% url 'admin_user_edit' user.pk %}">Edit</a>
                 </th>
                 <td>{{ user.username }}</td>
                 <td>{{ user.password|truncatechars:10 }}</td>

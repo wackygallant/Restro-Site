@@ -1,0 +1,101 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+
+{% block title %}Menu Categories - Admin Panel{% endblock %}
+
+{% block page_title %}Menu Categories{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid px-4">
+    <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-4">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-sm mb-0">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                            {% endif %}
+                            
+                            {% for page_num in page_obj.paginator.page_range %}
+                            <li class="page-item {% if page_obj.number == page_num %}active{% endif %}">
+                                <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                            </li>
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="col-md-8">
+                    <form method="get" class="d-flex gap-2 justify-content-md-end">
+                        <div class="input-group input-group-sm" style="max-width: 450px;">
+                            <input class="form-control" type="text" name="search" placeholder="Search Category..." value="{{ request.GET.search|default:'' }}">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                            {% if request.GET.search or request.GET.status %}
+                            <a href="{% url 'admin_categories' %}" class="btn btn-secondary">Clear</a>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Actions</th>
+                <th scope="col">ID</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Updated At</th>
+                <th scope="col">Priority</th>
+                <th scope="col">Slug</th>
+                <th scope="col">Category Name</th>
+            </tr>
+        </thead>
+        {% if categories %}
+        <tbody>
+            {% for category in categories %}
+            <tr>
+                <th scope="row">
+                    <a class="btn btn-primary" href="{% url 'admin_category_edit' category.id %}">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                </th>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ category.created_at|date:"M d, Y" }}</td>
+                <td>{{ category.updated_at|date:"M d, Y" }}</td>
+                <td>{{ category.priority }}</td>
+                <td>{{ category.slug }}</td>
+                <td>{{ category.name }}</td>
+            </tr>
+            {% endfor%}
+        </tbody>
+            {% else %}
+            <tbody>
+            <tr>
+                <th colspan="10" class="text-center">No Categories Found</th>
+            </tr>
+            </tbody>
+            {% endif %}
+    </table>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="flex-1" style="flex-basis: 0; flex-grow: 1;">
+        </div>
+
+        <div class="text-center flex-grow-1">
+            <p class="mb-0">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+        </div>
+
+        <div class="d-flex justify-content-end flex-grow-1" style="flex-basis: 0;">
+            <a href="{% url 'admin_category_create' %}" class="btn btn-primary text-nowrap">Create Category</a>
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock %}
