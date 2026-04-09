@@ -10,7 +10,6 @@
 
 <section>
     <div class="container py-5">
-        {% if bookings %}
         {% if is_paginated %}
         <div class="mb-3">
             <nav aria-label="Page navigation">
@@ -50,18 +49,21 @@
         <table class="table table-hover">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col">Date</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Contact No.</th>
-                    <th scope="col">Time Slot</th>
-                    <th scope="col">Total Pax.</th>
-                    <th scope="col">Booking Status</th>
+                    <th scope="col">Booking ID</th>
+                    <th>Date</th>
+                    <th>Email</th>
+                    <th>Contact No.</th>
+                    <th>Time Slot</th>
+                    <th>Total Pax.</th>
+                    <th>Booking Status</th>
                 </tr>
             </thead>
+            {% if bookings %}
             <tbody>
                 {% for booking in bookings %}
                 <tr>
-                    <th scope="row">{{ booking.booking_date }}</th>
+                    <th scope="row">{{ booking.booking_id }}</th>
+                    <td>{{ booking.booking_date }}</td>
                     <td>{{ booking.email }}</td>
                     <td>{{ booking.phone_number }}</td>
                     <td>{{ booking.time_slot }}</td>
@@ -70,14 +72,15 @@
                 </tr>
                 {% endfor %}
             </tbody>
+            {% else %}
+            <tbody>
+                <tr>
+                    <td colspan="7" class="text-center text-muted">No bookings found. <a href="{% url 'booking_page' %}">Book a table now</a></td>
+                </tr>
+            </tbody>
+            {% endif %}
         </table>
-        {% else %}
-        <div class="alert alert-info mb-0" role="alert">
-            <strong>No bookings yet!</strong> <br>
-            <p class="mb-0">You haven't made any table reservations. <a href="{% url 'booking_page' %}"
-                    class="alert-link fw-bold">Book a table now</a> to enjoy our delicious food.</p>
-        </div>
-        {% endif %}
+
     </div>
 </section>
 {% endblock %}

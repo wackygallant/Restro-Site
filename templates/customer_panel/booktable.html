@@ -4,133 +4,112 @@
 <section class="about-hero position-relative text-white text-center">
     <div class="container py-5">
         <h1 class="display-3 fw-bold">Reserve Your Table</h1>
-        <p class="lead fs-5">Experience dining like never before. Book your perfect moment with us.</p>
+        <p class="lead fs-5">Quick, easy, and instant confirmation.</p>
     </div>
 </section>
 
 <div class="container py-5">
     {% if user.is_authenticated %}
     <div class="row justify-content-center">
-        <div class="col-lg-7">
+        <div class="col-lg-8">
             
-            {% if message %}
-                <div class="alert alert-success border-0 shadow-sm mb-4">
-                    <strong>Success!</strong> {{ message }}
-                </div>
-            {% endif %}
-
-            {% if form.errors %}
-                <div class="alert alert-danger border-0 shadow-sm mb-4">
-                    <h6 class="fw-bold">Please correct the following:</h6>
-                    <ul class="mb-0">
-                        {% for field, errors in form.errors.items %}
-                            {% for error in errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-
-            <div class="card border-0 shadow-lg rounded-lg booking-form-card">
-                <div class="card-body p-5">
-                    <form method="post" novalidate>
+            <div class="card border-0 shadow-lg booking-form-card">
+                <div class="card-body p-4 p-md-5">
+                    <form method="POST"> 
                         {% csrf_token %}
 
-                        <div class="mb-4">
-                            <h5 class="fw-bold mb-4 pb-2 border-bottom"> Your Information</h5>
-
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Full Name</label>
-                                <input type="text" class="form-control form-control-lg bg-light"
-                                    value="{{ username }}" readonly>
-                                <small class="text-muted">Automatically filled from your account</small>
-                            </div>
-
+                        <div class="mb-5">
+                            <h5 class="fw-bold mb-4 form-section-title">👤 Personal Information</h5>
                             <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label fw-bold">Full Name</label>
+                                    <input type="text" class="form-control bg-light" name="name" value="{{ user.username }}" readonly>
+                                </div>
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Email</label>
-                                    <input type="email" class="form-control form-control-lg bg-light"
-                                    value="{{ user.email }}" readonly>
-                                    <small class="text-muted">Automatically filled from your account</small>
+                                    <input type="email" class="form-control bg-light" name="email" value="{{ user.email }}" readonly>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label fw-bold">Phone Number</label>
-                                    {{ form.phone_number }}
+                                    <label for="phone_number" class="form-label fw-bold">Phone Number</label>
+                                    <input type="tel" name="phone_number" id="phone_number" 
+                                           class="form-control" placeholder="e.g. +123456789" required>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mb-4">
-                            <h5 class="fw-bold mb-4 pb-2 border-bottom"> Reservation Details</h5>
-
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold">Number of Guests</label>
-                                    {{ form.person_count }}
+                        <div class="mb-5">
+                            <h5 class="fw-bold mb-4 form-section-title">🍽️ Booking Details</h5>
+                            <div class="row g-4">
+                                <div class="col-md-4">
+                                    <label for="person_count" class="form-label fw-bold">Guests</label>
+                                    <select name="person_count" id="person_count" class="form-select" required>
+                                        <option value="" disabled selected>Select size</option>
+                                        <option value="1">1 Person</option>
+                                        <option value="2">2 People</option>
+                                        <option value="3">3 People</option>
+                                        <option value="4">4 People</option>
+                                        <option value="5">5+ People</option>
+                                    </select>
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold">Date</label>
-                                    {{ form.booking_date }}
+
+                                <div class="col-md-4">
+                                    <label for="booking_date" class="form-label fw-bold">Date</label>
+                                    <input type="date" name="booking_date" id="booking_date" 
+                                           class="form-control" required>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="time_slot" class="form-label fw-bold">Time</label>
+                                    <select name="time_slot" id="time_slot" class="form-select" required>
+                                        <option value="" disabled selected>Choose time</option>
+                                        {% for time in time_slots %}
+                                        <option value="{{ time.id }}">{{ time.time|time:"g:i A" }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="form-label fw-bold"> Preferred Time</label>
-                            {{ form.time_slot }}
-                        </div>
-
-                        <div class="d-grid gap-2 mt-5">
-                            <button type="submit" class="btn btn-dark btn-lg fw-bold py-3">
-                                ✓ Confirm Reservation
-                            </button>
-                            <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-lg py-3">
-                                Cancel
-                            </a>
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                            <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-lg px-5">Cancel</a>
+                            <button type="submit" class="btn btn-dark btn-lg px-5 fw-bold">Confirm Booking</button>
                         </div>
                     </form>
                 </div>
             </div>
 
             <div class="row g-3 mt-5">
-                <div class="col-md-4">
-                    <div class="info-card text-center p-3 border rounded shadow-sm">
-                        <div class="info-icon mb-3 fs-3">🎯</div>
+                <div class="col-md-4 text-center">
+                    <div class="p-3 border rounded shadow-sm bg-white">
+                        <div class="fs-2">🎯</div>
                         <h6 class="fw-bold">Easy Booking</h6>
-                        <p class="small text-muted mb-0">Quick and simple reservation process</p>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="info-card text-center p-3 border rounded shadow-sm">
-                        <div class="info-icon mb-3 fs-3">⏱️</div>
-                        <h6 class="fw-bold">Instant Confirmation</h6>
-                        <p class="small text-muted mb-0">Get immediate booking confirmation</p>
+                <div class="col-md-4 text-center">
+                    <div class="p-3 border rounded shadow-sm bg-white">
+                        <div class="fs-2">⏱️</div>
+                        <h6 class="fw-bold">Instant Confirm</h6>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="info-card text-center p-3 border rounded shadow-sm">
-                        <div class="info-icon mb-3 fs-3">💬</div>
+                <div class="col-md-4 text-center">
+                    <div class="p-3 border rounded shadow-sm bg-white">
+                        <div class="fs-2">💬</div>
                         <h6 class="fw-bold">24/7 Support</h6>
-                        <p class="small text-muted mb-0">We're here to help anytime </p>
-                        <p></p>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
-
     {% else %}
     <div class="row justify-content-center">
-        <div class="col-lg-7">
-            <div class="alert alert-warning shadow-lg border-0 rounded-lg py-5" role="alert">
-                <div class="text-center">
-                    <h4 class="fw-bold mb-3">🔐 Login Required</h4>
-                    <p class="fs-5 mb-4">To book a table, you need to be logged in.</p>
-                    <div class="d-flex gap-2 justify-content-center">
-                        <a href="{% url 'login' %}" class="btn btn-dark btn-lg">Sign In</a>
-                        <a href="{% url 'register' %}" class="btn btn-outline-dark btn-lg">Create Account</a>
-                    </div>
+        <div class="col-lg-6">
+            <div class="card border-0 shadow text-center p-5">
+                <h4 class="fw-bold">🔐 Login Required</h4>
+                <p class="text-muted">Please sign in to book your table.</p>
+                <div class="d-grid gap-2 mt-3">
+                    <a href="{% url 'login' %}" class="btn btn-dark">Sign In</a>
+                    <a href="{% url 'register' %}" class="btn btn-outline-dark">Create Account</a>
                 </div>
             </div>
         </div>

@@ -1,0 +1,129 @@
+{% extends 'admin_panel/admin_base.html' %}
+{% load static %}
+
+{% block title %}Reservations - Admin Panel{% endblock %}
+
+{% block page_title %}Reservations{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid px-4">
+    <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-4">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination pagination-sm mb-0">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                            {% endif %}
+                            
+                            {% for page_num in page_obj.paginator.page_range %}
+                            <li class="page-item {% if page_obj.number == page_num %}active{% endif %}">
+                                <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                            </li>
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="col-md-8">
+                    <form method="get" class="d-flex gap-2 justify-content-md-end">
+                        <div class="input-group input-group-sm" style="max-width: 450px;">
+                            <input class="form-control" type="text" name="search" placeholder="Search Booking ID or Username..." value="{{ request.GET.search|default:'' }}">
+                            
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                <i class="bi bi-funnel"></i>
+                            </button>
+                            
+                            <ul class="dropdown-menu p-3 shadow" style="min-width: 200px;">
+                                <h6 class="dropdown-header ps-0">Reservation Status</h6>
+                                    {% for choice in choices %}
+                                    <li class="form-check">
+                                        <input class="form-check-input" 
+                                            type="checkbox" 
+                                            name="status" 
+                                            value="{{ choice }}" 
+                                            id="check{{ forloop.counter }}" 
+                                            {% if choice in status_filters %}checked{% endif %}>
+                                        <label class="form-check-label" for="check{{ forloop.counter }}">
+                                            {{ choice|title }}
+                                        </label>
+                                    </li>
+                                    {% endfor %}
+                                <li><hr class="dropdown-divider"></li>
+                                <button type="submit" class="btn btn-primary btn-sm w-100">Apply</button>
+                            </ul>
+
+                            <button type="submit" class="btn btn-primary">Search</button>
+                            {% if request.GET.search or request.GET.status %}
+                            <a href="{% url 'admin_reservations' %}" class="btn btn-secondary">Clear</a>
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Booking ID</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time</th>
+                <th scope="col">Party Size</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        {% if reservations %}
+        <tbody>
+            {% for reservation in reservations %}
+            <tr>
+                <th scope="row">{{ reservation.booking_id }}</th>
+                <td>{{ reservation.user.username }}</td>
+                <td>{{ reservation.email }}</td>
+                <td>{{ reservation.phone_number }}</td>
+                <td>
+                    {{  reservation.booking_date|date:"M d, Y"  }}
+                </td>
+                <td>{{ reservation.time_slot.time|time:"g:i A" }}</td>
+                <td>{{ reservation.person_count }} {{ reservation.person_count|pluralize:"person,people" }}</td>
+                <td>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="reservation_id" value="{{ reservation.id }}">
+                        
+                        <div class="input-group input-group-sm" style="width: 200px;">
+                            <select name="status" class="form-select" aria-label="Update status">
+                                <option value="pending" {% if reservation.booking_status == 'pending' %}selected{% endif %}>Pending</option>
+                                <option value="confirmed" {% if reservation.booking_status == 'confirmed' %}selected{% endif %}>Confirmed</option>
+                                <option value="cancelled" {% if reservation.booking_status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+            {% endfor%}
+        </tbody>
+            {% else %}
+            <tbody>
+            <tr>
+                <th colspan="8" class="text-center">No Reservations Found</th>
+            </tr>
+            </tbody>
+            {% endif %}
+    </table>
+    <div class="text-center d-flex justify-content-center">
+        <p class="mb-0">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+    </div>
+</div>
+{% endblock %}

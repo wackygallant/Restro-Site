@@ -8,7 +8,7 @@ from django.contrib import messages
 from customer_panel.formsets.bookingform import BookingForm
 
 # App Imports
-from booking.models import Booking
+from booking.models import Booking, TimeSlot
 
 # Custom Util Imports
 from utils._utils import get_username
@@ -24,31 +24,25 @@ class AllBookingsView(LoginRequiredMixin, generic.ListView):
 
 class BookTableView(LoginRequiredMixin, View):
     def get(self, request):
-        form = BookingForm()
-        return render(request, "customer_panel/booktable.html", {
-            "form": form,
-            "username": get_username(request)
-        })
+        context = {
+            "username": get_username(request),
+            "time_slots": TimeSlot.objects.all().order_by('time'),
+        }
+        return render(request, "customer_panel/booktable.html", context)
 
     def post(self, request):
         form = BookingForm(request.POST)
-        
+        breakpoint()
         if form.is_valid():
             booking = form.save(commit=False)
             booking.user = request.user
-            booking.email = request.user.email
+            booking.booking_id = booking.create_booking_id()
             booking.save()
             
-            messages.success(request, "Booking confirmed successfully!")
-            return render(request, "customer_panel/booktable.html", {
-                "form": BookingForm(),
-                "username": get_username(request),
-            })
+            messages.success(request, "Table booked successfully, Please wait for the confirmation of your booking!")
+            return render(request, "customer_panel/booktable.html")
         
         else:
             messages.error(request, "Form errors: " + str(form.errors))
             
-            return render(request, "customer_panel/booktable.html", {
-                "form": form,
-                "username": get_username(request)
-            })
+            return render(request, "customer_panel/booktable.html")

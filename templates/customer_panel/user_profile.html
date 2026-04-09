@@ -81,19 +81,21 @@
                             <table class="table table-hover mb-0">
                                 <thead>
                                     <tr class="border-bottom">
-                                        <th>Date</th>
-                                        <th>Time</th>
-                                        <th>Guests</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Booking ID</th>
+                                        <th scope="col">Time</th>
+                                        <th scope="col">Guests</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for booking in bookings %}
-                                    <tr>
-                                        <td>
+                                    <tr class="align-middle">
+                                        <td scope="row">
                                             <strong>{{ booking.booking_date|date:"M d, Y" }}</strong>
                                         </td>
+                                        <td>{{ booking.booking_id }}</td>
                                         <td>{{ booking.time_slot }}</td>
                                         <td>
                                             {{ booking.person_count }}
@@ -123,7 +125,7 @@
                                                         <div class="modal-body">
                                                             <div class="mb-3">
                                                                 <small class="text-muted fw-bold">DATE</small>
-                                                                <p class="mb-0">{{ booking.date|date:"M d, Y" }}</p>
+                                                                <p class="mb-0">{{ booking.booking_date|date:"M d, Y" }}</p>
                                                             </div>
                                                             <div class="mb-3">
                                                                 <small class="text-muted fw-bold">TIME</small>
@@ -182,20 +184,22 @@
                             <table class="table table-hover mb-0">
                                 <thead>
                                     <tr class="border-bottom">
-                                        <th>Date</th>
-                                        <th>Order Id</th>
-                                        <th>Total</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Order Id</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for order in orders %}
-                                    <tr>
-                                        <td>
+                                    <tr class="align-middle">
+                                        <td scope="row">
                                             <strong>{{ order.order_date|date:"M d, Y" }}</strong>
                                         </td>
                                         <td>{{ order.order_id }}</td>
+                                        <td>{{ order.order_items.count }}</td>
                                         <td> Rs. {{ order.total_amount }} </td>
                                         <td>
                                             <span class="badge bg-info">

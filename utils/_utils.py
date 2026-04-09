@@ -9,5 +9,8 @@ def get_username(request):
 def order_number_generator(prefix, number):
         return f"{prefix}-{str(number).zfill(6)}"
 
+def booking_id_generator(prefix, number):
+        return f"{prefix}-{str(number).zfill(6)}"
+
 def generate_otp():
     return str(random.randint(100000, 999999))

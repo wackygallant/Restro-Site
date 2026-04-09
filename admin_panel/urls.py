@@ -2,6 +2,7 @@ from django.urls import path
 from admin_panel.viewsets.admin_dashboard import DashboardView, LogoutView
 from admin_panel.viewsets.admin_user import UserAdminView, UserCreateView, UserEditView, UserDeleteView
 from admin_panel.viewsets.admin_order import AdminOrderView, CompleteOrder, CancelOrder
+from admin_panel.viewsets.admin_reservation import AdminReservationView
 
 urlpatterns = [
     path('', DashboardView.as_view(), name='admin_dashboard'),
@@ -13,4 +14,5 @@ urlpatterns = [
     path('orders/', AdminOrderView.as_view(), name='admin_orders'),
     path('orders/complete/<int:order_id>/', CompleteOrder.as_view(), name='admin_order_complete'),
     path('orders/cancel/<int:order_id>/', CancelOrder.as_view(), name='admin_order_cancel'),
+    path('reservations/', AdminReservationView.as_view(), name='admin_reservations'),
 ]

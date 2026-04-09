@@ -37,7 +37,7 @@
                             <input class="form-control" type="text" name="search" placeholder="Search User..." value="{{ request.GET.search|default:'' }}">
                             
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                                <i class="bi bi-funnel"></i> Filters
+                                <i class="bi bi-funnel"></i>
                             </button>
                             
                             <ul class="dropdown-menu p-3 shadow" style="min-width: 200px;">
@@ -69,15 +69,15 @@
         <thead>
             <tr>
                 <th scope="col">Actions</th>
-                <th scope="col">Username</th>
-                <th scope="col">Password</th>
-                <th scope="col">First Name</th>
-                <th scope="col">Last Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Is_Active</th>
-                <th scope="col">Is_SuperUser</th>
-                <th scope="col">Is_Staff</th>
-                <th scope="col">Date Joined</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Is_Active</th>
+                <th>Is_SuperUser</th>
+                <th>Is_Staff</th>
+                <th>Date Joined</th>
             </tr>
         </thead>
         {% if users %}

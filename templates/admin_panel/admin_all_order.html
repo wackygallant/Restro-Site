@@ -32,10 +32,10 @@
                 <div class="col-md-8">
                     <form method="get" class="d-flex gap-2 justify-content-md-end">
                         <div class="input-group input-group-sm" style="max-width: 450px;">
-                            <input class="form-control" type="text" name="search" placeholder="Search Order ID..." value="{{ request.GET.search|default:'' }}">
+                            <input class="form-control" type="text" name="search" placeholder="Search Order ID or Username..." value="{{ request.GET.search|default:'' }}">
                             
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                                <i class="bi bi-funnel"></i> Filters
+                                <i class="bi bi-funnel"></i>
                             </button>
                             
                             <ul class="dropdown-menu p-3 shadow" style="min-width: 200px;">
@@ -66,12 +66,12 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th class="ps-3">Order ID</th>
-                        <th>Date</th>
-                        <th>User</th>
-                        <th>Status</th>
-                        <th class="text-center">Items</th>
-                        <th>Total</th>
+                        <th scope="col" class="ps-3">Order ID</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Status</th>
+                        <th scope="col" class="text-center">Items</th>
+                        <th scope="col">Total</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -116,16 +116,16 @@
                                                 <table class="table table-sm border">
                                                     <thead class="table-dark">
                                                         <tr>
-                                                            <th>Item</th>
-                                                            <th class="text-center">Qty</th>
-                                                            <th>Price</th>
-                                                            <th class="text-end">Subtotal</th>
+                                                            <th scope="col">Item</th>
+                                                            <th scope="col" class="text-center">Qty</th>
+                                                            <th scope="col">Price</th>
+                                                            <th scope="col" class="text-end">Subtotal</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {% for item in order.order_items.all %}
                                                         <tr>
-                                                            <td>{{ item.menu_item.name }}</td>
+                                                            <td scope="row">{{ item.menu_item.name }}</td>
                                                             <td class="text-center">{{ item.quantity }}</td>
                                                             <td>Rs. {{ item.price }}</td>
                                                             <td class="text-end">Rs. {{ item.get_total }}</td>
