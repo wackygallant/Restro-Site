@@ -16,13 +16,15 @@ class DashboardView(AdminLoginRequiredMixin, generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        users = User.objects.prefetch_related('bookings', 'orders').all()
+        completed_orders = Order.objects.filter(order_status='completed')
+        confirmed_bookings = Booking.objects.filter(booking_status='confirmed')
+
         context.update({
-            'total_users': users.count(),
-            'total_orders': users.filter(orders__order_status='pending').count(),
-            'total_revenue': users.filter(orders__order_status='completed').aggregate(total=Sum('orders__total_amount'))['total'] or 0,
-            'total_reservations': users.filter(bookings__booking_status='confirmed').count(),
-            'orders': users.filter(orders__order_status='pending').order_by('-orders__order_date')[:4],
+            'total_users': User.objects.count(),
+            'total_orders': completed_orders.count(),
+            'total_revenue': completed_orders.aggregate(total=Sum('total_amount'))['total'] or 0,
+            'total_reservations': confirmed_bookings.count(),
+            'orders': Order.objects.all().order_by('-order_date')[:5]
         })
         return context
 

@@ -32,7 +32,6 @@ class BookTableView(LoginRequiredMixin, View):
 
     def post(self, request):
         form = BookingForm(request.POST)
-        breakpoint()
         if form.is_valid():
             booking = form.save(commit=False)
             booking.user = request.user
