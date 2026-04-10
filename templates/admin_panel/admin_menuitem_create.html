@@ -1,0 +1,113 @@
+{% extends 'admin_panel/admin_base.html' %}
+
+{% block title %}Create Menu Item{% endblock %}
+
+{% block content %}
+<div class="col-lg-10">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="mb-1">Create Menu Item</h2>
+                    <p class="text-muted mb-0">Add a new menu item to the system</p>
+                </div>
+                <a href="{% url 'admin_menu' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to Menu
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+            <form method="post" id="createMenuItemForm" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="mb-4">
+                    <h5 class="card-title mb-3 text-primary border-bottom pb-2">
+                        <i class="bi bi-info-circle me-2"></i>General Information
+                    </h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="name" class="form-label fw-semibold">Item Name<span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="name" name="name"
+                                placeholder="e.g. Grilled Salmon" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="category" class="form-label fw-semibold">Category <span
+                                    class="text-danger">*</span></label>
+                            <select class="form-select" id="category" name="category" required>
+                                <option value="" selected disabled>Select category</option>
+                                {% for category in categories %}
+                                    <option value="{{ category.id }}">{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="slug" class="form-label fw-semibold">Slug (URL identifier)</label>
+                            <input type="text" class="form-control" id="slug" name="slug" placeholder="grilled-salmon">
+                            <small class="text-muted">Automatically generated from name if left empty</small>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="description" class="form-label fw-semibold">Description <span
+                                    class="text-danger">*</span></label>
+                            <textarea class="form-control" id="description" name="description" rows="3" required
+                                placeholder="Describe the ingredients and taste..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="card-title mb-3 text-primary border-bottom pb-2">
+                        <i class="bi bi-tags me-2"></i>Pricing & Promotion
+                    </h5>
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-4">
+                            <label for="price" class="form-label fw-semibold">Base Price (Rs.) <span
+                                    class="text-danger">*</span></label>
+                            <input type="number" step="0.01" class="form-control" id="price" name="price" required
+                                placeholder="0.00">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="special_price" class="form-label fw-semibold">Special Price (Rs.)</label>
+                            <input type="number" step="0.01" class="form-control" id="special_price"
+                                name="special_price" placeholder="0.00">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" id="is_on_special" name="is_on_special">
+                                <label class="form-check-label fw-semibold" for="is_on_special">
+                                    Activate Promotion
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="card-title mb-3 text-primary border-bottom pb-2">
+                        <i class="bi bi-image me-2"></i>Media
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="formFile" class="form-label fw-semibold">Item Image <span
+                                    class="text-danger">*</span></label>
+                            <input class="form-control" type="file" id="formFile" name="image" required>
+                            <div class="form-text">High-resolution images (JPG/PNG) work best.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end align-items-center pt-4 border-top">
+                    <a href="{% url 'admin_menu' %}" class="btn btn-light border me-2">
+                        Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="bi bi-plus-circle me-1"></i> Create Menu Item
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

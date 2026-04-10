@@ -1,7 +1,6 @@
 # Django Module Imports
-from weakref import ref
 from django.views import generic
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 
 # App Imports
 from menu.models import MenuItems, MenuCategories
@@ -9,6 +8,7 @@ from user_accounts.viewsets.CustomMixin import AdminLoginRequiredMixin
 from django.views import View
 from django.contrib import messages
 from django.urls import reverse_lazy
+from admin_panel.formsets.menuitemform import MenuItemForm
 
 class AdminCategoryListView(AdminLoginRequiredMixin, generic.ListView):
     model = MenuCategories
@@ -79,6 +79,73 @@ class AdminMenuListView(AdminLoginRequiredMixin, generic.ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         search = self.request.GET.get('search')
+        category_filters = self.request.GET.getlist('category')
         if search:
             queryset = queryset.filter(name__icontains=search)
+        if category_filters:
+            queryset = queryset.filter(category_id__in=category_filters)
         return queryset.order_by('priority')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = MenuCategories.objects.all().order_by('priority')
+        return context
+
+class AdminMenuCreateView(AdminLoginRequiredMixin, View):
+    def get(self, request):
+        context = {
+            'categories': MenuCategories.objects.all().order_by('priority')
+        }
+        return render(request, 'admin_panel/admin_menuitem_create.html', context)
+    
+    def post(self, request):
+        try:
+            form = MenuItemForm(request.POST, request.FILES)
+            if form.is_valid():
+                menu_item = form.save(commit=False)
+                if request.POST.get('is_on_special') == 'on':
+                    menu_item.is_on_special = True
+                menu_item.save()
+                messages.success(request, 'Menu item created successfully!')
+            else:
+                messages.error(request, 'Error creating menu item!')
+                return redirect(reverse_lazy('admin_menu_create'))
+        except Exception as e:
+            messages.error(request, f'Error creating menu item: {str(e)}')
+        return redirect(reverse_lazy('admin_menu'))
+
+class AdminMenuEditView(AdminLoginRequiredMixin, View):
+    def get(self, request, pk):
+        context = {
+            'menu_item': MenuItems.objects.get(pk=pk),
+            'categories': MenuCategories.objects.all().order_by('priority')
+        }
+        return render(request, 'admin_panel/admin_menuitem_edit.html', context)
+    
+    def post(self, request, pk):
+        try:
+            menu_item = MenuItems.objects.get(pk=pk)
+            form = MenuItemForm(request.POST, request.FILES, instance=menu_item)
+            if form.is_valid():
+                menu_item = form.save(commit=False)
+                if request.POST.get('is_on_special') == 'on':
+                    menu_item.is_on_special = True
+                menu_item.save()
+                messages.success(request, 'Menu item updated successfully!')
+            else:
+                messages.error(request, 'Error updating menu item!')
+                return redirect(reverse_lazy('admin_menu_edit', kwargs={'pk': pk}))
+        except Exception as e:
+            messages.error(request, f'Error updating menu item: {str(e)}')
+        return redirect(reverse_lazy('admin_menu'))
+
+class AdminMenuDeleteView(AdminLoginRequiredMixin, View):
+    def get(self, request, pk):
+        try:
+            menu_item = MenuItems.objects.get(pk=pk)
+            menu_item.delete()
+            messages.success(request, 'Menu item deleted successfully!')
+        except Exception as e:
+            messages.error(request, f'Error deleting menu item: {str(e)}')
+        return redirect(reverse_lazy('admin_menu'))
+
