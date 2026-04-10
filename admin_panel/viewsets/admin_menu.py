@@ -16,7 +16,6 @@ class AdminCategoryListView(AdminLoginRequiredMixin, generic.ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        # Using .only() to fetch only necessary fields for the list
         queryset = MenuCategories.objects.only('name', 'priority').order_by('priority')
         search = self.request.GET.get('search')
         if search:
@@ -48,7 +47,6 @@ class AdminCategoryDeleteView(AdminLoginRequiredMixin, generic.DeleteView):
     model = MenuCategories
     success_url = reverse_lazy('admin_categories')
     
-    # We use get to allow deletion via a simple link as per your original code
     def get(self, request, *args, **kwargs):
         messages.success(self.request, 'Category deleted successfully!')
         return self.delete(request, *args, **kwargs)
@@ -63,7 +61,6 @@ class AdminMenuListView(AdminLoginRequiredMixin, generic.ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        # OPTIMIZATION: select_related joins category table to avoid N+1 queries
         queryset = MenuItems.objects.select_related('category').order_by('priority')
         
         search = self.request.GET.get('search')
@@ -77,7 +74,7 @@ class AdminMenuListView(AdminLoginRequiredMixin, generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # OPTIMIZATION: only fetch what's needed for the filter dropdown
+
         context['categories'] = MenuCategories.objects.only('id', 'name', 'priority').order_by('priority')
         return context
 
