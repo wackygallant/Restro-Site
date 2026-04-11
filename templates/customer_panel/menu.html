@@ -1,4 +1,5 @@
 {% extends "customer_panel/base.html" %}
+{% load static %}
 
 {% block content %}
 
@@ -22,8 +23,7 @@
 
             {% for category in options %}
             <li class="nav-item">
-                <a class="nav-link px-4 py-2 rounded-pill 
-                    {% if request.resolver_match.kwargs.category_slug == category.slug %}active-category{% endif %}"
+                <a class="nav-link px-4 py-2 rounded-pill {% if request.resolver_match.kwargs.category_slug == category.slug %}active-category{% endif %}"
                     href="{% url 'category_filter' category.slug %}">
                     {{ category.name }}
                 </a>
@@ -100,21 +100,7 @@
     </div>
 </section>
 
-<script>
-    // Save the scroll position before the page unloads
-    window.addEventListener('beforeunload', () => {
-        sessionStorage.setItem('scrollPosition', window.scrollY);
-    });
-
-    // Restore the scroll position when the page loads
-    window.addEventListener('load', () => {
-        const scrollPos = sessionStorage.getItem('scrollPosition');
-        if (scrollPos) {
-            window.scrollTo(0, parseInt(scrollPos));
-            sessionStorage.removeItem('scrollPosition'); // Clear it after use
-        }
-    });
-</script>
+<script src="{% static 'customer_panel/js/menu.js' %}"></script>
 
 {% endblock %}
 

@@ -1,8 +1,9 @@
-{% extends "customer_panel/base.html" %}
+{% extends 'customer_panel/base.html' %}
+{% load static %}
+
 {% block content %}
 
-<!-- HERO SECTION -->
-<section class="about-hero position-relative text-white text-center">
+<section class="about-hero text-white text-center">
     <div class="container py-5">
         <h1 class="display-3 fw-bold">Welcome to Restro</h1>
         <p class="lead fs-5">Experience the finest dining in town</p>
@@ -17,220 +18,93 @@
     </div>
 </section>
 
-<!-- SPECIAL OFFERS BANNER
-<section class="py-4 bg-dark text-white">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-8">
-                <h3 class="mb-2 fw-bold">🎉 Special Offer This Month</h3>
-                <p class="mb-0">Get 20% off on all pasta dishes when you book before 6 PM!</p>
-            </div>
-            <div class="col-md-4 text-md-end">
-                <a href="{% url 'booking_page' %}" class="btn btn-warning btn-sm px-3">Book Now</a>
+<section class="py-5 bg-white">
+    <div class="container-fluid px-0">
+        <div class="text-center">
+            <h2 class="section-title">Today's Specials</h2>
+        </div>
+
+        <div class="infinite-carousel-container" id="dish-carousel">
+            <div class="infinite-track" id="dish-track">
+                {% for item in special_items %}
+                <div class="card border-0 shadow-sm carousel-card">
+                    <div class="position-relative overflow-hidden" style="border-radius: 20px 20px 0 0;">
+                        <img src="{{ item.image.url }}" class="card-img-top" style="height: 230px; object-fit: cover;">
+                        <span class="badge bg-danger position-absolute top-0 end-0 m-3">SPECIAL</span>
+                    </div>
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold">{{ item.name }}</h5>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <span class="h5 fw-bold text-dark mb-0">Rs. {{ item.special_price }}</span>
+                            <a href="{% url 'menu_item_detail' item.slug %}"
+                                class="btn btn-sm btn-dark rounded-pill px-3">View</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
-</section> -->
+</section>
 
-<!-- FEATURED DISHES -->
 <section class="py-5 bg-light">
     <div class="container">
-        <h2 class="fw-bold text-center mb-5">Featured Dishes</h2>
-
-        <div id="featuredDishesCarousel" class="carousel slide px-md-5" data-bs-ride="carousel">
-            <div class="carousel-inner">
-
-                {% for menu_item in special_items %}
-                {% if forloop.counter0|divisibleby:3 %}
-                <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                    <div class="row g-4 justify-content-center">
-                        {% endif %}
-
-                        <div class="col-md-4">
-                            <div class="card border-0 shadow-sm h-100">
-                                <div class="position-relative">
-                                    <img src="{{ menu_item.image.url }}" class="card-img-top" alt="{{ menu_item.name }}"
-                                        style="height: 250px; object-fit: cover;">
-                                    <span class="badge bg-danger position-absolute top-0 end-0 m-3">Special!</span>
-                                </div>
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title fw-bold">{{ menu_item.name }}</h5>
-                                    <p class="card-text text-muted small">{{ menu_item.description|truncatechars:80 }}
-                                    </p>
-                                    <div class="mt-auto">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <span class="text-warning">★★★★★</span>
-                                            <span class="fw-bold">Rs. {{ menu_item.special_price }} <small
-                                                    class="text-decoration-line-through text-muted">{{ menu_item.price
-                                                    }}</small></span>
-                                        </div>
-                                        <a href="{% url 'menu_item_detail' menu_item.slug %}"
-                                            class="btn btn-dark btn-sm mt-3 w-100">View Details</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {# Close the row and slide every 3 items OR at the very last item #}
-                        {% if forloop.counter|divisibleby:3 or forloop.last %}
-                    </div>
+        <div class="text-center">
+            <h2 class="section-title">Why Restro?</h2>
+        </div>
+        <div class="row g-4 mt-2">
+            <div class="col-md-4 text-center">
+                <div class="card border-0 p-4 shadow-sm h-100 feature-card">
+                    <div class="icon-box">🥗</div>
+                    <h5 class="fw-bold">Fresh Ingredients</h5>
+                    <p class="text-muted small">Locally sourced, high-quality ingredients from trusted suppliers.</p>
                 </div>
-                {% endif %}
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="card border-0 p-4 shadow-sm h-100 feature-card">
+                    <div class="icon-box">👨‍🍳</div>
+                    <h5 class="fw-bold">Expert Chefs</h5>
+                    <p class="text-muted small">Award-winning culinary experts with decades of experience.</p>
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="card border-0 p-4 shadow-sm h-100 feature-card">
+                    <div class="icon-box">🕯️</div>
+                    <h5 class="fw-bold">Cozy Ambience</h5>
+                    <p class="text-muted small">A warm and welcoming environment for every occasion.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-white">
+    <div class="container-fluid px-0">
+        <div class="text-center">
+            <h2 class="section-title">Reviews</h2>
+        </div>
+        <div class="infinite-carousel-container" id="review-carousel">
+            <div class="infinite-track" id="review-track">
+                {% for review in reviews %}
+                <div class="card border-0 shadow-sm p-4 carousel-card bg-light">
+                    <div class="text-warning mb-2">
+                        {% for i in "12345" %}{% if forloop.counter <= review.rating %}<i class="bi bi-star-fill"></i>{% endif %}{% endfor %}
+                    </div>
+                    <p class="fst-italic small">"{{ review.review|truncatechars:100 }}"</p>
+                    <h6 class="fw-bold mb-0 mt-2">— {{ review.first_name }}</h6>
+                </div>
                 {% endfor %}
-
             </div>
-
-            <button class="carousel-control-prev" type="button" data-bs-target="#featuredDishesCarousel"
-                data-bs-slide="prev" style="width: 5%;">
-                <span class="carousel-control-prev-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#featuredDishesCarousel"
-                data-bs-slide="next" style="width: 5%;">
-                <span class="carousel-control-next-icon bg-dark rounded-circle p-3" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-
-        <div class="text-center mt-5">
-            <a href="{% url 'menu' %}" class="btn btn-dark btn-lg">View Full Menu</a>
         </div>
     </div>
 </section>
 
-<!-- WHY CHOOSE US -->
-<section class="py-5">
+<footer class="py-5 bg-dark text-white mt-5">
     <div class="container text-center">
-        <h2 class="fw-bold mb-5">Why Choose Us?</h2>
-        <div class="row g-4">
-
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 h-100 feature-card">
-                    <div class="fs-1 mb-3">🥗</div>
-                    <h4 class="fw-semibold">Fresh Ingredients</h4>
-                    <p class="text-muted">Only locally sourced, high-quality ingredients sourced from trusted suppliers.
-                    </p>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 h-100 feature-card">
-                    <div class="fs-1 mb-3">👨‍🍳</div>
-                    <h4 class="fw-semibold">Expert Chefs</h4>
-                    <p class="text-muted">Award-winning chefs with decades of combined culinary experience.</p>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 h-100 feature-card">
-                    <div class="fs-1 mb-3">🕯️</div>
-                    <h4 class="fw-semibold">Cozy Ambience</h4>
-                    <p class="text-muted">A warm and welcoming dining environment perfect for every occasion.</p>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 h-100 feature-card">
-                    <div class="fs-1 mb-3">🚀</div>
-                    <h4 class="fw-semibold">Fast Service</h4>
-                    <p class="text-muted">Efficient and courteous service without compromising on quality.</p>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 h-100 feature-card">
-                    <div class="fs-1 mb-3">💳</div>
-                    <h4 class="fw-semibold">Multiple Payments</h4>
-                    <p class="text-muted">Accept all major credit cards, digital wallets, and cash payments.</p>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 h-100 feature-card">
-                    <div class="fs-1 mb-3">🎁</div>
-                    <h4 class="fw-semibold">Loyalty Program</h4>
-                    <p class="text-muted">Earn points with every visit and unlock exclusive rewards.</p>
-                </div>
-            </div>
-
-        </div>
+        <p class="mb-0"> 2026 Restro Dining. All rights reserved.</p>
     </div>
-</section>
+</footer>
 
-<!-- REVIEWS/TESTIMONIALS -->
-<section class="bg-light py-5">
-    <div class="container text-center">
-        <h2 class="fw-bold mb-5">What Our Guests Say</h2>
-        <div class="row g-4">
-            {% for review in reviews %}
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm p-4 h-100 testimonial-card">
-                    <div class="text-warning fs-5 mb-2">
-                        {% for i in "12345" %}
-                        {% if forloop.counter <= review.rating %} <i class="bi bi-star-fill"></i>
-                            {% else %}
-                            <i class="bi bi-star"></i>
-                            {% endif %}
-                            {% endfor %}
-                    </div>
-                    <p class="fst-italic mb-3">"{{ review.review }}"</p>
-                    <small class="text-muted fw-bold">— {{ review.first_name }} {{ review.last_name }}</small>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</section>
+<script src="{% static 'customer_panel/js/index.js' %}"></script>
 
-<!-- OPERATING HOURS & CONTACT -->
-<section class="py-5">
-    <div class="container">
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="card border-0 shadow-sm p-4">
-                    <h4 class="fw-bold mb-4">⏰ Operating Hours</h4>
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between">
-                            <span>Monday - Thursday</span>
-                            <span class="fw-bold">11:00 AM - 10:00 PM</span>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between">
-                            <span>Friday - Saturday</span>
-                            <span class="fw-bold">11:00 AM - 11:00 PM</span>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between">
-                            <span>Sunday</span>
-                            <span class="fw-bold">12:00 PM - 9:00 PM</span>
-                        </div>
-                    </div>
-                    <hr>
-                    <p class="text-muted small">Closed on major holidays. Call ahead for special events.</p>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card border-0 shadow-sm p-4">
-                    <h4 class="fw-bold mb-4">📞 Contact Us</h4>
-                    <p class="mb-2">
-                        <strong>Phone:</strong> <a href="tel:+1234567890" class="text-decoration-none">(123)
-                            456-7890</a>
-                    </p>
-                    <p class="mb-2">
-                        <strong>Email:</strong> <a href="mailto:info@restro.com"
-                            class="text-decoration-none">info@restro.com</a>
-                    </p>
-                    <p class="mb-3">
-                        <strong>Address:</strong> 123 Main Street, Your City, ST 12345
-                    </p>
-                    <div class="d-grid gap-2">
-                        <a href="{% url 'booking_page' %}" class="btn btn-dark btn-sm">Book a Table</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 {% endblock %}
