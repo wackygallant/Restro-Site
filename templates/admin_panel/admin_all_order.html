@@ -13,9 +13,10 @@
                     <nav aria-label="Page navigation">
                         <ul class="pagination pagination-sm mb-0">
                             {% if page_obj.has_previous %}
-                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                            <li class="page-item"><a class="page-link"
+                                    href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
                             {% endif %}
-                            
+
                             {% for page_num in page_obj.paginator.page_range %}
                             <li class="page-item {% if page_obj.number == page_num %}active{% endif %}">
                                 <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
@@ -23,7 +24,8 @@
                             {% endfor %}
 
                             {% if page_obj.has_next %}
-                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                            <li class="page-item"><a class="page-link"
+                                    href="?page={{ page_obj.next_page_number }}">Next</a></li>
                             {% endif %}
                         </ul>
                     </nav>
@@ -32,21 +34,27 @@
                 <div class="col-md-8">
                     <form method="get" class="d-flex gap-2 justify-content-md-end">
                         <div class="input-group input-group-sm" style="max-width: 450px;">
-                            <input class="form-control" type="text" name="search" placeholder="Search Order ID or Username..." value="{{ request.GET.search|default:'' }}">
-                            
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                            <input class="form-control" type="text" name="search"
+                                placeholder="Search Order ID or Username..."
+                                value="{{ request.GET.search|default:'' }}">
+
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown" data-bs-auto-close="outside">
                                 <i class="bi bi-funnel"></i>
                             </button>
-                            
+
                             <ul class="dropdown-menu p-3 shadow" style="min-width: 200px;">
                                 <h6 class="dropdown-header ps-0">Order Status</h6>
                                 {% for status in order_status_choices %}
                                 <li class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="status" value="{{ status.0 }}" id="check{{ status.0 }}" {% if status.0 in status_filters %}checked{% endif %}>
+                                    <input class="form-check-input" type="checkbox" name="status" value="{{ status.0 }}"
+                                        id="check{{ status.0 }}" {% if status.0 in status_filters %}checked{% endif %}>
                                     <label class="form-check-label" for="check{{ status.0 }}">{{ status.1 }}</label>
                                 </li>
                                 {% endfor %}
-                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
                                 <button type="submit" class="btn btn-primary btn-sm w-100">Apply</button>
                             </ul>
 
@@ -61,22 +69,26 @@
         </div>
     </div>
 
-    <div class="card border-0 shadow-sm">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th scope="col" class="ps-3">Order ID</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">User</th>
-                        <th scope="col">Status</th>
-                        <th scope="col" class="text-center">Items</th>
-                        <th scope="col">Total</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if orders %}
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">All Orders</h3>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col" class="ps-3">Order ID</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">User</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" class="text-center">Items</th>
+                            <th scope="col">Total</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if orders %}
                         {% for order in orders %}
                         <tr>
                             <td class="ps-3 fw-bold text-primary">#{{ order.order_id }}</td>
@@ -84,9 +96,9 @@
                             <td>{{ order.user }}</td>
                             <td>
                                 <span class="badge rounded-pill 
-                                    {% if order.order_status == 'completed' %}bg-success
-                                    {% elif order.order_status == 'pending' %}bg-warning text-dark
-                                    {% else %}bg-info text-dark{% endif %}">
+                                        {% if order.order_status == 'completed' %}bg-success
+                                        {% elif order.order_status == 'pending' %}bg-warning text-dark
+                                        {% else %}bg-info text-dark{% endif %}">
                                     {{ order.order_status|title }}
                                 </span>
                             </td>
@@ -94,13 +106,16 @@
                             <td class="fw-bold">Rs. {{ order.total_amount }}</td>
                             <td>
                                 <div class="btn-group btn-group-sm">
-                                    <button class="btn btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#details-{{ order.id }}" title="View Details">
+                                    <button class="btn btn-outline-primary" data-bs-toggle="collapse"
+                                        data-bs-target="#details-{{ order.id }}" title="View Details">
                                         <i class="bi bi-eye-fill"></i>
                                     </button>
-                                    <a href="{% url 'admin_order_complete' order.id %}" class="btn btn-outline-primary" title="Complete">
+                                    <a href="{% url 'admin_order_complete' order.id %}" class="btn btn-outline-primary"
+                                        title="Complete">
                                         <i class="bi bi-check-circle"></i>
                                     </a>
-                                    <a href="{% url 'admin_order_cancel' order.id %}" class="btn btn-outline-danger" title="Cancel">
+                                    <a href="{% url 'admin_order_cancel' order.id %}" class="btn btn-outline-danger"
+                                        title="Cancel">
                                         <i class="bi bi-x-circle"></i>
                                     </a>
                                 </div>
@@ -133,32 +148,35 @@
                                                         {% endfor %}
                                                         <tr class="table-light fw-bold">
                                                             <td colspan="3" class="text-end">Total Amount</td>
-                                                            <td class="text-end text-primary">Rs. {{ order.total_amount }}</td>
+                                                            <td class="text-end text-primary">Rs. {{ order.total_amount
+                                                                }}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="p-3 border rounded bg-white">
-                                                    <h6 class="text-muted small text-uppercase fw-bold">Shipping Address</h6>
+                                                    <h6 class="text-muted small text-uppercase fw-bold">Shipping Address
+                                                    </h6>
                                                     <p class="mb-0 small">{{ order.shippingaddress }}</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    {% else %}
-                        <tr>
-                            <td colspan="7" class="text-center py-5 text-muted">
-                                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
-                                No Orders Found
-                            </td>
-                        </tr>
-                    {% endif %}
-                </tbody>
+            </div>
+            </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="7" class="text-center py-5 text-muted">
+                    <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                    No Orders Found
+                </td>
+            </tr>
+            {% endif %}
+            </tbody>
             </table>
         </div>
         <div class="card-footer bg-white border-0 py-3 text-center text-muted small">

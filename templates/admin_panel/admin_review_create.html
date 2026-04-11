@@ -1,0 +1,137 @@
+{% extends 'admin_panel/admin_base.html' %}
+
+{% block title %}Create Review{% endblock %}
+
+{% block content %}
+<style>
+    /* Star Rating Styling */
+    .star-rating {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        gap: 5px;
+    }
+    .star-rating input { display: none; }
+    .star-rating label {
+        font-size: 2.25rem;
+        color: #e9ecef;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .star-rating input:checked ~ label,
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+        color: #ffc107;
+        transform: scale(1.1);
+    }
+
+    /* Form Card Styling */
+    .review-card {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    .section-header {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #6c757d;
+        border-bottom: 2px solid #f8f9fa;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-0">Create Review</h2>
+            <p class="text-muted">Post a new customer testimonial manually</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <a href="{% url 'admin_reviews' %}" class="btn btn-outline-secondary rounded-pill">
+                <i class="bi bi-arrow-left me-1"></i> Back to List
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-9">
+            <div class="card border-0 shadow-sm review-card">
+                <div class="card-body p-4 p-md-5">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-md-5 border-end pe-md-4">
+                                <div class="section-header pb-2 mb-4">
+                                    <i class="bi bi-person-badge me-2"></i>Customer Context
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="first_name" class="form-label fw-bold">First Name</label>
+                                    <input type="text" class="form-control form-control" id="first_name" name="first_name" placeholder="John" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="last_name" class="form-label fw-bold">Last Name</label>
+                                    <input type="text" class="form-control form-control" id="last_name" name="last_name" placeholder="Doe" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold d-block">Overall Rating</label>
+                                    <div class="star-rating mb-1">
+                                        <input type="radio" id="star5" name="rating" value="5" required />
+                                        <label for="star5" title="5 stars">★</label>
+                                        <input type="radio" id="star4" name="rating" value="4" />
+                                        <label for="star4" title="4 stars">★</label>
+                                        <input type="radio" id="star3" name="rating" value="3" />
+                                        <label for="star3" title="3 stars">★</label>
+                                        <input type="radio" id="star2" name="rating" value="2" />
+                                        <label for="star2" title="2 stars">★</label>
+                                        <input type="radio" id="star1" name="rating" value="1" />
+                                        <label for="star1" title="1 star">★</label>
+                                    </div>
+                                    <small class="text-muted italic">Click a star to assign a score</small>
+                                </div>
+                            </div>
+
+                            <div class="col-md-7 ps-md-4">
+                                <div class="section-header pb-2 mb-4">
+                                    <i class="bi bi-chat-left-quote me-2"></i>Review Content
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="review" class="form-label fw-bold">Detailed Feedback</label>
+                                    <textarea class="form-control bg-light" id="review" name="review" rows="10" 
+                                              placeholder="What did the customer have to say?" required></textarea>
+                                    <div class="form-text mt-2">
+                                        <i class="bi bi-info-circle me-1"></i> Be as descriptive as possible to help with SEO.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-4 border-top d-flex justify-content-between align-items-center">
+                            <span class="text-muted small">* All fields are required for public display.</span>
+                            <div>
+                            <div>
+                                <a href="{% url 'admin_reviews' %}" class="btn btn-outline-secondary me-2">Discard</a>
+                                <button type="submit" class="btn btn-primary">
+                                    Save Review
+                                </button>
+                            </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3">
+            <div class="alert alert-info border-0 shadow-sm">
+                <h6 class="fw-bold"><i class="bi bi-lightbulb me-2"></i>Quick Tip</h6>
+                <p class="small mb-0">Public reviews appear on the homepage. Ensure the text is free of typos before saving!</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

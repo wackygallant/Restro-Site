@@ -17,15 +17,16 @@ class Teams(BaseModel):
         verbose_name_plural = 'Teams'
 
 
-class Testimonials(BaseModel):
-    name = models.CharField(max_length=100)
+class Reviews(BaseModel):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
     review = models.TextField()
     rating = models.PositiveSmallIntegerField(choices=[(i, i) for i in range(1, 6)])
     
     def __str__(self):
-        return f"{self.name} - {self.rating}⭐"
+        return f"{self.first_name} {self.last_name} - {self.rating}⭐"
 
     class Meta:
-        db_table = 'testimonial'
-        verbose_name = 'Testimonial'
-        verbose_name_plural = 'Testimonials'
+        db_table = 'reviews'
+        verbose_name = 'Review'
+        verbose_name_plural = 'Reviews'

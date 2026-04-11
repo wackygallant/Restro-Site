@@ -4,6 +4,7 @@ from admin_panel.viewsets.admin_user import UserAdminView, UserCreateView, UserE
 from admin_panel.viewsets.admin_order import AdminOrderView, CompleteOrder, CancelOrder
 from admin_panel.viewsets.admin_reservation import AdminReservationView
 from admin_panel.viewsets.admin_menu import AdminMenuListView, AdminCategoryListView, AdminCategoryEditView, AdminCategoryDeleteView, AdminCategoryCreateView, AdminMenuCreateView, AdminMenuEditView, AdminMenuDeleteView
+from admin_panel.viewsets.admin_reviews import AdminReviewsView, AdminReviewCreateView, AdminReviewEditView, AdminReviewDeleteView
 
 urlpatterns = [
     path('', DashboardView.as_view(), name='admin_dashboard'),
@@ -32,4 +33,10 @@ urlpatterns = [
     path('menu-items/create/', AdminMenuCreateView.as_view(), name='admin_menu_create'),
     path('menu-items/edit/<int:pk>/', AdminMenuEditView.as_view(), name='admin_menu_edit'),
     path('menu-items/delete/<int:pk>/', AdminMenuDeleteView.as_view(), name='admin_menu_delete'),
+
+    # Review Management
+    path('reviews/', AdminReviewsView.as_view(), name='admin_reviews'),
+    path('reviews/create/', AdminReviewCreateView.as_view(), name='admin_review_create'),
+    path('reviews/edit/<int:pk>/', AdminReviewEditView.as_view(), name='admin_review_edit'),
+    path('reviews/delete/<int:pk>/', AdminReviewDeleteView.as_view(), name='admin_review_delete'),
 ]
