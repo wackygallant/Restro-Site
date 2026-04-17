@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 
 # View Imports
 from customer_panel.viewsets.custom_pages import HomePage, AboutPage
@@ -16,14 +16,18 @@ urlpatterns = [
     
     # Menu
     path('menu/all/', Menu_Page.as_view(), name='menu'),
-    path('menu/<slug:category_slug>/', Menu_Page.as_view(), name='category_filter'),
-    path('menu/item/<slug:item_slug>/', Menu_Item_Detail.as_view(), name='menu_item_detail'),
+    path('menu/', include([
+        path('<slug:category_slug>/', Menu_Page.as_view(), name='category_filter'),
+        path('item/<slug:item_slug>/', Menu_Item_Detail.as_view(), name='menu_item_detail'),
+    ])),
     
     # Orders
     path('orders/', OrderListView.as_view(), name='orders'),
-    path('orders/order_cart/', OrderCartView.as_view(), name='order_cart'),
-    path('orders/order_cart/add/', AddToOrderCartView.as_view(), name='add-to-order-cart'),
-    path('orders/order_cart/remove/<int:order_cart_item_id>/', RemoveFromOrderCartView.as_view(), name='remove-from-order-cart'),
-    path('orders/order_cart/update/<int:order_cart_item_id>/', UpdateOrderCartItemView.as_view(), name='update-order-cart-item'),
-    path('orders/checkout/', CheckoutView.as_view(), name='checkout'),
-    ]
+    path('orders/', include([
+        path('order_cart/', OrderCartView.as_view(), name='order_cart'),
+        path('order_cart/add/', AddToOrderCartView.as_view(), name='add-to-order-cart'),
+        path('order_cart/remove/<int:order_cart_item_id>/', RemoveFromOrderCartView.as_view(), name='remove-from-order-cart'),
+        path('order_cart/update/<int:order_cart_item_id>/', UpdateOrderCartItemView.as_view(), name='update-order-cart-item'),
+        path('checkout/', CheckoutView.as_view(), name='checkout'),
+    ])),
+]
