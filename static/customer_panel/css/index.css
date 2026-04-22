@@ -1,0 +1,41 @@
+    .carousel-wrapper {
+        overflow: hidden;
+        position: relative;
+    }
+
+    .carousel-track {
+        display: flex;
+        transition: transform 0.6s ease;
+    }
+
+    /* Show center + side peek */
+    .carousel-card {
+        min-width: 33.33%;
+        padding: 0 10px;
+        transform: scale(0.9);
+        transition: all 0.4s ease;
+    }
+
+    /* Image styling */
+    .carousel-card img {
+        height: 220px;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+
+    /* Buttons */
+    .nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255,255,255,0.1);
+        border: none;
+        font-size: 28px;
+        color: white;
+        padding: 10px 15px;
+        cursor: pointer;
+        z-index: 10;
+    }
+
+    .nav-btn.left { left: -10px; color: black;}
+    .nav-btn.right { right: -10px; color: black;}

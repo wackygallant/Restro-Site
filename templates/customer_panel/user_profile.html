@@ -103,7 +103,7 @@
                                         </td>
                                         <td>
                                             <span class="badge bg-info">
-                                                {{ booking.booking_status }}
+                                                {{ booking.booking_status|title }}
                                             </span>
                                         </td>
                                         <td>
@@ -199,11 +199,14 @@
                                             <strong>{{ order.order_date|date:"M d, Y" }}</strong>
                                         </td>
                                         <td>{{ order.order_id }}</td>
-                                        <td>{{ order.order_items.count }}</td>
+                                        <td>
+                                            {{ order.order_items.count }}
+                                            {{ order.order_items.count|pluralize:"item,items" }}
+                                        </td>
                                         <td> Rs. {{ order.total_amount }} </td>
                                         <td>
                                             <span class="badge bg-info">
-                                                {{ order.order_status }}
+                                                {{ order.order_status|title }}
                                             </span>
                                         </td>
                                         <td>

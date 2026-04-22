@@ -8,6 +8,8 @@
     </div>
 </section>
 
+
+
 <section>
     <div class="container py-5">
         {% if is_paginated %}
@@ -15,7 +17,8 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-between align-items-center">
                     <li class="page-item disabled">
-                        <span class="page-link bg-light text-dark">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+                        <span class="page-link bg-light text-dark">Page {{ page_obj.number }} of {{
+                            page_obj.paginator.num_pages }}</span>
                     </li>
                     <div class="d-flex gap-2">
                         {% if page_obj.has_previous %}
@@ -27,7 +30,7 @@
                             <span class="page-link">Previous</span>
                         </li>
                         {% endif %}
-                        
+
                         {% for page_num in page_obj.paginator.page_range %}
                         <li class="page-item"><a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a></li>
                         {% endfor %}
@@ -49,21 +52,21 @@
         <table class="table table-hover">
             <thead class="table-dark">
                 <tr>
+                    <th scope="col">Date</th>
                     <th scope="col">Booking ID</th>
-                    <th>Date</th>
-                    <th>Email</th>
-                    <th>Contact No.</th>
-                    <th>Time Slot</th>
-                    <th>Total Pax.</th>
-                    <th>Booking Status</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Contact No.</th>
+                    <th scope="col">Time Slot</th>
+                    <th scope="col">Total Pax.</th>
+                    <th scope="col">Booking Status</th>
                 </tr>
             </thead>
             {% if bookings %}
             <tbody>
                 {% for booking in bookings %}
                 <tr>
-                    <th scope="row">{{ booking.booking_id }}</th>
-                    <td>{{ booking.booking_date }}</td>
+                    <th scope="row">{{ booking.booking_date }}</th>
+                    <td>{{ booking.booking_id }}</td>
                     <td>{{ booking.email }}</td>
                     <td>{{ booking.phone_number }}</td>
                     <td>{{ booking.time_slot }}</td>
@@ -75,12 +78,15 @@
             {% else %}
             <tbody>
                 <tr>
-                    <td colspan="7" class="text-center text-muted">No bookings found. <a href="{% url 'booking_page' %}">Book a table now</a></td>
+                    <td colspan="7" class="text-center text-muted">No bookings found. <a
+                            href="{% url 'booking_page' %}">Book a table now</a></td>
                 </tr>
             </tbody>
             {% endif %}
         </table>
-
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-primary" href="{% url 'profile' %}">Back to Profile</a>
+        </div>
     </div>
 </section>
 {% endblock %}

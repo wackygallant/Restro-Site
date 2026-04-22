@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'customer_panel/css/index.css' %}">
 
 <section class="about-hero text-white text-center">
     <div class="container py-5">
@@ -18,32 +19,45 @@
     </div>
 </section>
 
-<section class="py-5 bg-white">
-    <div class="container-fluid px-0">
+<section class="py-5">
+    <div class="container position-relative">
+
         <div class="text-center">
             <h2 class="section-title">Today's Specials</h2>
         </div>
 
-        <div class="infinite-carousel-container" id="dish-carousel">
-            <div class="infinite-track" id="dish-track">
+        <div class="carousel-wrapper">
+            <div class="carousel-track" id="dish-track">
+
                 {% for item in special_items %}
-                <div class="card border-0 shadow-sm carousel-card">
-                    <div class="position-relative overflow-hidden" style="border-radius: 20px 20px 0 0;">
-                        <img src="{{ item.image.url }}" class="card-img-top" style="height: 230px; object-fit: cover;">
-                        <span class="badge bg-danger position-absolute top-0 end-0 m-3">SPECIAL</span>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="fw-bold">{{ item.name }}</h5>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <span class="h5 fw-bold text-dark mb-0">Rs. {{ item.special_price }}</span>
-                            <a href="{% url 'menu_item_detail' item.slug %}"
-                                class="btn btn-sm btn-dark rounded-pill px-3">View</a>
+                <div class="carousel-card">
+                    <div class="card border-0">
+                        <img src="{{ item.image.url }}" class="card-img-top">
+
+                        <div class="card-body">
+                            <h5>{{ item.name }}</h5>
+                            <p class="small text-muted">
+                                {{ item.description|truncatechars:80 }}
+                            </p>
+
+                            <div class="d-flex justify-content-between">
+                                <span>Rs. {{ item.special_price }}</span>
+                                <a href="{% url 'menu_item_detail' item.slug %}" class="btn btn-primary">
+                                    View
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
+
             </div>
         </div>
+
+        <!-- Buttons -->
+        <button class="nav-btn left" id="dish-prev">❮</button>
+        <button class="nav-btn right" id="dish-next">❯</button>
+
     </div>
 </section>
 
@@ -79,23 +93,41 @@
 </section>
 
 <section class="py-5 bg-white">
-    <div class="container-fluid px-0">
+    <div class="container position-relative">
         <div class="text-center">
             <h2 class="section-title">Reviews</h2>
         </div>
-        <div class="infinite-carousel-container" id="review-carousel">
-            <div class="infinite-track" id="review-track">
+
+        <div class="carousel-wrapper">
+            <div class="carousel-track" id="review-track">
+
                 {% for review in reviews %}
-                <div class="card border-0 shadow-sm p-4 carousel-card bg-light">
-                    <div class="text-warning mb-2">
-                        {% for i in "12345" %}{% if forloop.counter <= review.rating %}<i class="bi bi-star-fill"></i>{% endif %}{% endfor %}
+                <div class="carousel-card">
+                    <div class="card border-0 shadow-sm p-4 bg-light text-center">
+                        
+                        <div class="text-warning mb-2">
+                            {% for i in "12345" %}
+                                {% if forloop.counter <= review.rating %}
+                                    <i class="bi bi-star-fill"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <p class="fst-italic small">
+                            "{{ review.review|truncatechars:100 }}"
+                        </p>
+
+                        <h6 class="fw-bold mt-2">— {{ review.first_name }}</h6>
                     </div>
-                    <p class="fst-italic small">"{{ review.review|truncatechars:100 }}"</p>
-                    <h6 class="fw-bold mb-0 mt-2">— {{ review.first_name }}</h6>
                 </div>
                 {% endfor %}
+
             </div>
         </div>
+
+        <!-- Buttons -->
+        <button class="nav-btn left" id="review-prev">❮</button>
+        <button class="nav-btn right" id="review-next">❯</button>
     </div>
 </section>
 
