@@ -25,8 +25,8 @@ A comprehensive restaurant management system built with Django, featuring online
 ### 💳 Payment Integration
 - **Multiple Payment Methods**: 
   - Cash on Delivery
+  - Khalti (Nepal) 
   - eSewa (Nepal) // UPDATE PENDING
-  - Khalti (Nepal) // UPDATE PENDING
 - **Payment Tracking**: Complete payment status management // UPDATE PENDING
 - **Transaction Records**: Detailed payment history and transaction IDs // UPDATE PENDING
 
@@ -80,25 +80,7 @@ A comprehensive restaurant management system built with Django, featuring online
    ```
 
 4. **Environment Configuration**
-   - Copy `.env copy` to `.env`
-   - Configure the following environment variables:
-   ```env
-   SECRET_KEY=your-secret-key-here
-   DEBUG=True
-   DB_ENGINE=django.db.backends.postgresql
-   DB_NAME=your_database_name
-   DB_USER=your_database_user
-   DB_PASSWORD=your_database_password
-   DB_HOST=localhost
-   DB_PORT=5432
-   
-   # Email Configuration (Optional)
-   EMAIL_HOST=smtp.gmail.com
-   EMAIL_PORT=587
-   EMAIL_USE_TLS=True
-   EMAIL_HOST_USER=your-email@gmail.com
-   EMAIL_HOST_PASSWORD=your-app-password
-   ```
+   - Copy `.env copy` to `.env` and update the variables
 
 5. **Database Setup**
    ```bash
@@ -133,48 +115,58 @@ A comprehensive restaurant management system built with Django, featuring online
 
 ```
 Restro-Site/
-├── core/                    # Core Django settings and configuration
-│   ├── settings.py          # Django settings
-│   ├── urls.py             # Main URL configuration
-│   └── wsgi.py             # WSGI configuration
-├── customer_panel/          # Main customer-facing application
-│   ├── models.py           # Teams, Testimonials models
-│   ├── views.py            # Main views
-│   ├── urls.py             # Customer panel URLs
-│   ├── viewsets/           # View classes for different features
-│   │   ├── auth.py         # Authentication views
-│   │   ├── booking.py      # Table reservation views
-│   │   ├── custom_pages.py # Home, About pages
-│   │   ├── menu.py         # Menu display views
-│   │   ├── order.py        # Order management views
-│   │   └── user_profile.py # User profile views
-│   └── formsets/           # Form classes
-├── menu/                   # Menu management
-│   ├── models.py           # MenuCategories, MenuItems
-│   └── admin.py            # Menu admin configuration
-├── booking/                # Table reservation system
-│   ├── models.py           # TimeSlot, Booking models
-│   └── admin.py            # Booking admin
-├── order/                  # Order management system
-│   ├── models.py           # OrderCart, Order, OrderItem models
-│   └── admin.py            # Order admin
-├── payments/               # Payment processing
-│   ├── models.py           # Payment model
-│   └── admin.py            # Payment admin
-├── user_accounts/          # User account management
-│   ├── models.py           # ShippingAddress, OTP models
-│   └── admin.py            # User account admin
-├── utils/                  # Utility models and functions
-│   ├── models.py           # BaseModel, CommonModel
-│   └── _utils.py           # Utility functions
-├── templates/              # HTML templates
-│   ├── authentication/     # Login, register templates
-│   └── customer_panel/     # Customer-facing templates
-├── static/                 # Static files (CSS, JS, images)
-├── media/                  # User-uploaded media files
-├── menu.json              # Sample menu data
-├── requirements.txt        # Python dependencies
-└── manage.py              # Django management script
+  admin_panel/            # Admin panel functionality
+  |   formsets/           # Admin form classes
+  |   urls.py             # Admin panel URL configuration
+  |   viewsets/           # Admin view classes
+  api/                    # API endpoints
+  |   serializers/        # API serializers
+  |   urls.py             # API URL configuration
+  |   viewsets/           # API view classes
+  booking/                # Table reservation system
+  |   models.py           # TimeSlot, Booking models
+  |   admin.py            # Booking admin
+  core/                   # Core Django settings and configuration
+  |   settings.py         # Django settings
+  |   urls.py             # Main URL configuration
+  |   wsgi.py             # WSGI configuration
+  customer_panel/         # Main customer-facing application
+  |   models.py           # Teams, Testimonials models
+  |   views.py            # Main views
+  |   urls.py             # Customer panel URLs
+  |   viewsets/           # View classes for different features
+  |   |   auth.py         # Authentication views
+  |   |   booking.py      # Table reservation views
+  |   |   custom_pages.py # Home, About pages
+  |   |   menu.py         # Menu display views
+  |   |   order.py        # Order management views
+  |   |   user_profile.py # User profile views
+  |   formsets/           # Form classes
+  menu/                   # Menu management
+  |   models.py           # MenuCategories, MenuItems
+  |   admin.py            # Menu admin configuration
+  order/                  # Order management system
+  |   models.py           # OrderCart, Order, OrderItem models
+  |   admin.py            # Order admin
+  payments/               # Payment processing
+  |   models.py           # Payment model
+  |   admin.py            # Payment admin
+  user_accounts/          # User account management
+  |   models.py           # ShippingAddress, OTP models
+  |   admin.py            # User account admin
+  utils/                  # Utility models and functions
+  |   models.py           # BaseModel, CommonModel
+  |   _utils.py           # Utility functions
+  templates/              # HTML templates
+  |   authentication/     # Login, register templates
+  |   customer_panel/     # Customer-facing templates
+  static/                 # Static files (CSS, JS, images)
+  media/                  # User-uploaded media files
+  .env                    # Environment variables
+  .env copy              # Environment variables template
+  menu.json              # Sample menu data
+  requirements.txt        # Python dependencies
+  manage.py              # Django management script
 ```
 
 ## 🔧 Configuration
