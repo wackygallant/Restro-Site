@@ -20,6 +20,9 @@ from utils._utils import get_username
 import time
 import requests
 import json
+import base64
+import hashlib
+import hmac
 
 
 class AllOrdersView(LoginRequiredMixin, generic.ListView):
@@ -146,12 +149,12 @@ class PaymentVerificationView(LoginRequiredMixin,generic.TemplateView):
             
             if status == "Completed":
                 # Update Payment Record
-                payment_details.status = "paid" # Use 'paid' to match your model choice
+                payment_details.status = "paid"
                 payment_details.save()
                 
                 # Update Related Order Status if necessary
                 order = payment_details.order
-                order.status = 'completed' # Or 'processing'
+                order.status = 'completed'
                 order.save()
 
                 # Clear order cart
@@ -166,9 +169,43 @@ class PaymentVerificationView(LoginRequiredMixin,generic.TemplateView):
         messages.error(request, "Payment verification failed.")
         return redirect("orders")
 
-
     def handle_esewa_payment_verification(self, request):
-        pass
+        params = request.GET.dict()
+        data = params.get("data", "")
+        
+        decoded_message = base64.b64decode(data)
+        json_data = json.loads(decoded_message)
+
+        total_amount = json_data.get("total_amount")
+        transaction_uuid = json_data.get("transaction_uuid")
+        status_check_url = f"https://rc.esewa.com.np/api/epay/transaction/status/?product_code={settings.ESEWA_MERCHANT_ID}&total_amount={total_amount}&transaction_uuid={transaction_uuid}"
+        response = requests.get(status_check_url)
+
+        if response.status_code == 200:
+            response = response.json()
+            payment_details = PaymentDetails.objects.filter(payment_id=transaction_uuid).first()
+
+            if status == "COMPLETED":
+                # Update Payment Record
+                payment_details.status = "paid"
+                payment_details.save()
+                
+                # Update Related Order Status if necessary
+                order = payment_details.order
+                order.status = 'completed'
+                order.save()
+
+                # Clear order cart
+                try:
+                    cart = OrderCart.objects.get(user=request.user)
+                    cart.order_cart_items.all().delete()
+                except Exception as e:
+                    print(f"Cart clearing error: {e}")
+                messages.success(request, "Payment successful via Esewa!")
+                return redirect('orders')
+
+        messages.error(request, "Payment verification failed.")
+        return redirect("orders")
 
     def get(self, request, *args, **kwargs):
         params = request.GET.dict()
@@ -252,17 +289,15 @@ class CheckoutView(LoginRequiredMixin, View):
                     'status': 'pending', # Use 'initiated' as they are leaving your site
                     'transaction_id': unique_txn_id,
                     'payment_id': khalti_pidx,
-                    'payment_url': checkout_url
                 }
             )
 
             if not created:
                 payment_details.payment_method = "khalti"
                 payment_details.amount = order.total_amount
-                payment_details.status = "initiated"
+                payment_details.status = "pending"
                 payment_details.transaction_id = unique_txn_id
                 payment_details.payment_id = khalti_pidx
-                payment_details.payment_url = checkout_url
                 payment_details.save()
 
             return redirect(checkout_url)
@@ -276,35 +311,54 @@ class CheckoutView(LoginRequiredMixin, View):
             return redirect('orders')
 
     def initiate_esewa_payment(self, request, order):
-        """Process eSewa payment"""
+        ESEWA_MERCHANT_ID = settings.ESEWA_MERCHANT_ID
+        ESEWA_SECRET_KEY = settings.ESEWA_SECRET_KEY
 
-        # hmac_sha256 = hmac.new(secret, message, hashlib.sha256)
-        # digest = hmac_sha256.digest()
-        # signature = base64.b64encode(digest).decode('utf-8') 
+        unique_txn_id = f"ESEWA{order.id}_{int(time.time())}"
+        
+        amount_str = str(order.total_amount)
 
-        # Create payment record
-        payment = Payment.objects.create(
-            order=order,
-            payment_method='esewa',
-            amount=order.total_amount,
-            status='paid',
-            transaction_id=f"esewa_{order.id}_{int(time.time())}"
+        input_text = f"total_amount={amount_str},transaction_uuid={unique_txn_id},product_code={ESEWA_MERCHANT_ID}"
+
+        # HMAC SHA256 Logic
+        hmac_sha256 = hmac.new(
+            ESEWA_SECRET_KEY.encode('utf-8'), 
+            input_text.encode('utf-8'), 
+            hashlib.sha256
         )
-        
-        # Clear order cart
-        try:
-            cart = OrderCart.objects.get(user=request.user)
-            cart_items = cart.order_cart_items.all()
-            print(f"Clearing {cart_items.count()} items from order cart for eSewa payment")
-            cart_items.delete()
-            print("Order cart cleared successfully for eSewa")
-        except Exception as e:
-            print(f"Error clearing order cart: {e}")
-            messages.error(request, "Error clearing order cart")
-        
-        messages.success(request, "Payment successful via eSewa!")
-        return redirect('orders')
+        digest = hmac_sha256.digest()
+        signature = base64.b64encode(digest).decode('utf-8')
 
+        # Update or Create payment record
+        payment_details, created = Payment.objects.update_or_create(
+            order=order,
+            defaults={
+                'payment_method': 'esewa',
+                'amount': order.total_amount,
+                'status': 'pending',
+                'transaction_id': unique_txn_id,
+                'payment_id': unique_txn_id, # Usually updated after success
+            }
+        )
+
+        if not created:
+            payment_details.payment_method = "esewa"
+            payment_details.amount = order.total_amount
+            payment_details.status = "pending"
+            payment_details.transaction_id = unique_txn_id
+            payment_details.payment_id = unique_txn_id
+            payment_details.save()
+
+        context = {
+            "esewa_data": {
+                "amount": order.total_amount, 
+                "transaction_uuid": unique_txn_id,
+                "product_code": ESEWA_MERCHANT_ID, 
+                "signature": signature,
+            }
+        }
+
+        return render(request, 'customer_panel/esewa_confirmation.html', context)
 
     def get(self, request):
         """Display checkout page with shipping and payment options"""

@@ -23,7 +23,6 @@ class Payment(BaseModel):
     status = models.CharField(max_length=20, choices=PAYMENT_STATUS, default='pending')
     transaction_id = models.CharField(max_length=100, null=True, blank=True)
     payment_id = models.CharField(max_length=100, null=True, blank=True)  # Khalti payment identifier
-    payment_url = models.URLField(null=True, blank=True)  # For redirect URLs
     
     @property
     def order_id(self):

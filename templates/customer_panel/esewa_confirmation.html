@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redirecting to Payment Gateway...</title>
+</head>
+<body onload="document.getElementById('esewa_form').submit();">
+    <div style="text-align: center; margin-top: 50px; font-family: sans-serif;">
+        <h2>Redirecting to eSewa...</h2>
+        <p>Please do not refresh the page or click back.</p>
+    </div>
+
+    <form id="esewa_form" action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
+        <input type="hidden" id="amount" name="amount" value="{{ esewa_data.amount }}" required>
+        <input type="hidden" id="tax_amount" name="tax_amount" value="0" required>
+        <input type="hidden" id="total_amount" name="total_amount" value="{{ esewa_data.amount }}" required>
+        <input type="hidden" id="transaction_uuid" name="transaction_uuid" value="{{ esewa_data.transaction_uuid }}" required>
+        <input type="hidden" id="product_code" name="product_code" value="{{ esewa_data.product_code }}" required>
+        <input type="hidden" id="product_service_charge" name="product_service_charge" value="0" required>
+        <input type="hidden" id="product_delivery_charge" name="product_delivery_charge" value="0" required>
+        <input type="hidden" id="success_url" name="success_url" value="http://127.0.0.1:8000/payment-verify/" required>
+        <input type="hidden" id="failure_url" name="failure_url" value="http://127.0.0.1:8000/orders/" required>
+        <input type="hidden" id="signed_field_names" name="signed_field_names" value="total_amount,transaction_uuid,product_code" required>
+        <input type="hidden" id="signature" name="signature" value="{{ esewa_data.signature }}" required>
+    </form>
+</body>
+</html>

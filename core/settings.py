@@ -142,7 +142,6 @@ STATIC_ROOT = BASE_DIR / 'static_root'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
 # Login redirect
 LOGIN_URL = 'login'
 
@@ -152,8 +151,7 @@ SESSION_COOKIE_AGE = 1800
 # This is the key: it saves the session and updates the cookie on every request
 SESSION_SAVE_EVERY_REQUEST = True
 
-
-# Email Configuration
+# For Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = os.getenv('EMAIL_PORT')
@@ -161,7 +159,11 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
-# Khalti API Integration
+# For Khalti
 KHALTI_API_URL = os.getenv('KHALTI_API_URL')
 KHALTI_API_SECRET_KEY = os.getenv('KHALTI_API_SECRET_KEY')
 KHALTI_API_PUBLIC_KEY = os.getenv('KHALTI_API_SECRET_KEY')
+
+# For Esewa
+ESEWA_MERCHANT_ID= os.getenv("ESEWA_MERCHANT_ID")
+ESEWA_SECRET_KEY= os.getenv("ESEWA_SECRET_KEY")
