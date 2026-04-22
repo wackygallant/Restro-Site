@@ -26,7 +26,7 @@ A comprehensive restaurant management system built with Django, featuring online
 - **Multiple Payment Methods**: 
   - Cash on Delivery
   - Khalti (Nepal) 
-  - eSewa (Nepal) // UPDATE PENDING
+  - eSewa (Nepal)
 - **Payment Tracking**: Complete payment status management // UPDATE PENDING
 - **Transaction Records**: Detailed payment history and transaction IDs // UPDATE PENDING
 

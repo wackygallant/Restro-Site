@@ -461,3 +461,4 @@ class CheckoutView(LoginRequiredMixin, View):
         except Exception as e:
             messages.error(request, f"An error occurred: {str(e)}")
             return redirect('order_cart')
+            
