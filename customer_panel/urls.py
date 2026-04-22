@@ -4,7 +4,7 @@ from django.urls import path, include
 from customer_panel.viewsets.custom_pages import HomePage, AboutPage
 from customer_panel.viewsets.booking import BookTableView
 from customer_panel.viewsets.menu import Menu_Page, Menu_Item_Detail
-from customer_panel.viewsets.order import OrderListView, OrderCartView, AddToOrderCartView, RemoveFromOrderCartView, UpdateOrderCartItemView, CheckoutView
+from customer_panel.viewsets.order import OrderListView, OrderCartView, AddToOrderCartView, RemoveFromOrderCartView, UpdateOrderCartItemView, CheckoutView, PaymentVerificationView
 
 urlpatterns = [
     # Home Pages
@@ -30,4 +30,7 @@ urlpatterns = [
         path('order_cart/update/<int:order_cart_item_id>/', UpdateOrderCartItemView.as_view(), name='update-order-cart-item'),
         path('checkout/', CheckoutView.as_view(), name='checkout'),
     ])),
+
+    # Payment Verification
+    path('payment-verify/', PaymentVerificationView.as_view(), name="payment-verify")
 ]

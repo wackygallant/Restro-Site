@@ -19,7 +19,6 @@ EMAIL_HOST_USER=your-email@gmail.com
 EMAIL_HOST_PASSWORD=your-app-password
 
 
-
-TEST_USER=customer2
-TEST_PASSWORD=j^cE21'BM6]$(R7Z
-TEST_EMAIL=customer2@gmail.com
+KHALTI_API_URL=https://dev.khalti.com/api/v2/
+KHALTI_API_SECRET_KEY=
+KHALTI_API_PUBLIC_KEY=

@@ -3,6 +3,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View, generic
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.conf import settings
+from django.db import transaction
 
 # App Imports
 from order.models import OrderCart, OrderCartItem, Order, OrderItem
@@ -16,6 +18,9 @@ from utils._utils import get_username
 
 # Python Package Imports
 import time
+import requests
+import json
+
 
 class AllOrdersView(LoginRequiredMixin, generic.ListView):
     model = Order
@@ -109,6 +114,78 @@ class UpdateOrderCartItemView(LoginRequiredMixin, View):
             
         return redirect('order_cart')
 
+class PaymentVerificationView(LoginRequiredMixin,generic.TemplateView):
+    template_name = "customer_panel/payment_verify.html"
+
+    def handle_khalti_payment_verification(self, request):
+        params = request.GET.dict()
+        pidx = params.get("pidx", "")
+        purchase_order_id = params.get("purchase_order_id", "")
+
+        payment_details = Payment.objects.filter(transaction_id=purchase_order_id).first()
+
+        if not payment_details:
+            messages.error(request, "Payment record not found.")
+            return redirect("orders")
+        
+        verify_url = f"{settings.KHALTI_API_URL}epayment/lookup/"
+        secret_key = settings.KHALTI_API_SECRET_KEY # Use your secret key
+
+        headers = {
+            "Authorization": f"Key {secret_key}",  
+            'Content-Type': 'application/json',
+        }  
+
+        payload = {"pidx": pidx}
+
+        response = requests.post(verify_url, headers=headers, json=payload)
+
+        if response.status_code == 200:
+            data = response.json()
+            status = data.get("status")
+            
+            if status == "Completed":
+                # Update Payment Record
+                payment_details.status = "paid" # Use 'paid' to match your model choice
+                payment_details.save()
+                
+                # Update Related Order Status if necessary
+                order = payment_details.order
+                order.status = 'completed' # Or 'processing'
+                order.save()
+
+                # Clear order cart
+                try:
+                    cart = OrderCart.objects.get(user=request.user)
+                    cart.order_cart_items.all().delete()
+                except Exception as e:
+                    print(f"Cart clearing error: {e}")
+                messages.success(request, "Payment successful via Khalti!")
+                return redirect('orders')
+
+        messages.error(request, "Payment verification failed.")
+        return redirect("orders")
+
+
+    def handle_esewa_payment_verification(self, request):
+        pass
+
+    def get(self, request, *args, **kwargs):
+        params = request.GET.dict()
+        purchase_order_id = params.get('purchase_order_id', '')
+
+        try:
+            with transaction.atomic():
+                if "pidx" in params or "khalti" in purchase_order_id.lower():
+                    return self.handle_khalti_payment_verification(request)
+                else:
+                    return self.handle_esewa_payment_verification(request)
+
+        except Exception as e:
+            print(f"Error in verification: {e}")
+            messages.error(f"")
+            return redirect("orders")
+
 class CheckoutView(LoginRequiredMixin, View):        
     def process_cod(self, request, order):
         # Create cash on delivery payment record
@@ -132,9 +209,79 @@ class CheckoutView(LoginRequiredMixin, View):
         
         messages.success(request, "Order placed successfully! Pay on delivery.")
         return redirect('orders')
+    
+    def initiate_khalti_payment(self, request, order):
+        url = settings.KHALTI_API_URL
+        secret_key = settings.KHALTI_API_SECRET_KEY
+
+        if not url or not secret_key:
+            return redirect(request.path)
+
+        initiate_url = f"{url}epayment/initiate/"
+
+        # 1. Create a unique internal transaction ID first
+        unique_txn_id = f"KHALTI_{order.id}_{int(time.time())}"
+
+        headers = {
+            'Authorization': f'Key {secret_key}',
+            'Content-Type': 'application/json',
+        }
+
+        # 2. Dynamic Payload (Amount in Paisa)
+        payload_dict = {
+            "return_url": "http://localhost:8000/payment-verify/",
+            "website_url": "http://localhost:8000/",
+            "amount": float(order.total_amount * 100),  # Correct Paisa conversion
+            "purchase_order_id": unique_txn_id,        # Send your unique ID
+            "purchase_order_name": f"Order #{order.id}",
+        }
+
+        response = requests.post(initiate_url, headers=headers, data=json.dumps(payload_dict))
+        
+        if response.status_code == 200:
+            response_data = response.json()
+            checkout_url = response_data.get("payment_url")
+            khalti_pidx = response_data.get("pidx")
+
+            # 3. Save/Update Payment Record
+            payment_details, created = Payment.objects.get_or_create(
+                order=order,
+                defaults={
+                    'payment_method': 'khalti',
+                    'amount': order.total_amount,
+                    'status': 'pending', # Use 'initiated' as they are leaving your site
+                    'transaction_id': unique_txn_id,
+                    'payment_id': khalti_pidx,
+                    'payment_url': checkout_url
+                }
+            )
+
+            if not created:
+                payment_details.payment_method = "khalti"
+                payment_details.amount = order.total_amount
+                payment_details.status = "initiated"
+                payment_details.transaction_id = unique_txn_id
+                payment_details.payment_id = khalti_pidx
+                payment_details.payment_url = checkout_url
+                payment_details.save()
+
+            return redirect(checkout_url)
+        
+        else:
+            print(f"Khalti API Error: {response.text}")
+            order.status = 'failed'
+            order.save()
+            messages.error(request, "We couldn't connect to Khalti. Please try again from your Orders page.")
+            
+            return redirect('orders')
 
     def initiate_esewa_payment(self, request, order):
         """Process eSewa payment"""
+
+        # hmac_sha256 = hmac.new(secret, message, hashlib.sha256)
+        # digest = hmac_sha256.digest()
+        # signature = base64.b64encode(digest).decode('utf-8') 
+
         # Create payment record
         payment = Payment.objects.create(
             order=order,
@@ -157,33 +304,8 @@ class CheckoutView(LoginRequiredMixin, View):
         
         messages.success(request, "Payment successful via eSewa!")
         return redirect('orders')
-    
-    def initiate_khalti_payment(self, request, order):
-        """Process Khalti payment"""
-        # Create payment record
-        payment = Payment.objects.create(
-            order=order,
-            payment_method='khalti',
-            amount=order.total_amount,
-            status='paid',
-            transaction_id=f"khalti_{order.id}_{int(time.time())}"
-        )
-        
-        # Clear order cart
-        try:
-            cart = OrderCart.objects.get(user=request.user)
-            cart_items = cart.order_cart_items.all()
-            print(f"Clearing {cart_items.count()} items from order cart for Khalti payment")
-            cart_items.delete()
-            print("Order cart cleared successfully.")
-        except Exception as e:
-            print(f"Error clearing order cart: {e}")
-            messages.error(request, "Error clearing order cart")
-        
-        messages.success(request, "Payment successful via Khalti!")
-        return redirect('orders')
 
-    """Convert order cart to order"""
+
     def get(self, request):
         """Display checkout page with shipping and payment options"""
         checkout_form = CheckoutForm()

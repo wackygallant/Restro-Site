@@ -3,8 +3,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from menu.models import MenuItems
 from django.db import models
-import datetime
 
+import datetime
 # Custom Util Imports
 from utils.models import BaseModel
 
@@ -54,7 +54,8 @@ class Order(models.Model):
     STATUS_CHOICES = {
         ('completed', 'Completed'),
         ('cancelled', 'Cancelled'),
-        ('pending', 'Pending')
+        ('pending', 'Pending'),
+        ('failed', 'Failed'),
     }
     
     order_id = models.CharField(max_length=100, unique=True)
