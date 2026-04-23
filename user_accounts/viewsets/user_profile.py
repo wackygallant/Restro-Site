@@ -1,7 +1,6 @@
 # Django Module Imports
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View, generic
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
@@ -11,8 +10,7 @@ from user_accounts.models import ShippingAddress
 # Form Imports
 from user_accounts.formsets.shippingaddform import ShippingAddressForm
 
-@method_decorator(login_required, name='dispatch')
-class ProfileView(generic.TemplateView):
+class ProfileView(LoginRequiredMixin, generic.TemplateView):
     template_name = 'customer_panel/user_profile.html'
 
     def get_context_data(self, **kwargs):
@@ -34,8 +32,7 @@ class ProfileView(generic.TemplateView):
         })
         return context
 
-@method_decorator(login_required, name='dispatch')
-class AddShippingAddressView(View):
+class AddShippingAddressView(LoginRequiredMixin, View):
     def post(self, request):
         form = ShippingAddressForm(request.POST)
         if form.is_valid():
@@ -47,8 +44,7 @@ class AddShippingAddressView(View):
             messages.error(request, 'Please correct the errors below')
         return redirect('profile')
 
-@method_decorator(login_required, name='dispatch')
-class EditShippingAddressView(View):
+class EditShippingAddressView(LoginRequiredMixin,View):
     def get(self, request, pk):
         address = ShippingAddress.objects.get(id=pk, username=request.user)
         form = ShippingAddressForm(instance=address)
@@ -64,8 +60,7 @@ class EditShippingAddressView(View):
             messages.error(request, 'Please correct the errors below')
         return redirect('profile')
 
-@method_decorator(login_required, name='dispatch')
-class DeleteShippingAddressView(View):
+class DeleteShippingAddressView(LoginRequiredMixin, View):
     def post(self, request):
         address_id = request.POST.get('address_id')
         if address_id:

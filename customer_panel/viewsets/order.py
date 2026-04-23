@@ -266,7 +266,7 @@ class CheckoutView(LoginRequiredMixin, View):
 
         # 2. Dynamic Payload (Amount in Paisa)
         payload_dict = {
-            "return_url": "http://localhost:8000/payment-verify/",
+            "return_url": "http://localhost:8000/payment_verify/",
             "website_url": "http://localhost:8000/",
             "amount": float(order.total_amount * 100),  # Correct Paisa conversion
             "purchase_order_id": unique_txn_id,        # Send your unique ID

@@ -74,7 +74,7 @@ class RegisterView(View):
         return render(request, self.template_name, {'form': form})
 
 class PasswordResetView(View):
-    template_name = 'authentication/reset-password.html'
+    template_name = 'authentication/reset_password.html'
 
     def get(self, request):
         # Initial state: Show the email entry form

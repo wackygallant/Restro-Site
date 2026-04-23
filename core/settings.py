@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
     # Created Apps
     'customer_panel',
     'menu',
@@ -48,6 +47,8 @@ INSTALLED_APPS = [
     'user_accounts',
     'order',
     'payments',
+    'rest_framework',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -150,6 +151,22 @@ SESSION_COOKIE_AGE = 1800
 
 # This is the key: it saves the session and updates the cookie on every request
 SESSION_SAVE_EVERY_REQUEST = True
+
+
+# DRF Spectacular Integration(Swagger UI)
+REST_FRAMEWORK = {
+    # YOUR SETTINGS
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Resto Site API',
+    'DESCRIPTION': 'This site is intended for restaurants to promote their online business.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}
+
 
 # For Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

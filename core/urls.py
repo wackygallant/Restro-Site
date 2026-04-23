@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import include, path
-from . import settings
+from core import settings
 from django.conf.urls.static import static
 from user_accounts.viewsets.auth import LoginView, LogoutView, RegisterView, PasswordResetView
 
@@ -10,8 +10,23 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('register/', RegisterView.as_view(), name='register'),
-    path('reset-password/', PasswordResetView.as_view(), name='reset-password'),
+    path('reset-password/', PasswordResetView.as_view(), name='reset_password'),
     path('', include('customer_panel.urls')),
     path('', include('user_accounts.urls')),
-    path('api/', include('api.urls'))
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+# Static and Media files
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Swagger UI
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+urlpatterns += [
+    path('api/', include([
+        path("", include('api.urls')),
+        # YOUR PATTERNS
+        path('schema/', SpectacularAPIView.as_view(), name='schema'),
+        # Optional UI:
+        path('doc/', SpectacularSwaggerView.as_view(url_name='schema'), name='doc'),
+        path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    ])),
+]

@@ -4,8 +4,8 @@ from customer_panel.viewsets.booking import AllBookingsView
 from customer_panel.viewsets.order import AllOrdersView
 
 urlpatterns = [
-    path('user-profile/', ProfileView.as_view(), name='profile'),
     path('user-profile/', include([
+        path('', ProfileView.as_view(), name='profile'),
         path('all-bookings/', AllBookingsView.as_view(), name="all_bookings_page"),
         path('all-orders/', AllOrdersView.as_view(), name='all_orders' ),
         path('add-shipping-address/', AddShippingAddressView.as_view(), name='add_shipping_address'),
