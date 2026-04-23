@@ -1,26 +1,36 @@
-from rest_framework import viewsets
+from rest_framework import serializers
 
-from api.serializers import BookingsSerializer, MenuCategoriesSerializer, MenuItemsSerializer
-from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
+from booking.models import Booking, TimeSlot
 from menu.models import MenuCategories, MenuItems
-from booking.models import Booking
 
-from drf_spectacular.utils import extend_schema
+class MenuCategoriesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MenuCategories
+        fields = "__all__"
 
-@extend_schema(tags=["MenuCategory(s)"])
-class MenuCategoriesViewset(viewsets.ModelViewSet):
-    queryset = MenuCategories.objects.all()
-    serializer_class = MenuCategoriesSerializer
-    permission_classes = [IsAdminUser]
+class MenuItemsSerializer(serializers.ModelSerializer):
+    # category = MenuCategoriesSerializer()
+    class Meta:
+        model = MenuItems
+        fields = "__all__"
 
-@extend_schema(tags=["Menu(s)"])
-class MenuItemsViewset(viewsets.ModelViewSet):
-    queryset = MenuItems.objects.all()
-    serializer_class = MenuItemsSerializer
-    permission_classes = [IsAdminUser]
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data["category"] = MenuCategoriesSerializer(instance.category).data
+        return data
 
-@extend_schema(tags=["Booking(s)"])
-class BookingViewset(viewsets.ModelViewSet):
-    queryset = Booking.objects.all()
-    serializer_class = BookingsSerializer
-    permission_classes = [IsAdminUser]
+class TimeslotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TimeSlot
+        fields = "__all__"
+
+class BookingsSerializer(serializers.ModelSerializer):
+    # time_slot = TimeslotSerializer()
+    class Meta:
+        model = Booking
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        data["time_slot"] = TimeslotSerializer(instance.time_slot).data
+        return data

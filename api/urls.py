@@ -2,7 +2,7 @@ from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
-from api.viewsets.menu import BookingViewset, MenuCategoriesViewset, MenuItemsViewset
+from api.viewsets import BookingViewset, MenuCategoriesViewset, MenuItemsViewset
 
 
 router = DefaultRouter()
