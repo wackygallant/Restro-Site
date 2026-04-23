@@ -11,16 +11,16 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='admin_logout'),
 
     # User Management
-    path('users/', UserAdminView.as_view(), name='admin_users'),
     path('users/', include([
+        path('', UserAdminView.as_view(), name='admin_users'),
         path('create/', UserCreateView.as_view(), name='admin_user_create'),
         path('edit/<int:pk>/', UserEditView.as_view(), name='admin_user_edit'),
         path('delete/<int:pk>/', UserDeleteView.as_view(), name='admin_user_delete'),
     ])),
     
     # Order Management
-    path('orders/', AdminOrderView.as_view(), name='admin_orders'),
     path('orders/', include([
+        path('', AdminOrderView.as_view(), name='admin_orders'),
         path('complete/<int:order_id>/', CompleteOrder.as_view(), name='admin_order_complete'),
         path('cancel/<int:order_id>/', CancelOrder.as_view(), name='admin_order_cancel'),
     ])),
@@ -29,23 +29,23 @@ urlpatterns = [
     path('reservations/', AdminReservationView.as_view(), name='admin_reservations'),
     
     # Menu Management
-    path('menu-categories/', AdminCategoryListView.as_view(), name='admin_categories'),
-    path('menu-categories/', include([
+    path('menu_categories/', include([
+        path('', AdminCategoryListView.as_view(), name='admin_categories'),
         path('create/', AdminCategoryCreateView.as_view(), name='admin_category_create'),
         path('edit/<int:pk>/', AdminCategoryEditView.as_view(), name='admin_category_edit'),
         path('delete/<int:pk>/', AdminCategoryDeleteView.as_view(), name='admin_category_delete'),
     ])),
 
-    path('menu-items/', AdminMenuListView.as_view(), name='admin_menu'),
-    path('menu-items/', include([
+    path('menu_items/', include([
+        path('', AdminMenuListView.as_view(), name='admin_menu'),
         path('create/', AdminMenuCreateView.as_view(), name='admin_menu_create'),
         path('edit/<int:pk>/', AdminMenuEditView.as_view(), name='admin_menu_edit'),
         path('delete/<int:pk>/', AdminMenuDeleteView.as_view(), name='admin_menu_delete'),
     ])),
 
     # Review Management
-    path('reviews/', AdminReviewsView.as_view(), name='admin_reviews'),
     path('reviews/', include([
+        path('', AdminReviewsView.as_view(), name='admin_reviews'),
         path('create/', AdminReviewCreateView.as_view(), name='admin_review_create'),
         path('edit/<int:pk>/', AdminReviewEditView.as_view(), name='admin_review_edit'),
         path('delete/<int:pk>/', AdminReviewDeleteView.as_view(), name='admin_review_delete'),

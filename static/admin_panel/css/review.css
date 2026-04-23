@@ -1,0 +1,34 @@
+/* Star Rating Styling */
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 5px;
+}
+.star-rating input { display: none; }
+.star-rating label {
+    font-size: 2.25rem;
+    color: #e9ecef;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.star-rating input:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffc107;
+    transform: scale(1.1);
+}
+
+/* Form Card Styling */
+.review-card {
+    border-radius: 12px;
+    overflow: hidden;
+}
+.section-header {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #6c757d;
+    border-bottom: 2px solid #f8f9fa;
+    margin-bottom: 20px;
+}

@@ -1,44 +1,10 @@
 {% extends 'admin_panel/admin_base.html' %}
+{% load static %}
 
-{% block title %}Edit Review{% endblock %}
+{% block title %}Create Review{% endblock %}
 
 {% block content %}
-<style>
-    /* Star Rating Styling */
-    .star-rating {
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: flex-end;
-        gap: 5px;
-    }
-    .star-rating input { display: none; }
-    .star-rating label {
-        font-size: 2.25rem;
-        color: #e9ecef;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-    .star-rating input:checked ~ label,
-    .star-rating label:hover,
-    .star-rating label:hover ~ label {
-        color: #ffc107;
-        transform: scale(1.1);
-    }
-
-    /* Form Card Styling */
-    .review-card {
-        border-radius: 12px;
-        overflow: hidden;
-    }
-    .section-header {
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #6c757d;
-        border-bottom: 2px solid #f8f9fa;
-        margin-bottom: 20px;
-    }
-</style>
+<link rel="stylesheet" href="{% static 'admin_panel/css/review.css' %}">
 
 <div class="container-fluid py-4">
     <div class="row mb-4 align-items-center">
@@ -67,17 +33,17 @@
                                 </div>
                                 
                                 <div class="mb-3">
-                                    <label for="first_name" class="form-label fw-bold">First Name</label>
-                                    <input type="text" class="form-control form-control-lg bg-light" id="first_name" name="first_name" placeholder="John" value="{{ review.first_name }}" required>
+                                    <label for="first_name" class="form-label fs-bold">First Name</label>
+                                    <input type="text" class="form-control form-control-lg bg-light fs-6" id="first_name" name="first_name" placeholder="John" value="{{ review.first_name }}" required>
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="last_name" class="form-label fw-bold">Last Name</label>
-                                    <input type="text" class="form-control form-control-lg bg-light" id="last_name" name="last_name" placeholder="Doe" value="{{ review.last_name }}" required>
+                                    <label for="last_name" class="form-label fs-bold">Last Name</label>
+                                    <input type="text" class="form-control form-control-lg bg-light fs-6" id="last_name" name="last_name" placeholder="Doe" value="{{ review.last_name }}" required>
                                 </div>
 
                                 <div class="mb-4">
-                                    <label class="form-label fw-bold d-block">Overall Rating</label>
+                                    <label class="form-label fs-bold d-block">Overall Rating</label>
                                     <div class="star-rating mb-1">
                                         <input type="radio" id="star5" name="rating" value="5" {% if review.rating == 5 %}checked{% endif %} required />
                                         <label for="star5" title="5 stars">★</label>
@@ -100,7 +66,7 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="review" class="form-label fw-bold">Detailed Feedback</label>
+                                    <label for="review" class="form-label fs-bold">Detailed Feedback</label>
                                     <textarea class="form-control bg-light" id="review" name="review" rows="10" 
                                               placeholder="What did the customer have to say?" required>{{ review.review }}</textarea>
                                     <div class="form-text mt-2">
@@ -127,7 +93,7 @@
 
         <div class="col-xl-3">
             <div class="alert alert-info border-0 shadow-sm">
-                <h6 class="fw-bold"><i class="bi bi-lightbulb me-2"></i>Quick Tip</h6>
+                <h6 class="fs-bold"><i class="bi bi-lightbulb me-2"></i>Quick Tip</h6>
                 <p class="small mb-0">Public reviews appear on the homepage. Ensure the text is free of typos before saving!</p>
             </div>
         </div>

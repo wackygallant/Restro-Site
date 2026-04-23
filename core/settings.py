@@ -157,16 +157,18 @@ SESSION_SAVE_EVERY_REQUEST = True
 REST_FRAMEWORK = {
     # YOUR SETTINGS
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
 }
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Resto Site API',
-    'DESCRIPTION': 'This site is intended for restaurants to promote their online business.',
+    'DESCRIPTION': 'API for the Restro Site',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
 }
-
 
 # For Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'

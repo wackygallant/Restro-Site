@@ -20,6 +20,11 @@ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Swagger UI
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
 urlpatterns += [
     path('api/', include([
         path("", include('api.urls')),
@@ -28,5 +33,7 @@ urlpatterns += [
         # Optional UI:
         path('doc/', SpectacularSwaggerView.as_view(url_name='schema'), name='doc'),
         path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+        path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+        path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     ])),
 ]
