@@ -29,7 +29,7 @@
                     <td>{{ item.menu_item.name }}</td>
                     <td>Rs. {{ item.menu_item.special_price|default:item.menu_item.price }}</td>
                     <td>
-                        <form method="POST" action="{% url 'update-order-cart-item' item.id %}" class="d-inline">
+                        <form method="POST" action="{% url 'update_order_cart_item' item.id %}" class="d-inline">
                             {% csrf_token %}
                             <div class="input-group input-group-sm" style="width: 120px;">
                                 <input type="number" name="quantity" value="{{ item.quantity }}" min="1"
@@ -40,7 +40,7 @@
                     </td>
                     <td>Rs.{{ item.get_total }}</td>
                     <td>
-                        <form method="POST" action="{% url 'remove-from-order-cart' item.id %}" class="d-inline">
+                        <form method="POST" action="{% url 'remove_from_order_cart' item.id %}" class="d-inline">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
                         </form>

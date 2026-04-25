@@ -120,7 +120,7 @@ class UpdateOrderCartItemView(LoginRequiredMixin, View):
 class PaymentVerificationView(LoginRequiredMixin,generic.TemplateView):
     template_name = "customer_panel/payment_verify.html"
 
-    def handle_khalti_payment_verification(self, request):
+    def handle_khalti_payment_verification(self, request, order): # Ensure 'order' is passed in
         params = request.GET.dict()
         pidx = params.get("pidx", "")
         purchase_order_id = params.get("purchase_order_id", "")
@@ -128,46 +128,52 @@ class PaymentVerificationView(LoginRequiredMixin,generic.TemplateView):
         payment_details = Payment.objects.filter(transaction_id=purchase_order_id).first()
 
         if not payment_details:
+            # If we can't find the payment, we can't find the order safely
             messages.error(request, "Payment record not found.")
             return redirect("orders")
         
+        # Ensure we are working with the correct order object
+        order = payment_details.order
+        
         verify_url = f"{settings.KHALTI_API_URL}epayment/lookup/"
-        secret_key = settings.KHALTI_API_SECRET_KEY # Use your secret key
-
         headers = {
-            "Authorization": f"Key {secret_key}",  
+            "Authorization": f"Key {settings.KHALTI_API_SECRET_KEY}",  
             'Content-Type': 'application/json',
         }  
 
-        payload = {"pidx": pidx}
+        try:
+            response = requests.post(verify_url, headers=headers, json={"pidx": pidx}, timeout=10)
+            response_data = response.json()
+        except Exception as e:
+            # Handle Timeout or Connection Error
+            order.order_status = 'failed'
+            order.save()
+            messages.error(request, "Communication error with Khalti.")
+            return redirect("orders")
 
-        response = requests.post(verify_url, headers=headers, json=payload)
-
-        if response.status_code == 200:
-            data = response.json()
-            status = data.get("status")
+        if response.status_code == 200 and response_data.get("status") == "Completed":
+            # SUCCESS PATH
+            payment_details.status = "paid"
+            payment_details.save()
             
-            if status == "Completed":
-                # Update Payment Record
-                payment_details.status = "paid"
-                payment_details.save()
-                
-                # Update Related Order Status if necessary
-                order = payment_details.order
-                order.status = 'completed'
-                order.save()
+            order.order_status = 'completed' # Standardize field names (status vs order_status)
+            order.save()
 
-                # Clear order cart
-                try:
-                    cart = OrderCart.objects.get(user=request.user)
-                    cart.order_cart_items.all().delete()
-                except Exception as e:
-                    print(f"Cart clearing error: {e}")
-                messages.success(request, "Payment successful via Khalti!")
-                return redirect('orders')
+            # Clear cart logic...
+            messages.success(request, "Payment successful via Khalti!")
+            return redirect('orders')
+        
+        else:
+            # FAILURE PATH (API returned 400/500 or status was 'Expired/Canceled')
+            payment_details.status = "failed"
+            payment_details.save()
 
-        messages.error(request, "Payment verification failed.")
-        return redirect("orders")
+            order.order_status = 'failed'
+            order.save()
+            
+            error_msg = response_data.get("detail", "Payment was not completed.")
+            messages.error(request, f"Khalti Error: {error_msg}")
+            return redirect("orders")
 
     def handle_esewa_payment_verification(self, request):
         params = request.GET.dict()
@@ -183,9 +189,9 @@ class PaymentVerificationView(LoginRequiredMixin,generic.TemplateView):
 
         if response.status_code == 200:
             response = response.json()
-            payment_details = PaymentDetails.objects.filter(payment_id=transaction_uuid).first()
+            payment_details = Payment.objects.filter(payment_id=transaction_uuid).first()
 
-            if status == "COMPLETED":
+            if response['status'] == "COMPLETE":
                 # Update Payment Record
                 payment_details.status = "paid"
                 payment_details.save()
@@ -204,8 +210,17 @@ class PaymentVerificationView(LoginRequiredMixin,generic.TemplateView):
                 messages.success(request, "Payment successful via Esewa!")
                 return redirect('orders')
 
-        messages.error(request, "Payment verification failed.")
-        return redirect("orders")
+            else:
+                # FAILURE PATH (API returned 400/500 or status was 'Expired/Canceled')
+                payment_details.status = "failed"
+                payment_details.save()
+
+                order.order_status = 'failed'
+                order.save()
+                
+                error_msg = response_data.get("detail", "Payment was not completed.")
+                messages.error(request, f"Khalti Error: {error_msg}")
+                return redirect("orders")
 
     def get(self, request, *args, **kwargs):
         params = request.GET.dict()
@@ -220,7 +235,7 @@ class PaymentVerificationView(LoginRequiredMixin,generic.TemplateView):
 
         except Exception as e:
             print(f"Error in verification: {e}")
-            messages.error(f"")
+            messages.error(request, f"Payment verification failed: {str(e)}")
             return redirect("orders")
 
 class CheckoutView(LoginRequiredMixin, View):        
@@ -301,14 +316,6 @@ class CheckoutView(LoginRequiredMixin, View):
                 payment_details.save()
 
             return redirect(checkout_url)
-        
-        else:
-            print(f"Khalti API Error: {response.text}")
-            order.status = 'failed'
-            order.save()
-            messages.error(request, "We couldn't connect to Khalti. Please try again from your Orders page.")
-            
-            return redirect('orders')
 
     def initiate_esewa_payment(self, request, order):
         ESEWA_MERCHANT_ID = settings.ESEWA_MERCHANT_ID

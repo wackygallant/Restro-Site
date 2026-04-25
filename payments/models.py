@@ -30,7 +30,7 @@ class Payment(BaseModel):
         return self.order.order_id
     
     def __str__(self):
-        return f"Payment for {self.order_id} - {self.get_status_display()}"
+        return f"Payment for {self.order_id} - {self.status}"
     
     class Meta:
         db_table = 'payments'
