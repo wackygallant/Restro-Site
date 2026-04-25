@@ -1,41 +1,116 @@
     .carousel-wrapper {
-        overflow: hidden;
-        position: relative;
-    }
+    overflow: hidden;
+    position: relative;
+}
 
-    .carousel-track {
-        display: flex;
-        transition: transform 0.6s ease;
-    }
+.carousel-track {
+    display: flex;
+    transition: transform 0.6s ease;
+}
 
-    /* Show center + side peek */
-    .carousel-card {
-        min-width: 33.33%;
-        padding: 0 10px;
-        transform: scale(0.9);
-        transition: all 0.4s ease;
-    }
+/* Show center + side peek */
+.carousel-card {
+    min-width: 33.33%;
+    padding: 0 10px;
+    transform: scale(0.9);
+    transition: all 0.4s ease;
+}
 
-    /* Image styling */
-    .carousel-card img {
-        height: 220px;
-        object-fit: cover;
-        border-radius: 12px;
-    }
+/* Image styling */
+.carousel-card img {
+    height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+}
 
-    /* Buttons */
-    .nav-btn {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(255,255,255,0.1);
-        border: none;
-        font-size: 28px;
-        color: white;
-        padding: 10px 15px;
-        cursor: pointer;
-        z-index: 10;
-    }
+/* Buttons */
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.1);
+    border: none;
+    font-size: 28px;
+    color: white;
+    padding: 10px 15px;
+    cursor: pointer;
+    z-index: 10;
+}
 
-    .nav-btn.left { left: -10px; color: black;}
-    .nav-btn.right { right: -10px; color: black;}
+.nav-btn.left { 
+    left: -10px; 
+    color: black;
+}
+
+.nav-btn.right { 
+    right: -10px; 
+    color: black;
+}
+
+/* Section spacing */
+section.py-5.bg-white {
+    margin-bottom: 2rem;
+}
+
+/* Review Form Styling */
+.rating-stars .btn {
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.rating-stars .btn:hover {
+    transform: scale(1.1);
+}
+
+.rating-stars .btn.active i {
+    color: #ffc107 !important;
+}
+
+.rating-stars .btn i {
+    transition: color 0.2s ease;
+}
+
+.rating-stars .btn:hover i {
+    color: #ffc107 !important;
+}
+
+/* Review form size reduction */
+#reviewForm .card {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem !important;
+}
+
+#reviewForm .form-control {
+    font-size: 0.9rem;
+}
+
+#reviewForm .form-label {
+    font-size: 0.9rem;
+}
+
+#reviewForm .btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 2rem;
+}
+
+/* Feature cards styling */
+.feature-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+}
+
+.icon-box {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover .icon-box {
+    transform: scale(1.1);
+}

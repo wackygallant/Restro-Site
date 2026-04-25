@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+<link rel="stylesheet" href="{% static 'customer_panel/css/index.css' %}">
 
 <section class="about-hero text-white text-center">
     <div class="container py-5">
@@ -23,20 +24,20 @@
             <div class="col-md-6">
                 <p class="lead text-muted">Restro was founded with a simple mission: to bring authentic, delicious
                     cuisine to our community.</p>
-                <p>Started in 2015, Restro has grown from a small neighborhood bistro to one of the city's most celebrated restaurants.</p>
+                <p class="lead text-muted">Started in 2015, Restro has grown from a small neighborhood bistro to one of the city's most celebrated restaurants.</p>
             </div>
         </div>
     </section>
 
     <section class="py-5 bg-light rounded">
-        <div class="container">
+        <div class="container position-relative">
         <div class="text-center">
             <h2 class="section-title">Meet Our Team</h2>
         </div>
-            <div class="team-carousel-container" id="team-carousel">
-                <div class="team-track" id="team-track">
+            <div class="carousel-wrapper">
+                <div class="carousel-track" id="team-track">
                     {% for team in teams %}
-                    <div class="team-member-card">
+                    <div class="carousel-card">
                         <div class="card border-0 shadow-sm overflow-hidden h-100">
                             <img src="{{ team.image.url }}" class="card-img-top" alt="{{ team.name }}"
                                 style="height: 250px; object-fit: cover;">
@@ -50,6 +51,10 @@
                     {% endfor %}
                 </div>
             </div>
+            
+            <!-- Buttons -->
+            <button class="nav-btn left" id="team-prev">❮</button>
+            <button class="nav-btn right" id="team-next">❯</button>
         </div>
     </section>
 
@@ -99,5 +104,6 @@
     </section>
 </div>
 
+<script src="{% static 'customer_panel/js/index.js' %}"></script>
 <script src="{% static 'customer_panel/js/about.js' %}"></script>
 {% endblock %}

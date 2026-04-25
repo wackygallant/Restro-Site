@@ -5,8 +5,8 @@ function initCarousel(trackId, prevBtnId, nextBtnId) {
 
     let cards = Array.from(track.children);
 
-    // ❗ Disable buttons if not enough items
-    if (cards.length <= 3) {
+    // ❗ Disable buttons if not enough items to scroll
+    if (cards.length <= 1) {
         if (prevBtn) prevBtn.style.display = "none";
         if (nextBtn) nextBtn.style.display = "none";
         return;
@@ -59,8 +59,3 @@ function initCarousel(trackId, prevBtnId, nextBtnId) {
 
     updateCarousel();
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-    initCarousel("dish-track", "dish-prev", "dish-next");
-    initCarousel("review-track", "review-prev", "review-next");
-});
