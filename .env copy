@@ -1,24 +1,26 @@
-SECRET_KEY=your-secret-key-here
+SECRET_KEY=
 
 DEBUG=True
 
-# Database Configuration
 DB_ENGINE=django.db.backends.postgresql
-DB_NAME=your_database_name
-DB_USER=your_database_user
-DB_PASSWORD=your_database_password
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
 DB_HOST=localhost
 DB_PORT=5432
 
 
-# Email Configuration (Optional)
 EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
 EMAIL_USE_TLS=True
-EMAIL_HOST_USER=your-email@gmail.com
-EMAIL_HOST_PASSWORD=your-app-password
+EMAIL_PORT=587
+EMAIL_HOST_USER=
+EMAIL_HOST_PASSWORD=
 
-
+# For Khalti Integration
 KHALTI_API_URL=https://dev.khalti.com/api/v2/
 KHALTI_API_SECRET_KEY=
 KHALTI_API_PUBLIC_KEY=
+
+# For Esewa Integration (UAT)
+ESEWA_MERCHANT_ID=EPAYTEST
+ESEWA_SECRET_KEY=8gBm/:&EnhH.1/q

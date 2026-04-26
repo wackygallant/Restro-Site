@@ -48,7 +48,7 @@ class EditShippingAddressView(LoginRequiredMixin,View):
     def get(self, request, pk):
         address = ShippingAddress.objects.get(id=pk, username=request.user)
         form = ShippingAddressForm(instance=address)
-        return render(request, 'edit_shipping_address.html', {'form': form, 'address': address})
+        return render(request, 'customer_panel/edit_shipping_address.html', {'form': form, 'address': address})
     
     def post(self, request, pk):
         address = ShippingAddress.objects.get(id=pk, username=request.user)

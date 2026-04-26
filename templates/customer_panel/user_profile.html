@@ -24,6 +24,11 @@
                     <h5 class="card-title text-center fw-bold">{{ user.username }}</h5>
 
                     <div class="mb-3">
+                        <small class="text-muted">Full Name</small>
+                        <p class="mb-0">{{ user.first_name }} {{ user.last_name }}</p>
+                    </div>
+
+                    <div class="mb-3">
                         <small class="text-muted">Email Address</small>
                         <p class="mb-0">{{ user.email }}</p>
                     </div>
@@ -272,7 +277,7 @@
                                 {% csrf_token %}
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Username</label>
-                                    <input type="text" class="form-control" value="{{ username }}" disabled>
+                                    <input type="text" class="form-control" value="{{ user.username }}" disabled>
                                     <small class="text-muted">Username cannot be changed</small>
                                 </div>
                                 <div class="mb-3">
