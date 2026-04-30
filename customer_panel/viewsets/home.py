@@ -19,7 +19,7 @@ class HomePage(generic.TemplateView):
         
         context.update({
             "username": _utils.get_username(self.request),
-            "reviews": Reviews.objects.all().order_by('-created_at')[:3],
+            "reviews": Reviews.objects.all().order_by('-created_at')[:6],
             "menu_items": MenuItems.objects.all(),
             "special_items": MenuItems.objects.filter(is_on_special=True)
         })

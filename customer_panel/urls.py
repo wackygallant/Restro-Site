@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 # View Imports
-from customer_panel.viewsets.custom_pages import HomePage, AboutPage
+from customer_panel.viewsets.home import HomePage, AboutPage
 from customer_panel.viewsets.booking import BookTableView
 from customer_panel.viewsets.menu import Menu_Page, Menu_Item_Detail
 from customer_panel.viewsets.order import OrderListView, OrderCartView, AddToOrderCartView, RemoveFromOrderCartView, UpdateOrderCartItemView, CheckoutView, PaymentVerificationView
