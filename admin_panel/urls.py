@@ -1,5 +1,6 @@
 from django.urls import path, include
 from admin_panel.viewsets.admin_dashboard import DashboardView, LogoutView
+from admin_panel.viewsets.admin_payments import AdminPaymentEditView, PaymentListView
 from admin_panel.viewsets.admin_user import UserAdminView, UserCreateView, UserEditView, UserDeleteView
 from admin_panel.viewsets.admin_order import AdminOrderView, CompleteOrder, CancelOrder
 from admin_panel.viewsets.admin_reservation import AdminReservationView
@@ -49,5 +50,9 @@ urlpatterns = [
         path('create/', AdminReviewCreateView.as_view(), name='admin_review_create'),
         path('edit/<int:pk>/', AdminReviewEditView.as_view(), name='admin_review_edit'),
         path('delete/<int:pk>/', AdminReviewDeleteView.as_view(), name='admin_review_delete'),
+    ])),
+    path('payments/', include([ 
+        path('', PaymentListView.as_view(), name='admin_payments'),
+        path('edit/<int:pk>/', AdminPaymentEditView.as_view(), name='admin_payment_edit'),
     ])),
 ]

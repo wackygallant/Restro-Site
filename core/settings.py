@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Created Apps
+    'admin_panel',
     'customer_panel',
     'menu',
     'booking',
@@ -153,7 +154,7 @@ SESSION_COOKIE_AGE = 1800
 SESSION_SAVE_EVERY_REQUEST = True
 
 
-# DRF Spectacular Integration(Swagger UI)
+# DRF Spectacular Integration(Swagger UI) with JWT Authentication
 REST_FRAMEWORK = {
     # YOUR SETTINGS
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',

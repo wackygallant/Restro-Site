@@ -2,6 +2,7 @@
 from django.views import generic
 from django.shortcuts import redirect
 from django.db.models import Q
+from django.contrib import messages
 
 # App Imports
 from booking.models import Booking
@@ -44,4 +45,5 @@ class AdminReservationView(generic.ListView):
         booking = Booking.objects.get(id=reservation_id)
         booking.booking_status = status
         booking.save()
+        messages.success(request, f"Reservation for {booking.booking_id} status updated to {status}.")
         return redirect('admin_reservations')

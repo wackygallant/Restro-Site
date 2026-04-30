@@ -1,9 +1,9 @@
 {% extends 'admin_panel/admin_base.html' %}
 {% load static %}
 
-{% block title %}Menu Items - Admin Panel{% endblock %}
+{% block title %}Payments - Admin Panel{% endblock %}
 
-{% block page_title %}Menu Items{% endblock %}
+{% block page_title %}All Payments{% endblock %}
 
 {% block content %}
 
@@ -15,19 +15,21 @@
                     <nav aria-label="Page navigation">
                         <ul class="pagination pagination-sm mb-0">
                             {% if page_obj.has_previous %}
-                            <li class="page-item"><a class="page-link"
-                                    href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}&{{ query_params }}">Previous</a>
+                            </li>
                             {% endif %}
 
                             {% for page_num in page_obj.paginator.page_range %}
                             <li class="page-item {% if page_obj.number == page_num %}active{% endif %}">
-                                <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                                <a class="page-link" href="?page={{ page_num }}&{{ query_params }}">{{ page_num }}</a>
                             </li>
                             {% endfor %}
 
                             {% if page_obj.has_next %}
-                            <li class="page-item"><a class="page-link"
-                                    href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                            <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                </li>
                             {% endif %}
                         </ul>
                     </nav>
@@ -36,7 +38,8 @@
                 <div class="col-md-8">
                     <form method="get" class="d-flex gap-2 justify-content-md-end">
                         <div class="input-group input-group-sm" style="max-width: 450px;">
-                            <input class="form-control" type="text" name="search" placeholder="Search Menu Item..."
+                            <input class="form-control" type="text" name="search"
+                                placeholder="Search Order ID or Transaction ID"
                                 value="{{ request.GET.search|default:'' }}">
 
                             <button class="btn btn-outline-secondary dropdown-toggle" type="button"
@@ -45,18 +48,14 @@
                             </button>
 
                             <ul class="dropdown-menu p-3 shadow" style="min-width: 200px;">
-                                <h6 class="dropdown-header ps-0">Category</h6>
-                                {% if categories %}
-                                {% for category in categories %}
+                                <h6 class="dropdown-header ps-0">Payment Status</h6>
+                                {% for status in payment_status_choices %}
                                 <li class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="category"
-                                        value="{{ category.id }}" id="check{{ category.id }}" {% if category.id in category_filters %}checked{% endif %}>
-                                    <label class="form-check-label" for="check{{ category.id }}">{{ category.name }}</label>
+                                    <input class="form-check-input" type="checkbox" name="status" value="{{ status.0 }}"
+                                        id="check{{ status.0 }}" {% if status.0 in status_filters %}checked{% endif %}>
+                                    <label class="form-check-label" for="check{{ status.0 }}">{{ status.1 }}</label>
                                 </li>
                                 {% endfor %}
-                                {% else %}
-                                <li class="text-muted">No categories found</li>
-                                {% endif %}
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -64,70 +63,66 @@
                             </ul>
 
                             <button type="submit" class="btn btn-primary">Search</button>
-                            {% if request.GET.search or request.GET.category %}
-                            <a href="{% url 'admin_menu' %}" class="btn btn-secondary">Clear</a>
+                            {% if request.GET.search or request.GET.status %}
+                            <a href="{% url 'admin_payments' %}" class="btn btn-secondary">Clear</a>
                             {% endif %}
                         </div>
                     </form>
                 </div>
             </div>
+
         </div>
     </div>
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">All Menu Items</h3>
+            <h3 class="card-title">All Payment Records</h3>
         </div>
         <div class="card-body">
             <table class="table table-hover text-center align-middle">
                 <thead>
                     <tr>
                         <th scope="col">Actions</th>
-                        <th scope="col">Created Date</th>
-                        <th scope="col">Updated Date</th>
-                        <th scope="col">Price(Rs.)</th>
-                        <th scope="col">Is_On_Special</th>
-                        <th scope="col">Special_Price</th>
-                        <th scope="col" class="text-start">Name</th>
-                        <th scope="col" class="text-start">Category</th>
-                        <th scope="col" class="text-start">Image</th>
-                        <th scope="col" class="text-start">Description</th>
+                        <th scope="col">Order ID</th>
+                        <th scope="col">Payment Method</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Transaction ID</th>
+                        <th scope="col">Payment ID</th>
+                        <th scope="col">Amount</th>
                     </tr>
                 </thead>
-                {% if menu_items %}
+                {% if payments %}
                 <tbody>
-                    {% for item in menu_items %}
+                    {% for payment in payments %}
                     <tr>
                         <th scope="row">
-                            <a href="{% url 'admin_menu_edit' item.pk %}">
+                            <a href="{% url 'admin_payment_edit' payment.pk %}">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
                         </th>
-                        <td>{{ item.created_at|date:"M d, Y" }}</td>
-                        <td>{{ item.updated_at|date:"M d, Y" }}</td>
-                        <td>{{ item.price }}</td>
-                        <td>{{ item.is_on_special }}</td>
+                        <td><span class="fw-bold">#{{ payment.order.order_id }}</span></td>
+                        <td>{{ payment.payment_method|title }}</td>
                         <td>
-                            {% if item.special_price %}
-                            {{ item.special_price }}
-                            {% else %}
-                            -
-                            {% endif %}
+                            <span class="badge rounded-pill 
+                                {% if payment.status == 'paid' %}bg-success
+                                {% elif payment.status == 'pending' %}bg-warning text-dark
+                                {% elif payment.status == 'failed' %}bg-danger text-white
+                                {% else %}bg-info text-dark{% endif %}">
+                                {{ payment.status|title }}
+                            </span>
                         </td>
-                        <td class="text-start">{{ item.name }}</td>
-                        <td class="text-start">{{ item.category }}</td>
-                        <td class="text-start">{{ item.image }}</td>
-                        <td class="text-start">{{ item.description|truncatewords:8 }}</td>
+                        <td>{{ payment.transaction_id }}</td>
+                        <td>{{ payment.payment_id }}</td>
+                        <td>Rs. {{ payment.amount }}</td>
                     </tr>
                     {% endfor%}
                 </tbody>
                 {% else %}
                 <tbody>
                     <tr>
-                        <td colspan="10" class="text-center">No Menu Items Created</td>
+                        <td colspan="10" class="text-center">No Payments Found</td>
                     </tr>
-                </tbody>
-                {% endif %}
+                    {% endif %}
             </table>
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="flex-1" style="flex-basis: 0; flex-grow: 1;">
@@ -138,7 +133,6 @@
                 </div>
 
                 <div class="d-flex justify-content-end flex-grow-1" style="flex-basis: 0;">
-                    <a href="{% url 'admin_menu_create' %}" class="btn btn-primary text-nowrap">Create Menu Item</a>
                 </div>
             </div>
         </div>

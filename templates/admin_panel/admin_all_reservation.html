@@ -75,33 +75,39 @@
             <h3 class="card-title">All Reservations</h3>
         </div>
         <div class="card-body">
-            <table class="table table-bordered">
+            <table class="table table-hover text-center align-middle">
         <thead>
             <tr>
-                <th scope="col">Booking ID</th>
-                <th scope="col">Username</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone</th>
+                <th scope="col">Actions</th>
                 <th scope="col">Date</th>
                 <th scope="col">Time</th>
+                <th scope="col">Booking ID</th>
+                <th scope="col" class="text-start">Name</th>
+                <th scope="col" class="text-start">Email</th>
+                <th scope="col" class="text-start">Phone</th>
                 <th scope="col">Party Size</th>
-                <th scope="col">Status</th>
+                <th scope="col" class="text-start">Status</th>
             </tr>
         </thead>
         {% if reservations %}
         <tbody>
             {% for reservation in reservations %}
             <tr>
-                <th scope="row">{{ reservation.booking_id }}</th>
-                <td>{{ reservation.user.username }}</td>
-                <td>{{ reservation.email }}</td>
-                <td>{{ reservation.phone_number }}</td>
+                <th scope="row">
+                    <a href="#">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                </th>
                 <td>
                     {{  reservation.booking_date|date:"M d, Y"  }}
                 </td>
                 <td>{{ reservation.time_slot.time|time:"g:i A" }}</td>
+                <td>{{ reservation.booking_id }}</td>
+                <td class="text-start">{{ reservation.user.first_name }} {{ reservation.user.last_name }}</td>
+                <td class="text-start">{{ reservation.email }}</td>
+                <td class="text-start">{{ reservation.phone_number }}</td>
                 <td>{{ reservation.person_count }} {{ reservation.person_count|pluralize:"person,people" }}</td>
-                <td>
+                <td class="text-start">
                     <form method="post">
                         {% csrf_token %}
                         <input type="hidden" name="reservation_id" value="{{ reservation.id }}">

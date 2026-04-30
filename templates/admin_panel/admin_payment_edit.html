@@ -1,0 +1,143 @@
+{% extends 'admin_panel/admin_base.html' %}
+
+{% block page_title %}Admin Payment Edit{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="mb-1">Edit Payment</h2>
+                <p class="text-muted mb-0">Edit payment information</p>
+            </div>
+            <a href="{% url 'admin_payments' %}" class="btn btn-outline-secondary rounded-pill">
+                <i class="bi bi-arrow-left"></i> Back to Payments
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="stat-card">
+            <div class="card-body p-4">
+                <h5 class="card-title mb-4">
+                    <i class="bi bi-cash-stack"></i> Payment Information
+                </h5>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="order_id" class="form-label fw-semibold">
+                                Order ID
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-tags"></i>
+                                </span>
+                                <input type="text" class="form-control" id="order_id" name="order_id" 
+                                readonly value="{{ payment.order.order_id }}">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="payment_method" class="form-label fw-semibold">
+                                Payment Method
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-person-badge"></i>
+                                </span>
+                                <input type="text" class="form-control" id="payment_method" name="payment_method"
+                                    readonly value="{{ payment.payment_method }}" >
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="transaction_id" class="form-label fw-semibold">
+                                Transaction ID <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-tags"></i>
+                                </span>
+                                <input type="text" class="form-control" id="transaction_id" name="transaction_id" required
+                                    value="{{ payment.transaction_id }}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="payment_id" class="form-label fw-semibold">
+                                Payment ID <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-tags"></i>
+                                </span>
+                                <input type="text" class="form-control" id="payment_id" name="payment_id" required
+                                    value="{{ payment.payment_id }}" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="amount" class="form-label fw-semibold">
+                                Amount <span class="text-danger">*</span>
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-currency-rupee"></i>
+                                </span>
+                                <input type="text" class="form-control" id="amount" name="amount" required
+                                    value="{{ payment.amount }}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="status" class="form-label fw-semibold">
+                                Status <span class="text-danger">*</span>
+                            </label>
+                                <div class="input-group">
+                                <span class="input-group-text">
+                                    <i class="bi bi-arrow-bar-down"></i>
+                                </span>
+                                <select class="form-control" id="status" name="status" required>
+                                    {% for value, label in payment_status_choices %}
+                                        <option value="{{ value }}" {% if payment.status == value %}selected{% endif %}>
+                                            {{ label }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="sendWelcomeEmail">
+                            <label class="form-check-label" for="sendWelcomeEmail">
+                                Send welcome email to user
+                            </label>
+                        </div>
+
+                        <div>
+                            <a href="{% url 'admin_payments' %}" class="btn btn-outline-secondary me-2">
+                                <i class="bi bi-x-circle"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-circle"></i> Update
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
