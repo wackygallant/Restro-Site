@@ -1,21 +1,51 @@
 {% extends 'admin_panel/admin_base.html' %}
 {% load static %}
 
+{% block title %}All Testimonials - Admin Panel{% endblock %}
 {% block page_title %}Reviews{% endblock %}
 
-{% block title %}All Testimonials - Admin Panel{% endblock %}
-
 {% block content %}
+
 <div class="container-fluid">
-    <div class="card mb-4 border-0 shadow-sm">
+
+    <!-- Top Controls -->
+    <div class="card border-0 shadow-sm mb-3">
         <div class="card-body">
-            <div class="row align-items-center">
-                <div class="col-md-4">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination pagination-sm mb-0">
+
+            <div class="row g-3 align-items-center">
+
+                <!-- Search -->
+                <div class="col-12 col-md-6 order-2 order-md-1">
+                    <form method="get" class="d-flex">
+                        <div class="input-group input-group-sm">
+
+                            <input type="text" name="search" class="form-control" placeholder="Search Keywords..."
+                                value="{{ request.GET.search|default:'' }}">
+
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-search"></i>
+                            </button>
+
+                            {% if request.GET.search %}
+                            <a href="{% url 'admin_testimonials' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x"></i>
+                            </a>
+                            {% endif %}
+
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Pagination -->
+                <div class="col-12 col-md-6 order-1 order-md-2 text-md-end">
+                    <nav>
+                        <ul
+                            class="pagination pagination-sm justify-content-md-end justify-content-center mb-0 flex-wrap">
+
                             {% if page_obj.has_previous %}
-                            <li class="page-item"><a class="page-link"
-                                    href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Prev</a>
+                            </li>
                             {% endif %}
 
                             {% for page_num in page_obj.paginator.page_range %}
@@ -25,88 +55,154 @@
                             {% endfor %}
 
                             {% if page_obj.has_next %}
-                            <li class="page-item"><a class="page-link"
-                                    href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                            </li>
                             {% endif %}
+
                         </ul>
                     </nav>
                 </div>
 
-                <div class="col-md-8">
-                    <form method="get" class="d-flex gap-2 justify-content-md-end">
-                        <div class="input-group input-group-sm" style="max-width: 450px;">
-                            <input class="form-control" type="text" name="search" placeholder="Search Keywords..."
-                                value="{{ request.GET.search|default:'' }}">
-                            <button type="submit" class="btn btn-primary">Search</button>
-                            {% if request.GET.search or request.GET.status %}
-                            <a href="{% url 'admin_testimonials' %}" class="btn btn-secondary">Clear</a>
-                            {% endif %}
-                        </div>
-                    </form>
-                </div>
             </div>
+
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">All Reviews</h3>
-                </div>
-                <div class="card-body">
-                    <table class="table table-hover text-center align-middle">
-                        <thead>
-                            <tr>
-                                <th scope="col">Actions</th>
-                                <th scope="col">Created At</th>
-                                <th scope="col">Updated At</th>
-                                <th scope="col">First Name</th>
-                                <th scope="col">Last Name</th>
-                                <th scope="col">Rating</th>
-                                <th scope="col" class="text-start">Review</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for review in reviews %}
-                            <tr>
-                                <td>
-                                    <a href="{% url 'admin_review_edit' review.pk %}">
-                                        <i class="bi bi-pencil-square"></i>
-                                    </a>
-                                </td>
-                                <td>{{ review.created_at }}</td>
-                                <td>{{ review.updated_at }}</td>
-                                <td>{{ review.first_name }}</td>
-                                <td>{{ review.last_name }}</td>
-                                <td>{{ review.rating }}</td>
-                                <td class="text-start">{{ review.review }}</td>
-                            </tr>
-                            {% empty %}
-                            <tr>
-                                <th colspan="7" class="text-center py-5 text-muted">
-                                    <i class="bi bi-inbox fs-1 d-block mb-2"></i>
-                                    No Payment Records Found
-                                </th>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div class="flex-1" style="flex-basis: 0; flex-grow: 1;">
-                            </div>
+    <!-- Reviews Content -->
+    <div class="card border-0 shadow-sm">
 
-                            <div class="text-center flex-grow-1">
-                                <p class="mb-0">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
-                            </div>
-
-                            <div class="d-flex justify-content-end flex-grow-1" style="flex-basis: 0;">
-                                <a href="{% url 'admin_review_create' %}" class="btn btn-primary text-nowrap">Create Review</a>
-                            </div>
-                        </div>
-                </div>
-            </div>
+        <div class="card-header bg-white">
+            <h5 class="mb-0">All Reviews</h5>
         </div>
+
+        <div class="card-body p-0">
+
+            {% if reviews %}
+
+            <!-- ================= DESKTOP TABLE ================= -->
+            <div class="table-responsive d-none d-md-block">
+                <table class="table table-hover align-middle text-center mb-0">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>Action</th>
+                            <th>Created</th>
+                            <th>Updated</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Rating</th>
+                            <th class="text-start">Review</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for review in reviews %}
+                        <tr>
+
+                            <td>
+                                <a href="{% url 'admin_review_edit' review.pk %}" class="text-primary">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                            </td>
+
+                            <td>{{ review.created_at|date:"M d, Y" }}</td>
+
+                            <td>{{ review.updated_at|date:"M d, Y" }}</td>
+
+                            <td>{{ review.first_name }}</td>
+
+                            <td>{{ review.last_name }}</td>
+
+                            <td>
+                                <span class="badge bg-warning text-dark">
+                                    {{ review.rating }}/5
+                                </span>
+                            </td>
+
+                            <td class="text-start">
+                                {{ review.review|truncatewords:15 }}
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+            <!-- ================= MOBILE CARDS ================= -->
+            <div class="d-md-none p-3">
+
+                {% for review in reviews %}
+                <div class="card mb-3 border">
+
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <div class="fw-bold">
+                                    {{ review.first_name }} {{ review.last_name }}
+                                </div>
+                                <div class="small text-muted">
+                                    {{ review.created_at|date:"M d, Y" }}
+                                </div>
+                            </div>
+
+                            <a href="{% url 'admin_review_edit' review.pk %}" class="text-primary">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                        </div>
+
+                        <div class="mb-2">
+                            <span class="badge bg-warning text-dark">
+                                Rating: {{ review.rating }}/5
+                            </span>
+                        </div>
+
+                        <p class="small mb-0">
+                            {{ review.review|truncatewords:20 }}
+                        </p>
+
+                    </div>
+
+                </div>
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="text-center py-5 text-muted">
+                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                No Reviews Found
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer bg-white">
+
+            <div class="row g-2 align-items-center">
+
+                <div class="col-12 col-md-6 text-center text-md-start">
+                    <small>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</small>
+                </div>
+
+                <div class="col-12 col-md-6 text-center text-md-end">
+                    <a href="{% url 'admin_review_create' %}" class="btn btn-primary btn-sm w-100 w-md-auto">
+                        <i class="bi bi-plus-lg"></i> Create Review
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
+
 </div>
+
 {% endblock %}

@@ -5,16 +5,76 @@
 {% block page_title %}Orders Management{% endblock %}
 
 {% block content %}
-<div class="container-fluid px-4">
-    <div class="card mb-4 border-0 shadow-sm">
+
+<div class="container-fluid">
+
+    <!-- Top Controls -->
+    <div class="card border-0 shadow-sm mb-3">
         <div class="card-body">
-            <div class="row align-items-center">
-                <div class="col-md-4">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination pagination-sm mb-0">
+
+            <div class="row g-3 align-items-center">
+
+                <!-- Search + Filter -->
+                <div class="col-12 col-md-6 order-2 order-md-1">
+                    <form method="get" class="d-flex">
+                        <div class="input-group input-group-sm">
+
+                            <input type="text" name="search" class="form-control"
+                                placeholder="Search Order ID or Username..."
+                                value="{{ request.GET.search|default:'' }}">
+
+                            <!-- Filter Dropdown -->
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                                data-bs-toggle="dropdown" data-bs-auto-close="outside">
+                                <i class="bi bi-funnel"></i>
+                            </button>
+
+                            <ul class="dropdown-menu p-3 shadow" style="min-width: 220px;">
+                                <h6 class="dropdown-header ps-0">Order Status</h6>
+
+                                {% for status in order_status_choices %}
+                                <li class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="status" value="{{ status.0 }}"
+                                        id="check{{ status.0 }}" {% if status.0 in status_filters %}checked{% endif %}>
+                                    <label class="form-check-label" for="check{{ status.0 }}">
+                                        {{ status.1 }}
+                                    </label>
+                                </li>
+                                {% endfor %}
+
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+
+                                <button type="submit" class="btn btn-primary btn-sm w-100">
+                                    Apply Filters
+                                </button>
+                            </ul>
+
+                            <button class="btn btn-primary" type="submit">
+                                <i class="bi bi-search"></i>
+                            </button>
+
+                            {% if request.GET.search or request.GET.status %}
+                            <a href="{% url 'admin_orders' %}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x"></i>
+                            </a>
+                            {% endif %}
+
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Pagination -->
+                <div class="col-12 col-md-6 order-1 order-md-2 text-md-end">
+                    <nav>
+                        <ul
+                            class="pagination pagination-sm justify-content-md-end justify-content-center mb-0 flex-wrap">
+
                             {% if page_obj.has_previous %}
-                            <li class="page-item"><a class="page-link"
-                                    href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Prev</a>
+                            </li>
                             {% endif %}
 
                             {% for page_num in page_obj.paginator.page_range %}
@@ -24,173 +84,251 @@
                             {% endfor %}
 
                             {% if page_obj.has_next %}
-                            <li class="page-item"><a class="page-link"
-                                    href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                            </li>
                             {% endif %}
+
                         </ul>
                     </nav>
                 </div>
 
-                <div class="col-md-8">
-                    <form method="get" class="d-flex gap-2 justify-content-md-end">
-                        <div class="input-group input-group-sm" style="max-width: 450px;">
-                            <input class="form-control" type="text" name="search"
-                                placeholder="Search Order ID or Username..."
-                                value="{{ request.GET.search|default:'' }}">
-
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button"
-                                data-bs-toggle="dropdown" data-bs-auto-close="outside">
-                                <i class="bi bi-funnel"></i>
-                            </button>
-
-                            <ul class="dropdown-menu p-3 shadow" style="min-width: 200px;">
-                                <h6 class="dropdown-header ps-0">Order Status</h6>
-                                {% for status in order_status_choices %}
-                                <li class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="status" value="{{ status.0 }}"
-                                        id="check{{ status.0 }}" {% if status.0 in status_filters %}checked{% endif %}>
-                                    <label class="form-check-label" for="check{{ status.0 }}">{{ status.1 }}</label>
-                                </li>
-                                {% endfor %}
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <button type="submit" class="btn btn-primary btn-sm w-100">Apply</button>
-                            </ul>
-
-                            <button type="submit" class="btn btn-primary">Search</button>
-                            {% if request.GET.search or request.GET.status %}
-                            <a href="{% url 'admin_orders' %}" class="btn btn-secondary">Clear</a>
-                            {% endif %}
-                        </div>
-                    </form>
-                </div>
             </div>
+
         </div>
     </div>
 
-    <div class="card">
-        <div class="card-header">
-            <h3 class="card-title">All Orders</h3>
+    <!-- Orders Content -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white">
+            <h5 class="mb-0">All Orders</h5>
         </div>
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-hover text-center align-middle">
+
+        <div class="card-body p-0">
+
+            {% if orders %}
+
+            <!-- ================= DESKTOP TABLE ================= -->
+            <div class="table-responsive d-none d-md-block">
+                <table class="table table-hover align-middle text-center mb-0">
+
                     <thead class="table-light">
                         <tr>
-                            <th scope="col">Actions</th>
-                            <th scope="col">Date</th>
-                            <th scope="col" class="text-start">Order ID</th>
-                            <th scope="col" class="text-start">User</th>
-                            <th scope="col">Order Status</th>
-                            <th scope="col">Items</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Payment Status</th>
-                            <th scope="col">Details</th>
+                            <th>Actions</th>
+                            <th>Date</th>
+                            <th class="text-start">Order ID</th>
+                            <th class="text-start">User</th>
+                            <th>Status</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Payment</th>
+                            <th>Details</th>
                         </tr>
                     </thead>
+
                     <tbody>
-                        {% if orders %}
                         {% for order in orders %}
                         <tr>
-                            <th scope="row">
-                            <div class="btn-group" role="group">
-                                <a class="btn btn-outline-secondary" href="{% url 'admin_order_complete' order.id %}" title="Complete Order">
-                                    <i class="bi bi-check-circle"></i>
-                                </a>
-                                <a class="btn btn-outline-secondary" href="{% url 'admin_order_cancel' order.id %}" title="Cancel Order">
-                                    <i class="bi bi-x-circle"></i>
-                                </a>
-                            </div>
-                            </th>
-                            <td>{{ order.order_date|date:"M d, Y" }}</td>
-                            <td class="fw-bold text-start -whitespace-wrap">#{{ order.order_id }}</td>
-                            <td class="text-start">{{ order.user.first_name }} {{ order.user.last_name }}</td>
+
+                            <!-- Actions -->
                             <td>
-                                <span class="badge rounded-pill 
-                                        {% if order.order_status == 'completed' %}bg-success
-                                        {% elif order.order_status == 'pending' %}bg-warning text-dark
-                                        {% else %}bg-info text-dark{% endif %}">
+                                <div class="btn-group btn-group-sm">
+                                    <a class="btn btn-outline-success" href="{% url 'admin_order_complete' order.id %}">
+                                        <i class="bi bi-check-circle"></i>
+                                    </a>
+                                    <a class="btn btn-outline-danger" href="{% url 'admin_order_cancel' order.id %}">
+                                        <i class="bi bi-x-circle"></i>
+                                    </a>
+                                </div>
+                            </td>
+
+                            <td>{{ order.order_date|date:"M d, Y" }}</td>
+
+                            <td class="text-start fw-bold">#{{ order.order_id }}</td>
+
+                            <td class="text-start">
+                                {{ order.user.first_name }} {{ order.user.last_name }}
+                            </td>
+
+                            <!-- Order Status -->
+                            <td>
+                                <span class="badge rounded-pill
+                                    {% if order.order_status == 'completed' %}bg-success
+                                    {% elif order.order_status == 'pending' %}bg-warning text-dark
+                                    {% else %}bg-info text-dark{% endif %}">
                                     {{ order.order_status|title }}
                                 </span>
-                                </td>                            
-                                <td class="text-center">{{ order.order_items.count }}</td>
-                                <td class="fw-bold">Rs. {{ order.total_amount }}</td>
-                                <td>
-                                    <span class="badge rounded-pill 
-                                            {% if order.payments.status == 'paid' %}bg-success
-                                                {% elif order.payments.status == 'pending' %}bg-warning text-dark
-                                            {% elif order.payments.status == 'failed' %}bg-danger text-white
-                                            {% else %}bg-info text-dark{% endif %}">
-                                        {{ order.payments.status|title }}
-                                    </span>
-                                </td>
-                            <td class="text-center">
-                                <button class="btn btn-outline-primary" data-bs-toggle="collapse"
-                                    data-bs-target="#details-{{ order.id }}" title="View Details">
-                                    <i class="bi bi-eye-fill"></i>
+                            </td>
+
+                            <td>{{ order.order_items.count }}</td>
+
+                            <td class="fw-bold">Rs. {{ order.total_amount }}</td>
+
+                            <!-- Payment Status -->
+                            <td>
+                                <span class="badge rounded-pill
+                                    {% if order.payments.status == 'paid' %}bg-success
+                                    {% elif order.payments.status == 'pending' %}bg-warning text-dark
+                                    {% elif order.payments.status == 'failed' %}bg-danger
+                                    {% else %}bg-secondary{% endif %}">
+                                    {{ order.payments.status|title }}
+                                </span>
+                            </td>
+
+                            <!-- Details -->
+                            <td>
+                                <button class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse"
+                                    data-bs-target="#details-{{ order.id }}">
+                                    <i class="bi bi-eye"></i>
                                 </button>
                             </td>
+
                         </tr>
+
+                        <!-- Expand Row -->
                         <tr class="collapse" id="details-{{ order.id }}">
-                            <td colspan="7" class="bg-light p-4">
-                                <div class="card shadow-sm border-0">
-                                    <div class="card-body">
-                                        <h6 class="mb-3"><i class="bi bi-box-seize me-2"></i>Order Summary</h6>
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <table class="table table-sm border">
-                                                    <thead class="table-dark">
+                            <td colspan="9" class="bg-light text-start p-4">
+
+                                <div class="row g-3">
+
+                                    <!-- Items -->
+                                    <div class="col-md-8">
+                                        <div class="card">
+                                            <div class="card-body">
+
+                                                <h6 class="mb-3">Order Items</h6>
+
+                                                <table class="table table-sm mb-0">
+                                                    <thead>
                                                         <tr>
-                                                            <th scope="col">Item</th>
-                                                            <th scope="col" class="text-center">Qty</th>
-                                                            <th scope="col">Price</th>
-                                                            <th scope="col" class="text-end">Subtotal</th>
+                                                            <th>Item</th>
+                                                            <th class="text-center">Qty</th>
+                                                            <th>Price</th>
+                                                            <th class="text-end">Subtotal</th>
                                                         </tr>
                                                     </thead>
+
                                                     <tbody>
                                                         {% for item in order.order_items.all %}
                                                         <tr>
-                                                            <td scope="row">{{ item.menu_item.name }}</td>
+                                                            <td>{{ item.menu_item.name }}</td>
                                                             <td class="text-center">{{ item.quantity }}</td>
                                                             <td>Rs. {{ item.price }}</td>
                                                             <td class="text-end">Rs. {{ item.get_total }}</td>
                                                         </tr>
                                                         {% endfor %}
-                                                        <tr class="table-light fw-bold">
-                                                            <td colspan="3" class="text-end">Total Amount</td>
-                                                            <td class="text-end text-primary">Rs. {{ order.total_amount }}</td>
+
+                                                        <tr class="fw-bold">
+                                                            <td colspan="3" class="text-end">Total</td>
+                                                            <td class="text-end text-primary">
+                                                                Rs. {{ order.total_amount }}
+                                                            </td>
                                                         </tr>
                                                     </tbody>
+
                                                 </table>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="p-3 border rounded bg-white">
-                                                    <h6 class="text-muted small text-uppercase fw-bold">Shipping Address
-                                                    </h6>
-                                                    <p class="mb-0 small">{{ order.shippingaddress }}</p>
-                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- Shipping -->
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h6 class="text-muted text-uppercase small">Shipping Address</h6>
+                                                <p class="mb-0">{{ order.shippingaddress }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
+
                             </td>
                         </tr>
                         {% endfor %}
-                        {% else %}
-                        <tr>
-                            <th colspan="9" class="text-center py-5 text-muted">
-                                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
-                                No Orders Found
-                            </th>
-                        </tr>
-                    {% endif %}
                     </tbody>
+
                 </table>
             </div>
-            <div class="card-footer bg-white border-0 py-3 text-center text-muted small">
-                Page <strong>{{ page_obj.number }}</strong> of {{ page_obj.paginator.num_pages }}
+
+            <!-- ================= MOBILE CARDS ================= -->
+            <div class="d-md-none p-3">
+
+                {% for order in orders %}
+                <div class="card mb-3 border">
+
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <div class="fw-bold">#{{ order.order_id }}</div>
+                                <div class="small text-muted">
+                                    {{ order.user.first_name }} {{ order.user.last_name }}
+                                </div>
+                            </div>
+
+                            <div class="btn-group btn-group-sm">
+                                <a class="btn btn-success btn-sm" href="{% url 'admin_order_complete' order.id %}">
+                                    <i class="bi bi-check"></i>
+                                </a>
+                                <a class="btn btn-danger btn-sm" href="{% url 'admin_order_cancel' order.id %}">
+                                    <i class="bi bi-x"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="small text-muted">
+                            <div><strong>Date:</strong> {{ order.order_date|date:"M d, Y" }}</div>
+                            <div><strong>Items:</strong> {{ order.order_items.count }}</div>
+                            <div><strong>Total:</strong> Rs. {{ order.total_amount }}</div>
+                        </div>
+
+                        <div class="mt-2 d-flex gap-2 flex-wrap">
+                            <span class="badge bg-primary">{{ order.order_status|title }}</span>
+                            <span class="badge bg-secondary">{{ order.payments.status|title }}</span>
+                        </div>
+
+                        <button class="btn btn-outline-primary btn-sm mt-2 w-100" data-bs-toggle="collapse"
+                            data-bs-target="#m-details-{{ order.id }}">
+                            View Details
+                        </button>
+
+                        <div class="collapse mt-2" id="m-details-{{ order.id }}">
+                            <div class="small">
+                                <strong>Shipping:</strong>
+                                <div>{{ order.shippingaddress }}</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                {% endfor %}
+
             </div>
+
+            {% else %}
+
+            <div class="text-center py-5 text-muted">
+                <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                No Orders Found
+            </div>
+
+            {% endif %}
+
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer bg-white">
+            <div class="text-center small text-muted">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </div>
+        </div>
+
     </div>
+
 </div>
+
 {% endblock %}

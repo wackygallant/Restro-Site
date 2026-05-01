@@ -114,59 +114,191 @@ A comprehensive restaurant management system built with Django, featuring online
 ## 🏗️ Project Structure
 
 ```
-Restro-Site/
-  admin_panel/            # Admin panel functionality
-  |   formsets/           # Admin form classes
-  |   urls.py             # Admin panel URL configuration
-  |   viewsets/           # Admin view classes
-  api/                    # API endpoints
-  |   serializers/        # API serializers
-  |   urls.py             # API URL configuration
-  |   viewsets/           # API view classes
-  booking/                # Table reservation system
-  |   models.py           # TimeSlot, Booking models
-  |   admin.py            # Booking admin
-  core/                   # Core Django settings and configuration
-  |   settings.py         # Django settings
-  |   urls.py             # Main URL configuration
-  |   wsgi.py             # WSGI configuration
-  customer_panel/         # Main customer-facing application
-  |   models.py           # Teams, Testimonials models
-  |   views.py            # Main views
-  |   urls.py             # Customer panel URLs
-  |   viewsets/           # View classes for different features
-  |   |   auth.py         # Authentication views
-  |   |   booking.py      # Table reservation views
-  |   |   custom_pages.py # Home, About pages
-  |   |   menu.py         # Menu display views
-  |   |   order.py        # Order management views
-  |   |   user_profile.py # User profile views
-  |   formsets/           # Form classes
-  menu/                   # Menu management
-  |   models.py           # MenuCategories, MenuItems
-  |   admin.py            # Menu admin configuration
-  order/                  # Order management system
-  |   models.py           # OrderCart, Order, OrderItem models
-  |   admin.py            # Order admin
-  payments/               # Payment processing
-  |   models.py           # Payment model
-  |   admin.py            # Payment admin
-  user_accounts/          # User account management
-  |   models.py           # ShippingAddress, OTP models
-  |   admin.py            # User account admin
-  utils/                  # Utility models and functions
-  |   models.py           # BaseModel, CommonModel
-  |   _utils.py           # Utility functions
-  templates/              # HTML templates
-  |   authentication/     # Login, register templates
-  |   customer_panel/     # Customer-facing templates
-  static/                 # Static files (CSS, JS, images)
-  media/                  # User-uploaded media files
-  .env                    # Environment variables
-  .env copy              # Environment variables template
-  menu.json              # Sample menu data
-  requirements.txt        # Python dependencies
-  manage.py              # Django management script
+ Restro-Site
+    ├── admin_panel
+    │   ├── apps.py
+    │   ├── formsets
+    │   │   ├── menuitemform.py
+    │   │   ├── reviewform.py
+    │   │   └── usercreationform.py
+    │   ├── __init__.py
+    │   ├── urls.py
+    │   └── viewsets
+    │       ├── admin_dashboard.py
+    │       ├── admin_menu.py
+    │       ├── admin_order.py
+    │       ├── admin_payments.py
+    │       ├── admin_reservation.py
+    │       ├── admin_reviews.py
+    │       └── admin_user.py
+    ├── api
+    │   ├── __init__.py
+    │   ├── serializers.py
+    │   ├── urls.py
+    │   └── viewsets.py
+    ├── booking
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── __init__.py
+    │   ├── migrations
+    │   │   ├── 0001_initial.py
+    │   │   └── __init__.py
+    │   ├── models.py
+    │   └── tests.py
+    ├── core
+    │   ├── asgi.py
+    │   ├── benchmark_middleware.py
+    │   ├── __init__.py
+    │   ├── settings.py
+    │   ├── urls.py
+    │   └── wsgi.py
+    ├── customer_panel
+    │   ├── admin.py
+    │   ├── formsets
+    │   │   ├── bookingform.py
+    │   │   ├── orderform.py
+    │   │   └── resetpassform.py
+    │   ├── __init__.py
+    │   ├── migrations
+    │   │   ├── 0001_initial.py
+    │   │   └── __init__.py
+    │   ├── models.py
+    │   ├── urls.py
+    │   └── viewsets
+    │       ├── booking.py
+    │       ├── home.py
+    │       ├── __init__.py
+    │       ├── menu.py
+    │       └── order.py
+    ├── docker-compose.yml
+    ├── Dockerfile
+    ├── manage.py
+    ├── media
+    │   ├── menu_items
+    │   │   ├── Food_Item_2Pcauod.png
+    │   │   ├── Food_Item_3E6QGkS.png
+    │   │   ├── Food_Item_aa6l09X.png
+    │   │   ├── Food_Item_c1aDoZ5.png
+    │   │   ├── Food_Item_DUsocid.png
+    │   │   ├── Food_Item_HACncVG.png
+    │   │   ├── Food_Item_hszht1j.png
+    │   │   ├── Food_Item.png
+    │   │   ├── Food_Item_SlFJllJ.png
+    │   │   ├── Food_Item_V3L3qd0.png
+    │   │   └── Food_Item_XFbsaiB.png
+    │   └── teams
+    │       ├── person_31oAOrj.jpg
+    │       ├── person_5eEPb0l.jpg
+    │       ├── person.jpg
+    │       ├── person_KGh213O.jpg
+    │       ├── person_r7wyBnX.jpg
+    │       └── person_X8X8Dmu.jpg
+    ├── menu
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── __init__.py
+    │   ├── migrations
+    │   │   ├── 0001_initial.py
+    │   │   └── __init__.py
+    │   ├── models.py
+    │   └── tests.py
+    ├── menu.json
+    ├── order
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── __init__.py
+    │   ├── migrations
+    │   │   ├── 0001_initial.py
+    │   │   └── __init__.py
+    │   ├── models.py
+    │   └── tests.py
+    ├── payments
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── __init__.py
+    │   ├── migrations
+    │   │   ├── 0001_initial.py
+    │   │   └── __init__.py
+    │   ├── models.py
+    │   ├── tests.py
+    │   └── views.py
+    ├── README.md
+    ├── requirements.txt
+    ├── Restro_backup.sql
+    ├── static
+    │   ├── admin_panel
+    │   │   └── css
+    │   │       ├── review.css
+    │   │       └── style.css
+    │   └── customer_panel
+    │       ├── css
+    │       │   ├── index.css
+    │       │   └── styles.css
+    │       └── js
+    │           ├── about.js
+    │           ├── index.js
+    │           ├── menu_item.js
+    │           └── menu.js
+    ├── templates
+    │   ├── admin_panel
+    │   │   ├── admin_all_categories.html
+    │   │   ├── admin_all_menu.html
+    │   │   ├── admin_all_order.html
+    │   │   ├── admin_all_payments.html
+    │   │   ├── admin_all_reservation.html
+    │   │   ├── admin_all_reviews.html
+    │   │   ├── admin_all_user.html
+    │   │   ├── admin_base.html
+    │   │   ├── admin_category_create.html
+    │   │   ├── admin_category_edit.html
+    │   │   ├── admin_dashboard.html
+    │   │   ├── admin_menuitem_create.html
+    │   │   ├── admin_menuitem_edit.html
+    │   │   ├── admin_payment_edit.html
+    │   │   ├── admin_review_create.html
+    │   │   ├── admin_review_edit.html
+    │   │   ├── admin_user_create.html
+    │   │   └── admin_user_edit.html
+    │   ├── authentication
+    │   │   ├── login.html
+    │   │   ├── register.html
+    │   │   └── reset_password.html
+    │   └── customer_panel
+    │       ├── about.html
+    │       ├── all_bookings.html
+    │       ├── all_orders.html
+    │       ├── base.html
+    │       ├── booktable.html
+    │       ├── cart.html
+    │       ├── checkout.html
+    │       ├── edit_shipping_address.html
+    │       ├── esewa_confirmation.html
+    │       ├── index.html
+    │       ├── menu.html
+    │       ├── menu_item.html
+    │       ├── payment_verify.html
+    │       └── user_profile.html
+    ├── user_accounts
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── formsets
+    │   │   ├── registerform.py
+    │   │   └── shippingaddform.py
+    │   ├── __init__.py
+    │   ├── migrations
+    │   │   ├── 0001_initial.py
+    │   │   └── __init__.py
+    │   ├── models.py
+    │   ├── tests.py
+    │   ├── urls.py
+    │   └── viewsets
+    │       ├── auth.py
+    │       ├── CustomMixin.py
+    │       └── user_profile.py
+    └── utils
+        ├── __init__.py
+        ├── models.py
+        └── _utils.py
 ```
 
 ## 🔧 Configuration
