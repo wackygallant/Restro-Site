@@ -27,7 +27,16 @@
                 {% for item in order_cart_items %}
                 <tr>
                     <td>{{ item.menu_item.name }}</td>
-                    <td>Rs. {{ item.menu_item.special_price|default:item.menu_item.price }}</td>
+                    
+                    <td>
+                        {% if item.menu_item.is_on_special and item.menu_item.special_price %}
+                            <span class="text-decoration-line-through text-muted">Rs. {{ item.menu_item.price }}</span>
+                            <span class="text-danger fw-bold">Rs. {{ item.menu_item.special_price }}</span>
+                        {% else %}
+                            {{ item.menu_item.price }}
+                        {% endif %}
+                    </td>
+
                     <td>
                         <form method="POST" action="{% url 'update_order_cart_item' item.id %}" class="d-inline">
                             {% csrf_token %}

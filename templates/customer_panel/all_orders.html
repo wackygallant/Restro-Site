@@ -63,15 +63,15 @@
                     {% if orders %}
                         {% for order in orders %}
                         <tr class="align-middle">
-                            <td scope="row"><span>{{ order.order_date|date:"M d, Y" }}</span></td>
+                            <td scope="row"><span>{{ order.created_at|date:"M d, Y" }}</span></td>
                             <td>#{{ order.order_id }}</td>
                             <td>{{ order.order_items.count }}</td>
                             <td class="fw-bold">Rs. {{ order.total_amount }}</td>
                             <td>{{ order.order_status|title }}</td>
                             <td>
-                                    <button class="btn btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#details-{{ order.id }}" title="View Details">
-                                        View Details
-                                    </button>
+                                <button class="btn btn-outline-secondary" data-bs-toggle="collapse" data-bs-target="#details-{{ order.id }}" title="View Details">
+                                    View Details
+                                </button>
                             </td>
                         </tr>
                         <tr class="collapse" id="details-{{ order.id }}">

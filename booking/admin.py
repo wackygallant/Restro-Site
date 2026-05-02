@@ -8,6 +8,6 @@ class TimeSlotAdmin(admin.ModelAdmin):
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ('user', 'booking_date', 'time_slot', 'person_count')
-    list_filter = ('booking_date', 'time_slot')
+    list_display = ('user', 'created_at', 'updated_at', 'time_slot', 'person_count')
+    list_filter = ('created_at', 'updated_at', 'time_slot')
     search_fields = ('user', 'email')

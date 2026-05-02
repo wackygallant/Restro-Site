@@ -17,8 +17,8 @@ class ProfileView(LoginRequiredMixin, generic.TemplateView):
         context = super().get_context_data(**kwargs)
         user = self.request.user
 
-        orders_qs = user.orders.all().order_by('-order_date').prefetch_related('order_items')
-        bookings_qs = user.bookings.order_by('-booking_date')
+        orders_qs = user.orders.all().order_by('-created_at').prefetch_related('order_items')
+        bookings_qs = user.bookings.order_by('-created_at')
         shipping_addresses = user.shipping_addresses.all()
         # orders_qs = Order.objects.filter(user=user.id).order_by('-order_date').prefetch_related('order_items')
     

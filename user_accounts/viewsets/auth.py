@@ -2,14 +2,15 @@
 from django.shortcuts import redirect, render
 from django.views import View
 from django.contrib.auth import authenticate, login, logout
-from customer_panel.formsets.resetpassform import EmailVerificationForm, OTPVerificationForm
+from user_accounts.formsets.resetpassform import EmailVerificationForm, OTPVerificationForm
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import check_password
 
 # Form Imports
-from user_accounts.formsets.registerform import SignUpForm
+from user_accounts.formsets.user_register_form import SignUpForm
 from user_accounts.models import OTP
 
 # Custom Utils Imports
@@ -73,8 +74,9 @@ class RegisterView(View):
             messages.error(request, 'Please correct the error below.')
         return render(request, self.template_name, {'form': form})
 
-class PasswordResetView(View):
-    template_name = 'authentication/reset_password.html'
+class ForgotPasswordView(View):
+
+    template_name = 'authentication/forgot_password.html'
 
     def get(self, request):
         # Initial state: Show the email entry form
@@ -132,4 +134,44 @@ class PasswordResetView(View):
                 else:
                     messages.error(request, "Invalid or expired OTP.")
             
-            return render(request, self.template_name, {'form': form, 'email': email, 'step': 2})
+            return render(request, self.template_name, {'form': form, 'email': email, 'step': 2})    
+
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+from django.contrib.auth.hashers import check_password
+
+class ChangePasswordView(View):
+
+    def get(self, request, pk):
+        editing_user = User.objects.get(id=pk)
+        return render(request, 'authentication/change_password.html', {'edit_user': editing_user})
+
+    def post(self, request, pk):
+        editing_user = User.objects.get(id=pk)
+        
+        is_admin = request.user.is_superuser
+        current_pwd = request.POST.get('password') # The "Old/Admin" password for verification
+        
+        if not is_admin:
+            if not current_pwd or not check_password(current_pwd, request.user.password):
+                messages.error(request, "Incorrect current password.")
+                return self.get(request, pk)
+
+        p1 = request.POST.get('password1')
+        p2 = request.POST.get('password2')
+
+        if p1 != p2:
+            messages.error(request, "New passwords do not match!")
+            return self.get(request, pk)
+
+        try:
+            validate_password(p1, user=editing_user)
+        except ValidationError as e:
+            messages.error(request, " ".join(e.messages))
+            return self.get(request, pk)
+
+        editing_user.set_password(p1)
+        editing_user.save()
+        
+        messages.success(request, f"Password for {editing_user.username} updated!")
+        return redirect("admin_users")

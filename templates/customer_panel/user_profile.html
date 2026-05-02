@@ -98,7 +98,7 @@
                                     {% for booking in bookings %}
                                     <tr class="align-middle">
                                         <td scope="row">
-                                            <strong>{{ booking.booking_date|date:"M d, Y" }}</strong>
+                                            <strong>{{ booking.created_at|date:"M d, Y" }}</strong>
                                         </td>
                                         <td>{{ booking.booking_id }}</td>
                                         <td>{{ booking.time_slot }}</td>
@@ -123,13 +123,13 @@
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header border-bottom">
-                                                            <h5 class="modal-title fw-bold">Booking</h5>
+                                                            <h5 class="modal-title fw-bold">#{{ booking.booking_id }}</h5>
                                                             <button type="button" class="btn-close"
                                                                 data-bs-dismiss="modal"></button>
                                                         </div>
                                                         <div class="modal-body">
                                                             <div class="mb-3">
-                                                                <small class="text-muted fw-bold">DATE</small>
+                                                                <small class="text-muted fw-bold">BOOKED FOR</small>
                                                                 <p class="mb-0">{{ booking.booking_date|date:"M d, Y" }}</p>
                                                             </div>
                                                             <div class="mb-3">
@@ -201,7 +201,7 @@
                                     {% for order in orders %}
                                     <tr class="align-middle">
                                         <td scope="row">
-                                            <strong>{{ order.order_date|date:"M d, Y" }}</strong>
+                                            <strong>{{ order.created_at|date:"M d, Y" }}</strong>
                                         </td>
                                         <td>{{ order.order_id }}</td>
                                         <td>
@@ -280,27 +280,32 @@
                                     <input type="text" class="form-control" value="{{ user.username }}" disabled>
                                     <small class="text-muted">Username cannot be changed</small>
                                 </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">First Name</label>
+                                    <input type="email" class="form-control" name="email" value="{{ user.first_name }}" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Last Name</label>
+                                    <input type="email" class="form-control" name="email" value="{{ user.last_name }}" required>
+                                </div>
+                                
                                 <div class="mb-3">
                                     <label class="form-label fw-bold">Email</label>
-                                    <input type="email" class="form-control" name="email" value="{{ email }}" required>
-                                </div>
-                                <div class="mb-0">
-                                    <label class="form-label fw-bold">Password</label>
-                                    <input type="password" class="form-control" name="password"
-                                        placeholder="Leave blank to keep current password">
-                                    <small class="text-muted">Enter a new password only if you want to change it</small>
+                                    <input type="email" class="form-control" name="email" value="{{ user.email }}" required>
                                 </div>
                             </form>
                         </div>
                         <div class="modal-footer border-top">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <a href="{% url 'change_password' user.id %}" class="btn btn-secondary" >Change Password</a>
                             <button type="button" class="btn btn-dark">Save Changes</button>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Edit Profile Modal End-->
-
 
             <!-- Add Shipping Address Modal Start -->
             <div class="modal fade" id="addShippingAddressModal" tabindex="-1">

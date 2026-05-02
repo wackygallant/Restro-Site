@@ -15,7 +15,7 @@ class AdminReservationView(generic.ListView):
     
     def get_queryset(self):
         # 1. Base Queryset with optimizations
-        queryset = Booking.objects.all().order_by("-booking_date")
+        queryset = Booking.objects.all().order_by("-created_at")
 
         # 2. Get parameters from request
         search_query = self.request.GET.get('search')

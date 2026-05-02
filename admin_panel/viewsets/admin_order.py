@@ -16,7 +16,7 @@ class AdminOrderView(AdminLoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         
-        queryset = Order.objects.select_related('user').prefetch_related('order_items', 'payments').order_by("-order_date")
+        queryset = Order.objects.select_related('user').prefetch_related('order_items', 'payments').order_by("-created_at")
 
         search_query = self.request.GET.get('search')
         status_filters = self.request.GET.getlist('status')

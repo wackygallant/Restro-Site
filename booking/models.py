@@ -2,7 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 import datetime
 
-class TimeSlot(models.Model):
+from utils.models import BaseModel
+
+class TimeSlot(BaseModel):
     # Example: 10:00 AM, 12:00 PM etc.
     # Unique so we don't create duplicate times
     time = models.TimeField(unique=True)
@@ -11,7 +13,7 @@ class TimeSlot(models.Model):
         # Display in 12-hour format for humans
         return self.time.strftime("%I:%M %p")
 
-class Booking(models.Model):
+class Booking(BaseModel):
     STATUS_CHOICES = {
         ('ended', 'Ended'),
         ('confirmed', 'Confirmed'),
@@ -20,9 +22,9 @@ class Booking(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookings')
     booking_id = models.CharField(max_length=100, unique=True)
+    booking_date = models.DateField()
     email = models.EmailField(default='')
     phone_number = models.CharField(max_length=15, default='')
-    booking_date = models.DateField()
     time_slot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE, related_name='time_slots')
     person_count = models.PositiveIntegerField(default=1)
     booking_status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
@@ -51,4 +53,9 @@ class Booking(models.Model):
         # Format with leading zeros (4 digits)
         self.booking_id = f'BKG-{current_year}-{next_sequence:04d}'
         return self.booking_id
+    
+    class Meta:
+        db_table = 'booking'
+        verbose_name = 'booking'
+        verbose_name_plural = 'bookings'        
 

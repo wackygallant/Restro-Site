@@ -32,8 +32,7 @@ class AllOrdersView(LoginRequiredMixin, generic.ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Order.objects.filter(user=self.request.user).order_by('-order_date')
-
+        return Order.objects.prefetch_related('order_items', 'order_items__menu_item').filter(user=self.request.user).order_by('-created_at')
 
 class OrderListView(LoginRequiredMixin, View):
     """Display user's order cart"""
@@ -46,13 +45,12 @@ class OrderListView(LoginRequiredMixin, View):
             order_cart, created = OrderCart.objects.get_or_create(user=request.user)
             order_cart_items = order_cart.order_cart_items.all()
             total_price = order_cart.get_total_price()
-
+        
         return render(request, 'customer_panel/cart.html', {
             'order_cart_items': order_cart_items,
             'total_price': total_price,
             'username': username
         })
-
 
 class OrderCartView(LoginRequiredMixin, View):
     """Display user's shopping order cart"""
@@ -61,6 +59,7 @@ class OrderCartView(LoginRequiredMixin, View):
         order_cart_items = order_cart.order_cart_items.all()
         total_items = order_cart.get_total_items()
         total_price = order_cart.get_total_price()
+        breakpoint()
 
         return render(request, 'customer_panel/cart.html', {
             'order_cart': order_cart,
@@ -68,7 +67,6 @@ class OrderCartView(LoginRequiredMixin, View):
             'total_items': total_items,
             'total_price': total_price
         })
-
 
 class AddToOrderCartView(LoginRequiredMixin, View):
     """Add item to order cart"""
@@ -93,7 +91,6 @@ class AddToOrderCartView(LoginRequiredMixin, View):
         messages.success(request, f"{menu_item.name} added to order cart!")
         return redirect('orders')
 
-
 class RemoveFromOrderCartView(LoginRequiredMixin, View):
     """Remove item from order cart"""
     def post(self, request, order_cart_item_id):
@@ -104,7 +101,6 @@ class RemoveFromOrderCartView(LoginRequiredMixin, View):
         order_cart_item.delete()
         messages.success(request, f"{menu_item_name} removed from order cart!")
         return redirect('order_cart')
-
 
 class UpdateOrderCartItemView(LoginRequiredMixin, View):
     """Update quantity of item in order cart"""
@@ -124,7 +120,6 @@ class UpdateOrderCartItemView(LoginRequiredMixin, View):
             messages.success(request, "Item removed from order cart!")
 
         return redirect('order_cart')
-
 
 class PaymentVerificationView(LoginRequiredMixin, generic.TemplateView):
     template_name = "customer_panel/payment_verify.html"
@@ -178,7 +173,7 @@ class PaymentVerificationView(LoginRequiredMixin, generic.TemplateView):
                 payment_details.status = "paid"
                 payment_details.save()
 
-                order.order_status = "completed"
+                order.order_status = "pending"
                 order.save()
 
                 try:
@@ -189,7 +184,7 @@ class PaymentVerificationView(LoginRequiredMixin, generic.TemplateView):
                 except Exception as e:
                     print(f"Cart clearing error: {e}")
 
-            messages.success(request, "Payment successful via Khalti!")
+            messages.success(request, "Payment successful via Khalti, Order Created with {order.order_id}!")
             return redirect("orders")
 
         # FAILURE PATH — be surgical about what we delete
@@ -199,7 +194,7 @@ class PaymentVerificationView(LoginRequiredMixin, generic.TemplateView):
             # Explicit cancellation/expiry — safe to clean up
             with transaction.atomic():
                 payment_details.delete()
-                order.delete()  # Cascades to OrderItems
+                order.delete()
             messages.error(request, f"Payment {khalti_status.lower()}. Your order has been removed.")
         else:
             # Ambiguous failure (Khalti 5xx, unknown status) — keep for admin review
@@ -249,7 +244,7 @@ class PaymentVerificationView(LoginRequiredMixin, generic.TemplateView):
                 order = Order(
                     user=request.user,
                     shippingaddress=pending['shipping_address'],
-                    order_status='completed',
+                    order_status='pending',
                     total_amount=pending['total_amount'],
                 )
                 # FIX: generate the order_id before saving
@@ -282,7 +277,7 @@ class PaymentVerificationView(LoginRequiredMixin, generic.TemplateView):
                 except Exception as e:
                     print(f"Cart clearing error: {e}")
 
-            messages.success(request, "Payment successful via eSewa!")
+            messages.success(request, "Payment successful via eSewa, Order Created with {order.order_id}!")
             return redirect('orders')
 
         else:
@@ -310,7 +305,6 @@ class PaymentVerificationView(LoginRequiredMixin, generic.TemplateView):
             print(f"Error in verification: {e}")
             messages.error(request, f"Payment verification failed: {str(e)}")
             return redirect("orders")
-
 
 class CheckoutView(LoginRequiredMixin, View):
 

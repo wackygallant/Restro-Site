@@ -20,7 +20,7 @@ class AllBookingsView(LoginRequiredMixin, generic.ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return Booking.objects.filter(user=self.request.user).order_by('-booking_date')
+        return Booking.objects.filter(user=self.request.user).order_by('-created_at')
 
 class BookTableView(LoginRequiredMixin, View):
     def get(self, request):

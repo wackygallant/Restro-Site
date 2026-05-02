@@ -2,89 +2,125 @@
 {% load static %}
 
 {% block content %}
-{% if menu_item.is_on_special %}
-<div class="bg-dark text-white py-5 text-center">
-    <div class="container">
-        <h1 class="display-4 fw-bold">{{ menu_item.name }}</h1>
-        <p class="lead mb-0">
-            <span class="text-muted text-decoration-line-through me-2">Rs. {{ menu_item.price }}</span>
-            <span class="text-warning fw-bold">Rs. {{ menu_item.special_price }} <s>{{ menu_item.price }} </s> </span>
-        </p>
-    </div>
-</div>
-{% else %}
-<div class="bg-dark text-white py-5 text-center">
-    <div class="container">
-        <h1 class="display-4 fw-bold">{{ menu_item.name }}</h1>
-        <p class="lead text-warning mb-0">Rs. {{ menu_item.price }}</p>
-    </div>
-</div>
-{% endif %}
 
-<div class="container my-5">
-    <div class="card border-0 shadow-lg overflow-hidden">
-        <div class="row g-0">
+<link rel="stylesheet" href="{% static 'customer_panel/css/menu.css' %}">
 
-            <div class="col-lg-5 position-relative">
-                <img src="{{ menu_item.image.url }}" class="w-100 h-100" alt="{{ menu_item.name }}"
-                    style="object-fit: cover; min-height: 400px;">
-                {% if menu_item.is_on_special %}
-                <div class="badge bg-danger position-absolute top-0 end-0 m-3 px-3 py-2 shadow">
-                    On Special !!!
+<style>
+/* Smooth modern card */
+.hover-card {
+    border-radius: 20px;
+    transition: all 0.35s ease;
+    overflow: hidden;
+}
+
+.hover-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+/* Image rounding fix */
+.hover-card img {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+/* Header section */
+.menu-header {
+    border-radius: 0 0 30px 30px;
+}
+</style>
+
+<div class="container-fluid px-0">
+
+    <!-- HEADER -->
+    <div class="bg-dark text-white py-5 text-center menu-header">
+        <h1 class="display-4 fw-bold">{{ menu_item.name }}</h1>
+
+        {% if menu_item.is_on_special %}
+            <p class="lead mb-0">
+                <span class="text-muted text-decoration-line-through me-2">
+                    Rs. {{ menu_item.price }}
+                </span>
+                <span class="text-warning fw-bold fs-4">
+                    Rs. {{ menu_item.special_price }}
+                </span>
+            </p>
+        {% else %}
+            <p class="lead text-warning mb-0 fs-4">
+                Rs. {{ menu_item.price }}
+            </p>
+        {% endif %}
+    </div>
+
+    <!-- CARD -->
+    <div class="container my-5">
+        <div class="card border-0 shadow-sm hover-card">
+            <div class="row g-0">
+
+                <!-- IMAGE -->
+                <div class="col-lg-5 position-relative">
+                    <img src="{{ menu_item.image.url }}"
+                         class="w-100 h-100"
+                         alt="{{ menu_item.name }}"
+                         style="object-fit: cover; min-height: 400px;">
+
+                    {% if menu_item.is_on_special %}
+                        <div class="badge bg-danger position-absolute top-0 end-0 m-3 px-3 py-2 shadow">
+                            On Special
+                        </div>
+                    {% endif %}
                 </div>
-                {% endif %}
-            </div>
 
-            <div class="col-lg-7">
-                <div class="card-body p-4 p-lg-5 d-flex flex-column h-100">
-                    <h4 class="fw-bold mb-3">About this dish</h4>
+                <!-- DETAILS -->
+                <div class="col-lg-7">
+                    <div class="card-body p-4 p-lg-5 d-flex flex-column h-100">
 
-                    <p class="text-muted mb-3">
-                        <span>
+                        <h4 class="fw-bold mb-3">About this dish</h4>
+
+                        <p class="text-muted mb-3">
                             <strong>Category:</strong> {{ menu_item.category }}
-                        </span>
-                    </p>
+                        </p>
 
-                    <p class="card-text flex-grow-1 lh-lg">
-                        {{ menu_item.description }}
-                    </p>
+                        <p class="card-text flex-grow-1 lh-lg">
+                            {{ menu_item.description }}
+                        </p>
 
-                    <form method="POST" class="mt-4">
-                        {% csrf_token %}
-                        <div class="d-flex align-items-center flex-wrap gap-3">
+                        <!-- ACTIONS -->
+                        <form method="POST" class="mt-4">
+                            {% csrf_token %}
 
-                            <a href="{% url 'menu' %}" class="btn btn-outline-dark">
-                                Back
-                            </a>
+                            <div class="d-flex align-items-center flex-wrap gap-3">
 
-                            <div class="input-group shadow-sm" style="width: 140px;">
-                                <button class="btn btn-outline-secondary" type="button" id="btn-minus">
-                                    <strong> - </strong>
-                                </button>
+                                <a href="{% url 'menu' %}" class="btn btn-outline-dark rounded-pill px-4">
+                                    ← Back
+                                </a>
 
-                                <input type="number" name="quantity" id="quantity-input"
-                                    class="form-control text-center border-secondary fw-bold" value="1" min="1"
-                                    readonly>
+                                <!-- QUANTITY -->
+                                <div class="input-group shadow-sm rounded-pill overflow-hidden" style="width: 150px;">
+                                    <button class="btn btn-outline-secondary" type="button" id="btn-minus">−</button>
 
-                                <button class="btn btn-outline-secondary" type="button" id="btn-plus">
-                                    <strong> + </strong>
+                                    <input type="number" name="quantity" id="quantity-input"
+                                           class="form-control text-center fw-bold border-0"
+                                           value="1" min="1" readonly>
+
+                                    <button class="btn btn-outline-secondary" type="button" id="btn-plus">+</button>
+                                </div>
+
+                                <!-- ADD TO CART -->
+                                <button type="submit" class="btn btn-dark px-4 rounded-pill">
+                                    Add to Cart
                                 </button>
 
                             </div>
-                            <button type="submit" class="btn btn-dark px-4 flex-grow-2 flex-md-grow-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                    class="bi bi-cart-plus-fill" viewBox="0 0 16 16">
-                                    <path
-                                        d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0M9 5.5V7h1.5a.5.5 0 0 1 0 1H9v1.5a.5.5 0 0 1-1 0V8H6.5a.5.5 0 0 1 0-1H8V5.5a.5.5 0 0 1 1 0" />
-                                </svg>
-                            </button>
+                        </form>
 
-                        </div>
-                    </form>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
+
 </div>
 
 <script src="{% static 'customer_panel/js/menu_item.js' %}"></script>

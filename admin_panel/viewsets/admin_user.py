@@ -9,6 +9,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from admin_panel.formsets.usercreationform import Admin_UserCreationForm
 from user_accounts.viewsets.CustomMixin import AdminLoginRequiredMixin
+from admin_panel.formsets.usereditform import Admin_UserEditForm
 
 class UserAdminView(AdminLoginRequiredMixin, generic.ListView):
     template_name="admin_panel/admin_all_user.html"
@@ -34,7 +35,6 @@ class UserAdminView(AdminLoginRequiredMixin, generic.ListView):
         context['status_filters'] = self.request.GET.getlist('status')
         return context
 
-
 class UserCreateView(AdminLoginRequiredMixin, View):
     def get(self, request):
         return render(request, 'admin_panel/admin_user_create.html')
@@ -49,33 +49,44 @@ class UserCreateView(AdminLoginRequiredMixin, View):
             return redirect('admin_users')
         return render(request, 'admin_panel/admin_user_create.html', {'form': form})
 
-
 class UserEditView(AdminLoginRequiredMixin, View):
     template_name="admin_panel/admin_user_edit.html"
 
     def get(self, request, pk):
         context = {
-            'user': User.objects.get(pk=pk),
+            'edit_user': User.objects.get(pk=pk),
         }
         return render(request, self.template_name, context)
 
     def post(self, request, pk):
-        user = User.objects.get(pk=pk)
-        user.username = request.POST['username']
-        user.first_name = request.POST['first_name']
-        user.last_name = request.POST['last_name']
-        user.email = request.POST['email']
-        user.is_superuser = True if request.POST.get('is_superuser') == 'on' else False
-        user.is_staff = True if request.POST.get('is_staff') == 'on' else False
-        user.is_active = True if request.POST.get('is_active') == 'on' else False
-        user.save()
-        messages.success(request, 'User updated successfully!')
+        edit_user = User.objects.get(pk=pk)
+        form = Admin_UserEditForm(request.POST, instance=edit_user) 
+        
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'User updated successfully!')
+        else:
+            messages.error(request, f"Update failed: {form.errors.as_text()}")
+            
         return redirect('admin_users')
 
 class UserDeleteView(AdminLoginRequiredMixin, View):
     def get(self, request, pk):
-        user = User.objects.get(pk=pk)
-        user.delete()
+        edit_user = User.objects.get(pk=pk)
+        edit_user.delete()
         messages.success(request, 'User deleted successfully!')
         return redirect('admin_users')
 
+        password1, password2 = request.POST['password1'], request.POST['password2']
+        if password1 != password2:
+            context = {
+            'edit_user' : User.objects.get(id=pk),
+            }
+            messages.error(request, f"Failed to Change Password for {editing_user.username}!")
+            return render(request, 'authentication/change_password.html', context)
+        
+        editing_user = User.objects.get(id=pk)
+        editing_user.set_password(request.POST['password1'])
+        editing_user.save()
+        messages.success(request, f"Password Changed for {editing_user.username} successfully!")
+        return redirect("admin_users")

@@ -56,8 +56,8 @@
                     <th scope="col">Booking ID</th>
                     <th scope="col">Email</th>
                     <th scope="col">Contact No.</th>
-                    <th scope="col">Time Slot</th>
-                    <th scope="col">Total Pax.</th>
+                    <th scope="col" class="text-center">Time Slot</th>
+                    <th scope="col" class="text-center">Total Pax.</th>
                     <th scope="col">Booking Status</th>
                 </tr>
             </thead>
@@ -65,13 +65,13 @@
             <tbody>
                 {% for booking in bookings %}
                 <tr>
-                    <th scope="row">{{ booking.booking_date }}</th>
+                    <th scope="row">{{ booking.created_at|date:"M d, Y"  }}</th>
                     <td>{{ booking.booking_id }}</td>
                     <td>{{ booking.email }}</td>
                     <td>{{ booking.phone_number }}</td>
-                    <td>{{ booking.time_slot }}</td>
-                    <td>{{ booking.person_count }}</td>
-                    <td>{{ booking.booking_status }}</td>
+                    <td class="text-center">{{ booking.time_slot }}</td>
+                    <td class="text-center">{{ booking.person_count }}</td>
+                    <td>{{ booking.booking_status|title }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

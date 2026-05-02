@@ -6,6 +6,7 @@ from admin_panel.viewsets.admin_order import AdminOrderView, CompleteOrder, Canc
 from admin_panel.viewsets.admin_reservation import AdminReservationView
 from admin_panel.viewsets.admin_menu import AdminMenuListView, AdminCategoryListView, AdminCategoryEditView, AdminCategoryDeleteView, AdminCategoryCreateView, AdminMenuCreateView, AdminMenuEditView, AdminMenuDeleteView
 from admin_panel.viewsets.admin_reviews import AdminReviewsView, AdminReviewCreateView, AdminReviewEditView, AdminReviewDeleteView
+from user_accounts.viewsets.auth import ChangePasswordView
 
 urlpatterns = [
     path('', DashboardView.as_view(), name='admin_dashboard'),

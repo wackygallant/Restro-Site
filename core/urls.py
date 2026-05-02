@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import include, path
 from core import settings
 from django.conf.urls.static import static
-from user_accounts.viewsets.auth import LoginView, LogoutView, RegisterView, PasswordResetView
+from user_accounts.viewsets.auth import LoginView, LogoutView, RegisterView, ForgotPasswordView, ChangePasswordView
 
 urlpatterns = [
     path('default-admin/', admin.site.urls),
@@ -10,7 +10,8 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('register/', RegisterView.as_view(), name='register'),
-    path('reset-password/', PasswordResetView.as_view(), name='reset_password'),
+    path('reset_password/', ForgotPasswordView.as_view(), name='reset_password'), 
+    path('change_password/<int:pk>/', ChangePasswordView.as_view(), name='change_password'),
     path('', include('customer_panel.urls')),
     path('', include('user_accounts.urls')),
 ]
