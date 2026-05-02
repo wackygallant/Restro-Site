@@ -119,8 +119,8 @@
                             <th>Order ID</th>
                             <th>Method</th>
                             <th>Status</th>
-                            <th>Transaction ID</th>
-                            <th>Payment ID</th>
+                            <th class="text-start">Transaction ID</th>
+                            <th class="text-start">Payment ID</th>
                             <th>Amount</th>
                         </tr>
                     </thead>
@@ -149,9 +149,9 @@
                                 </span>
                             </td>
 
-                            <td>{{ payment.transaction_id }}</td>
+                            <td class="text-start">{{ payment.transaction_id }}</td>
 
-                            <td>{{ payment.payment_id }}</td>
+                            <td class="text-start" >{{ payment.payment_id }}</td>
 
                             <td class="fw-bold">Rs. {{ payment.amount }}</td>
 

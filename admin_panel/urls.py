@@ -2,11 +2,10 @@ from django.urls import path, include
 from admin_panel.viewsets.admin_dashboard import DashboardView, LogoutView
 from admin_panel.viewsets.admin_payments import AdminPaymentEditView, PaymentListView
 from admin_panel.viewsets.admin_user import UserAdminView, UserCreateView, UserEditView, UserDeleteView
-from admin_panel.viewsets.admin_order import AdminOrderView, CompleteOrder, CancelOrder
+from admin_panel.viewsets.admin_order import AdminOrderView, CompleteOrder, CancelOrder, DeleteOrder
 from admin_panel.viewsets.admin_reservation import AdminReservationView
 from admin_panel.viewsets.admin_menu import AdminMenuListView, AdminCategoryListView, AdminCategoryEditView, AdminCategoryDeleteView, AdminCategoryCreateView, AdminMenuCreateView, AdminMenuEditView, AdminMenuDeleteView
 from admin_panel.viewsets.admin_reviews import AdminReviewsView, AdminReviewCreateView, AdminReviewEditView, AdminReviewDeleteView
-from user_accounts.viewsets.auth import ChangePasswordView
 
 urlpatterns = [
     path('', DashboardView.as_view(), name='admin_dashboard'),
@@ -25,6 +24,7 @@ urlpatterns = [
         path('', AdminOrderView.as_view(), name='admin_orders'),
         path('complete/<int:order_id>/', CompleteOrder.as_view(), name='admin_order_complete'),
         path('cancel/<int:order_id>/', CancelOrder.as_view(), name='admin_order_cancel'),
+        path('delete/<int:pk>/', DeleteOrder.as_view(), name='admin_order_delete'),
     ])),
     
     # Reservation Management

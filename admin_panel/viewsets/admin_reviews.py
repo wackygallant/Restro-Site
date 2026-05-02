@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from django.views import generic
+from django.views import View, generic
 from django.urls import reverse_lazy
 from customer_panel.models import Reviews
 from user_accounts.viewsets.CustomMixin import AdminLoginRequiredMixin
@@ -48,15 +48,9 @@ class AdminReviewEditView(AdminLoginRequiredMixin, generic.UpdateView):
         context['review'] = self.object
         return context
 
-class AdminReviewDeleteView(AdminLoginRequiredMixin, generic.DeleteView):
-    model = Reviews
-    template_name = 'admin_panel/admin_review_delete.html'
-    success_url = reverse_lazy('admin_reviews')
-    success_message = "Review deleted successfully!"
-
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        success_url = self.get_success_url()
-        self.object.delete()
-        messages.success(self.request, self.success_message)
-        return redirect(success_url)
+class AdminReviewDeleteView(AdminLoginRequiredMixin, View):
+    def get(self, request, pk):
+        edit_review = Reviews.objects.get(pk=pk)
+        edit_review.delete()
+        messages.success(request, 'Review deleted successfully!')
+        return redirect('admin_reviews')

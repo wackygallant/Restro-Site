@@ -118,10 +118,10 @@
                             <th>Actions</th>
                             <th>Date</th>
                             <th class="text-start">Order ID</th>
-                            <th class="text-start">Name</th>
+                            <th class="text-start">Order By</th>
                             <th>Status</th>
                             <th>Items</th>
-                            <th>Total</th>
+                            <th>Amount</th>
                             <th>Payment</th>
                             <th>Details</th>
                         </tr>
@@ -137,13 +137,19 @@
                                     <a class="btn btn-outline-success" href="{% url 'admin_order_complete' order.id %}">
                                         <i class="bi bi-check-circle"></i>
                                     </a>
-                                    <a class="btn btn-outline-danger" href="{% url 'admin_order_cancel' order.id %}">
+                                    <a class="btn btn-outline-secondary" href="{% url 'admin_order_cancel' order.id %}">
                                         <i class="bi bi-x-circle"></i>
                                     </a>
+                                    <button type="button"
+                                            class="btn btn-outline-danger"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal-{{ order.id }}">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
                                 </div>
                             </td>
 
-                            <td>{{ order.order_date|date:"M d, Y" }}</td>
+                            <td>{{ order.created_at|date:"M d, Y" }}</td>
 
                             <td class="text-start fw-bold">#{{ order.order_id }}</td>
 
@@ -185,6 +191,26 @@
                             </td>
 
                         </tr>
+                        
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="deleteModal-{{ order.id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="deleteModalLabel">Do you want to delete the order?</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Order Number: <span class="text-start fw-bold">#{{ order.order_id }}</span></p>
+                                    <p>Order Items: <span class="text-start fw-bold">{{ order.order_items.count }}</span></p>
+                                    <p>Total Amount: <span class="text-start fw-bold">{{ order.total_amount }}</span></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <a class="btn btn-outline-danger" href="{% url 'admin_order_delete' order.id %}" >Confirm</a>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Expand Row -->
                         <tr class="collapse" id="details-{{ order.id }}">

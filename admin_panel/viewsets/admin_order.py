@@ -1,4 +1,5 @@
 # Django Module Imports
+from django.urls import reverse_lazy
 from django.views import generic, View
 from django.db.models import Q
 from django.shortcuts import redirect, get_object_or_404
@@ -40,8 +41,6 @@ class AdminOrderView(AdminLoginRequiredMixin, generic.ListView):
         context['order_status_choices'] = Order.STATUS_CHOICES
         return context
 
-# --- OPTIMIZED STATUS UPDATE VIEWS ---
-
 class BaseOrderStatusUpdateView(AdminLoginRequiredMixin, View):
     """
     A base view to handle updating an order's status.
@@ -71,3 +70,10 @@ class CancelOrder(BaseOrderStatusUpdateView):
     orderstatus_to_set = 'cancelled'
     paymentstatus_to_set = 'pending'
     success_message = 'Order cancelled successfully!'
+
+class DeleteOrder(AdminLoginRequiredMixin, View):
+    def get(self, request, pk):
+        edit_order = Order.objects.get(pk=pk)
+        edit_order.delete()
+        messages.success(request, 'Order deleted successfully!')
+        return redirect('admin_orders')
