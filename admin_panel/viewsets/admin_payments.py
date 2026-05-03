@@ -4,8 +4,10 @@ from payments.models import Payment
 from django.db.models import Q
 from django.contrib.messages.views import SuccessMessageMixin
 
+from user_accounts.viewsets.CustomMixin import AdminLoginRequiredMixin
 
-class PaymentListView(generic.ListView):
+
+class PaymentListView(AdminLoginRequiredMixin,generic.ListView):
     model = Payment
     template_name = 'admin_panel/admin_all_payments.html'
     context_object_name = 'payments'
@@ -44,7 +46,7 @@ class PaymentListView(generic.ListView):
         return context
     
 
-class AdminPaymentEditView(SuccessMessageMixin, generic.UpdateView):
+class AdminPaymentEditView(AdminLoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
     model = Payment
     template_name = 'admin_panel/admin_payment_edit.html'
     fields = ['payment_method', 'status', 'transaction_id', 'payment_id', 'amount']
