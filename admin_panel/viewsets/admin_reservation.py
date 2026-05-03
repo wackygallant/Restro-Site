@@ -1,13 +1,15 @@
 # Django Module Imports
-from django.views import generic
-from django.shortcuts import redirect
+from django.views import View, generic
+from django.shortcuts import redirect, render
 from django.db.models import Q
 from django.contrib import messages
 
 # App Imports
-from booking.models import Booking
+from booking.models import Booking, TimeSlot
+from customer_panel.formsets.bookingform import BookingForm
+from user_accounts.viewsets.CustomMixin import AdminLoginRequiredMixin
 
-class AdminReservationView(generic.ListView):
+class AdminReservationView(AdminLoginRequiredMixin, generic.ListView):
     model = Booking
     template_name = 'admin_panel/admin_all_reservation.html'
     context_object_name = 'reservations'
@@ -47,3 +49,26 @@ class AdminReservationView(generic.ListView):
         booking.save()
         messages.success(request, f"Reservation for {booking.booking_id} status updated to {status}.")
         return redirect('admin_reservations')
+
+class AdminReservationEditView(AdminLoginRequiredMixin, View):
+    def get(self, request, pk):
+        booking = Booking.objects.get(id=pk)
+        choices = [choice[0] for choice in Booking.STATUS_CHOICES]
+        context = {
+            'reservation': booking,
+            'choices' : choices,
+            'time_slots' : TimeSlot.objects.all(),
+        }
+        return render(request, "admin_panel/admin_edit_reservation.html", context)
+    
+    def post(self, request, pk):
+        booking = Booking.objects.get(id=pk)
+        form = BookingForm(request.POST, instance=booking)
+        breakpoint()
+        if form.is_valid():
+            form.save()
+            messages.success(request, f"Reservation detail for {booking.booking_id} updated successfully!")
+            return redirect('admin_reservations')
+        else: 
+            messages.error(request, f"Reservation detail for {booking.booking_id} updated failed!")
+            return self.get(request, pk)

@@ -133,9 +133,8 @@
                     <tbody>
                         {% for reservation in reservations %}
                         <tr>
-
                             <td>
-                                <a href="#" class="text-primary">
+                                <a href="{% url 'admin_edit_reservations' reservation.id %}" class="text-primary" title="Edit">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
                             </td>

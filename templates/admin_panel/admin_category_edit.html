@@ -1,69 +1,118 @@
 {% extends 'admin_panel/admin_base.html' %}
 
-{% block title %}Edit Category{% endblock %}
+{% block page_title %}Edit Category{% endblock %}
 
 {% block content %}
-<div class="card shadow-sm border-0">
-    <div class="card-header bg-dark text-white py-3">
-        <h5 class="mb-0"><i class="bi bi-pencil-square me-2"></i>Edit Category: {{ category.name }}</h5>
+
+<div class="container-fluid">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Edit Category</h2>
+            <p class="text-muted mb-0">Update category details</p>
+        </div>
+
+        <a href="{% url 'admin_categories' %}" class="btn btn-outline-secondary rounded-pill px-3">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
     </div>
-    <div class="card-body p-4">
-        <form method="post">
-            {% csrf_token %}
 
-            <div class="row g-3 mb-4 p-3 bg-light rounded border">
-                <div class="col-md-4">
-                    <label class="form-label fw-bold small text-muted text-uppercase">Category ID</label>
-                    <input type="text" class="form-control form-control-sm border-0 bg-transparent fw-bold"
-                        value="#{{ category.id }}" readonly>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label fw-bold small text-muted text-uppercase">Created At</label>
-                    <input type="text" class="form-control form-control-sm border-0 bg-transparent"
-                        value="{{ category.created_at|date:'Y-m-d H:i' }}" readonly>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label fw-bold small text-muted text-uppercase">Last Updated</label>
-                    <input type="text" class="form-control form-control-sm border-0 bg-transparent"
-                        value="{{ category.updated_at|date:'Y-m-d H:i' }}" readonly>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4 p-lg-5">
+
+                    <!-- TITLE -->
+                    <h5 class="fw-semibold mb-4">
+                        <i class="bi bi-tag text-primary me-2"></i>
+                        Category: {{ category.name }}
+                    </h5>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <!-- META INFO -->
+                        <div class="row g-3 mb-4 bg-light rounded-3 p-3 border">
+
+                            <div class="col-md-4">
+                                <small class="text-muted d-block">Category ID</small>
+                                <span class="fw-semibold">#{{ category.id }}</span>
+                            </div>
+
+                            <div class="col-md-4">
+                                <small class="text-muted d-block">Created</small>
+                                <span>{{ category.created_at|date:"M d, Y H:i" }}</span>
+                            </div>
+
+                            <div class="col-md-4">
+                                <small class="text-muted d-block">Last Updated</small>
+                                <span>{{ category.updated_at|date:"M d, Y H:i" }}</span>
+                            </div>
+
+                        </div>
+
+                        <!-- FORM -->
+                        <div class="row g-3">
+
+                            <div class="col-md-8">
+                                <label class="form-label fw-semibold">Category Name</label>
+                                <input type="text" class="form-control"
+                                    name="name" value="{{ category.name }}"
+                                    placeholder="e.g. Main Course" required>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label fw-semibold">Priority</label>
+                                <input type="number" class="form-control"
+                                    name="priority" value="{{ category.priority }}" min="0">
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold text-muted">Slug</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light">
+                                        <i class="bi bi-link-45deg"></i>
+                                    </span>
+                                    <input type="text" class="form-control bg-light"
+                                        value="{{ category.slug }}" readonly>
+                                </div>
+                                <div class="form-text">
+                                    Slug is auto-generated and used in URLs
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- ACTIONS -->
+                        <div class="d-flex justify-content-between align-items-center mt-5 border-top pt-4">
+
+                            <a href="{% url 'admin_category_delete' category.id %}"
+                                class="btn btn-outline-danger">
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'admin_categories' %}" class="btn btn-light border">
+                                    Cancel
+                                </a>
+
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="bi bi-check-circle"></i> Update
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </form>
+
                 </div>
             </div>
 
-            <div class="row g-3">
-                <div class="col-md-8">
-                    <label for="name" class="form-label fw-bold">Category Name</label>
-                    <input type="text" class="form-control" id="name" name="name" value="{{ category.name }}"
-                        placeholder="e.g. Main Course" required>
-                </div>
-
-                <div class="col-md-4">
-                    <label for="priority" class="form-label fw-bold">Priority</label>
-                    <input type="number" class="form-control" id="priority" name="priority"
-                        value="{{ category.priority }}" min="0">
-                </div>
-
-                <div class="col-12">
-                    <label for="slug" class="form-label fw-bold text-muted">Slug (Auto-generated)</label>
-                    <div class="input-group">
-                        <span class="input-group-text bg-light text-muted"><i class="bi bi-link-45deg"></i></span>
-                        <input type="text" class="form-control bg-light" id="slug" name="slug"
-                            value="{{ category.slug }}" readonly>
-                    </div>
-                    <small class="text-muted">The slug is used in the URL and cannot be edited directly.</small>
-                </div>
-            </div>
-
-            <div class="d-flex justify-content-end mt-3 mb-3">
-                <a href="{% url 'admin_categories' %}" class="btn btn-outline-secondary btn-sm px-2">Cancel</a>
-                <a href="{% url 'admin_category_delete' category.id %}" class="btn btn-danger btn-sm px-2">
-                    <i class="bi bi-trash me-2"></i>Delete
-                </a>
-                <button type="submit" class="btn btn-primary btn-sm px-2">
-                    <i class="bi bi-save me-2"></i>Update
-                </button>
-            </div>
-        </form>
+        </div>
     </div>
+
 </div>
 
 {% endblock %}

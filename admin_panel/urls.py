@@ -3,7 +3,7 @@ from admin_panel.viewsets.admin_dashboard import DashboardView, LogoutView
 from admin_panel.viewsets.admin_payments import AdminPaymentEditView, PaymentListView
 from admin_panel.viewsets.admin_user import UserAdminView, UserCreateView, UserEditView, UserDeleteView
 from admin_panel.viewsets.admin_order import AdminOrderView, CompleteOrder, CancelOrder, DeleteOrder
-from admin_panel.viewsets.admin_reservation import AdminReservationView
+from admin_panel.viewsets.admin_reservation import AdminReservationView, AdminReservationEditView
 from admin_panel.viewsets.admin_menu import AdminMenuListView, AdminCategoryListView, AdminCategoryEditView, AdminCategoryDeleteView, AdminCategoryCreateView, AdminMenuCreateView, AdminMenuEditView, AdminMenuDeleteView
 from admin_panel.viewsets.admin_reviews import AdminReviewsView, AdminReviewCreateView, AdminReviewEditView, AdminReviewDeleteView
 
@@ -28,7 +28,11 @@ urlpatterns = [
     ])),
     
     # Reservation Management
-    path('reservations/', AdminReservationView.as_view(), name='admin_reservations'),
+    path('reservations/', include([
+        path('', AdminReservationView.as_view(), name='admin_reservations'),
+        path('edit/<int:pk>/', AdminReservationEditView.as_view(), name='admin_edit_reservations'),
+
+    ])),
     
     # Menu Management
     path('menu_categories/', include([

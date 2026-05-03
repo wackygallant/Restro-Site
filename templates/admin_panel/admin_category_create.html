@@ -1,60 +1,88 @@
 {% extends 'admin_panel/admin_base.html' %}
 
-{% block title %}Edit Category{% endblock %}
+{% block page_title %}Create Category{% endblock %}
 
 {% block content %}
 
+<div class="container-fluid">
 
-<div class="col-lg-10">
-    <div class="row">
-    <div class="col-12">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h2 class="mb-1">Create Category</h2>
-                <p class="text-muted mb-0">Organize your menu by adding a new category</p>
-            </div>
-            <a href="{% url 'admin_categories' %}" class="btn btn-outline-secondary">
-                <i class="bi bi-arrow-left"></i> Back to Categories
-            </a>
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Create Category</h2>
+            <p class="text-muted mb-0">Organize your menu by adding a new category</p>
         </div>
-    </div>
-</div>
-    <div class="card border-0 shadow-sm">
-        <div class="card-body p-4">
-            <form method="post">
-                {% csrf_token %}
 
-                <div class="mb-4">
-                    <h5 class="card-title mb-3 text-primary border-bottom pb-2">
-                        <i class="bi bi-tag me-2"></i>Category Information
+        <a href="{% url 'admin_categories' %}" class="btn btn-outline-secondary rounded-pill px-3">
+            <i class="bi bi-arrow-left"></i> Back
+        </a>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4 p-lg-5">
+
+                    <!-- TITLE -->
+                    <h5 class="fw-semibold mb-4">
+                        <i class="bi bi-plus-circle text-primary me-2"></i>
+                        New Category Details
                     </h5>
 
-                    <div class="row g-3">
-                        <div class="col-md-8">
-                            <label for="name" class="form-label fw-semibold">Category Name<span
-                                    class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="name" name="name" placeholder="e.g. Main Course"
-                                required>
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <!-- FORM -->
+                        <div class="row g-3">
+
+                            <div class="col-md-8">
+                                <label for="name" class="form-label fw-semibold">Category Name<span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" 
+                                    id="name" name="name" 
+                                    placeholder="e.g. Main Course" required>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label for="priority" class="form-label fw-semibold">Priority</label>
+                                <input type="number" class="form-control" 
+                                    id="priority" name="priority" 
+                                    value="0" min="0">
+                                <div class="form-text">Lower numbers appear first</div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="p-3 bg-light rounded-3 border">
+                                    <small class="text-muted d-block">
+                                        <i class="bi bi-info-circle me-1"></i> 
+                                        Slugs are automatically generated from the name to create SEO-friendly URLs.
+                                    </small>
+                                </div>
+                            </div>
+
                         </div>
 
-                        <div class="col-md-4">
-                            <label for="priority" class="form-label fw-semibold">Display Priority</label>
-                            <input type="number" class="form-control" id="priority" name="priority" min="0" value="0">
-                            <div class="form-text">Lower numbers appear first.</div>
-                        </div>
-                    </div>
-                </div>
+                        <!-- ACTIONS -->
+                        <div class="d-flex justify-content-end align-items-center mt-5 border-top pt-4">
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'admin_categories' %}" class="btn btn-light border">
+                                    Cancel
+                                </a>
 
-                <div class="d-flex justify-content-end align-items-center pt-4 border-top">
-                    <a href="{% url 'admin_categories' %}" class="btn btn-light border me-2">
-                        Cancel
-                    </a>
-                    <button type="submit" class="btn btn-primary px-4">
-                        <i class="bi bi-plus-circle me-1"></i> Create Category
-                    </button>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="bi bi-check-circle"></i> Create Category
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+
                 </div>
-            </form>
+            </div>
+
         </div>
     </div>
+
 </div>
+
 {% endblock %}

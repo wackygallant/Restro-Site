@@ -134,14 +134,15 @@
                             <!-- Actions -->
                             <td>
                                 <div class="btn-group btn-group-sm">
-                                    <a class="btn btn-outline-success" href="{% url 'admin_order_complete' order.id %}">
+                                    <a class="btn btn-outline-success" href="{% url 'admin_order_complete' order.id %}" title="Complete Order">
                                         <i class="bi bi-check-circle"></i>
                                     </a>
-                                    <a class="btn btn-outline-secondary" href="{% url 'admin_order_cancel' order.id %}">
+                                    <a class="btn btn-outline-secondary" href="{% url 'admin_order_cancel' order.id %}" title="Cancel Order">
                                         <i class="bi bi-x-circle"></i>
                                     </a>
                                     <button type="button"
                                             class="btn btn-outline-danger"
+                                            title="Delete Order"
                                             data-bs-toggle="modal"
                                             data-bs-target="#deleteModal-{{ order.id }}">
                                         <i class="bi bi-trash"></i>

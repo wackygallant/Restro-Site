@@ -1,130 +1,180 @@
 {% extends 'admin_panel/admin_base.html' %}
 
-{% block title %}Edit Menu Item{% endblock %}
+{% block page_title %}Edit Menu Item{% endblock %}
 
 {% block content %}
-<div class="col-lg-10">
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h2 class="mb-1">Edit Menu Item</h2>
-                    <p class="text-muted mb-0">Edit an existing menu item</p>
-                </div>
-                <a href="{% url 'admin_menu' %}" class="btn btn-outline-secondary rounded-pill">
-                    <i class="bi bi-arrow-left"></i> Back to Menu
-                </a>
-            </div>
+
+<div class="container-fluid">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">Edit Menu Item</h2>
+            <p class="text-muted mb-0">Update details for an existing dish or beverage</p>
         </div>
+
+        <a href="{% url 'admin_menu' %}" class="btn btn-outline-secondary rounded-pill px-3">
+            <i class="bi bi-arrow-left"></i> Back to Menu
+        </a>
     </div>
+
     {% if menu_item %}
-    <div class="card border-0 shadow-sm">
-        <div class="card-body p-4">
-            <form method="post" id="createMenuItemForm" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="mb-4">
-                    <h5 class="card-title mb-3 text-primary border-bottom pb-2">
-                        <i class="bi bi-info-circle me-2"></i>General Information
-                    </h5>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label for="name" class="form-label fw-semibold">Item Name<span
-                                    class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="name" name="name"
-                                placeholder="e.g. Grilled Salmon" value="{{ menu_item.name }}" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="category" class="form-label fw-semibold">Category <span
-                                    class="text-danger">*</span></label>
-                            <select class="form-select" id="category" name="category" required>
-                                <option value="" selected disabled>Select category</option>
-                                {% for category in categories %}
-                                    <option value="{{ category.id }}" {% if category.id == menu_item.category.id %}selected{%endif %}>{{ category.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-md-12">
-                            <label for="slug" class="form-label fw-semibold">Slug (URL identifier)</label>
-                            <input type="text" class="form-control" id="slug" name="slug" placeholder="grilled-salmon"
-                                value="{{ menu_item.slug }}">
-                            <small class="text-muted">Automatically generated from name if left empty</small>
-                        </div>
-                        <div class="col-md-12">
-                            <label for="description" class="form-label fw-semibold">Description <span
-                                    class="text-danger">*</span></label>
-                            <textarea class="form-control" id="description" name="description" rows="3" required
-                                placeholder="Describe the ingredients and taste...">{{ menu_item.description }}</textarea>
-                        </div>
-                    </div>
-                </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
 
-                <div class="mb-4">
-                    <h5 class="card-title mb-3 text-primary border-bottom pb-2">
-                        <i class="bi bi-tags me-2"></i>Pricing & Promotion
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4 p-lg-5">
+
+                    <!-- TITLE & META -->
+                    <h5 class="fw-semibold mb-4">
+                        <i class="bi bi-pencil-square text-primary me-2"></i>
+                        Item: {{ menu_item.name }}
                     </h5>
-                    <div class="row g-3 align-items-end">
-                        <div class="col-md-4">
-                            <label for="price" class="form-label fw-semibold">Base Price (Rs.) <span
-                                    class="text-danger">*</span></label>
-                            <input type="number" step="0.01" class="form-control" id="price" name="price" required
-                                placeholder="0.00" value="{{ menu_item.price }}">
-                        </div>
-                        <div class="col-md-4">
-                            <label for="special_price" class="form-label fw-semibold">Special Price (Rs.)</label>
-                            <input type="number" step="0.01" class="form-control" id="special_price"
-                                name="special_price" placeholder="0.00" value="{{ menu_item.special_price }}">
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" id="is_on_special" name="is_on_special"
-                                    {% if menu_item.is_on_special %}checked{% endif %}>
-                                <label class="form-check-label fw-semibold" for="is_on_special">
-                                    Activate Promotion
-                                </label>
+
+                    <form method="post" id="editMenuItemForm" enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <!-- META INFO BOX -->
+                        <div class="row g-3 mb-5 bg-light rounded-3 p-3 border">
+                            <div class="col-md-4">
+                                <small class="text-muted d-block">Item ID</small>
+                                <span class="fw-semibold">#{{ menu_item.id }}</span>
+                            </div>
+                            <div class="col-md-4">
+                                <small class="text-muted d-block">Current Category</small>
+                                <span class="badge bg-primary-soft text-primary border border-primary-subtle px-2">
+                                    {{ menu_item.category.name }}
+                                </span>
+                            </div>
+                            <div class="col-md-4 text-md-end">
+                                <small class="text-muted d-block">Status</small>
+                                {% if menu_item.is_on_special %}
+                                    <span class="text-success small"><i class="bi bi-lightning-fill"></i> On Promotion</span>
+                                {% else %}
+                                    <span class="text-muted small">Standard Pricing</span>
+                                {% endif %}
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="mb-4">
-                    <h5 class="card-title mb-3 text-primary border-bottom pb-2">
-                        <i class="bi bi-image me-2"></i>Media
-                    </h5>
-                    <div class="row">
-                        {% if menu_item.image %}
-                        <div class="mb-2 d-flex align-items-center p-2 border rounded bg-light">
-                            <img src="{{ menu_item.image.url }}" alt="Current Image" class="rounded me-3"
-                                style="width: 50px; height: 50px; object-fit: cover;">
-                            <div class="small">
-                                <span class="text-muted d-block">Current file:</span>
-                                <a href="{{ menu_item.image.url }}" target="_blank"
-                                    class="text-decoration-none text-truncate d-inline-block" style="max-width: 200px;">
-                                    {{ menu_item.image.name }}
+                        <!-- SECTION 1: GENERAL INFO -->
+                        <div class="mb-5">
+                            <h5 class="fw-semibold mb-4 text-dark">
+                                <i class="bi bi-info-circle me-2 text-primary"></i>General Information
+                            </h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label fw-semibold">Item Name<span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="name" name="name"
+                                        value="{{ menu_item.name }}" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="category" class="form-label fw-semibold">Category <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="category" name="category" required>
+                                        {% for category in categories %}
+                                            <option value="{{ category.id }}" {% if category.id == menu_item.category.id %}selected{% endif %}>
+                                                {{ category.name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="slug" class="form-label fw-semibold text-muted">Slug (URL identifier)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-link-45deg"></i></span>
+                                        <input type="text" class="form-control bg-light" id="slug" name="slug" 
+                                            value="{{ menu_item.slug }}" readonly>
+                                    </div>
+                                    <div class="form-text">Slug is auto-managed and used for the public menu link.</div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="description" class="form-label fw-semibold">Description <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="description" name="description" rows="3" required>{{ menu_item.description }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SECTION 2: PRICING -->
+                        <div class="mb-5">
+                            <h5 class="fw-semibold mb-4 text-dark">
+                                <i class="bi bi-tags me-2 text-primary"></i>Pricing & Promotion
+                            </h5>
+                            <div class="row g-3 align-items-center">
+                                <div class="col-md-4">
+                                    <label for="price" class="form-label fw-semibold">Base Price (Rs.)<span class="text-danger">*</span></label>
+                                    <input type="number" step="0.01" class="form-control" id="price" name="price" 
+                                        value="{{ menu_item.price }}" required>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="special_price" class="form-label fw-semibold">Special Price (Rs.)</label>
+                                    <input type="number" step="0.01" class="form-control" id="special_price" 
+                                        name="special_price" value="{{ menu_item.special_price }}">
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-check mt-4">
+                                        <input class="form-check-input" type="checkbox" id="is_on_special" name="is_on_special"
+                                            {% if menu_item.is_on_special %}checked{% endif %}>
+                                        <label class="form-check-label fw-semibold" for="is_on_special">
+                                            Activate Promotion
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SECTION 3: MEDIA -->
+                        <div class="mb-4">
+                            <h5 class="fw-semibold mb-4 text-dark">
+                                <i class="bi bi-image me-2 text-primary"></i>Media
+                            </h5>
+                            
+                            <div class="p-4 border rounded-3 bg-light">
+                                {% if menu_item.image %}
+                                <div class="d-flex align-items-center mb-4 p-3 bg-white border rounded shadow-sm">
+                                    <img src="{{ menu_item.image.url }}" alt="{{ menu_item.name }}" class="rounded me-3 border"
+                                        style="width: 80px; height: 80px; object-fit: cover;">
+                                    <div class="overflow-hidden">
+                                        <small class="text-muted d-block">Currently active image:</small>
+                                        <span class="text-primary text-truncate d-block">{{ menu_item.image.name }}</span>
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                <label for="formFile" class="form-label fw-semibold">Replace Image</label>
+                                <input class="form-control" type="file" id="formFile" name="image">
+                                <div class="form-text mt-2">Uploading a new image will overwrite the existing one.</div>
+                            </div>
+                        </div>
+
+                        <!-- ACTIONS -->
+                        <div class="d-flex justify-content-between align-items-center mt-5 border-top pt-4">
+                            <a href="{% url 'admin_menu_delete' pk=menu_item.pk %}" class="btn btn-outline-danger">
+                                <i class="bi bi-trash"></i> Delete Item
+                            </a>
+
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'admin_menu' %}" class="btn btn-light border">
+                                    Cancel
                                 </a>
+                                <button type="submit" class="btn btn-primary px-4">
+                                    <i class="bi bi-check-circle"></i> Update Item
+                                </button>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <input class="form-control" type="file" id="formFile" name="image" {% if not menu_item.image %}required{% endif %}>
-                            <div class="form-text">Upload a new image to replace the current one. High-resolution JPG/PNG work best.</div>
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
 
-                <div class="d-flex justify-content-end align-items-center pt-4 border-top">
-                    <a href="{% url 'admin_menu' %}" class="btn btn-light border me-2">
-                        Cancel
-                    </a>
-                    <a href="{% url 'admin_menu_delete' pk=menu_item.pk %}" class="btn btn-light border me-2">
-                        Delete
-                    </a>
-                    <button type="submit" class="btn btn-primary px-4">
-                        <i class="bi bi-plus-circle me-1"></i> Update Menu Item
-                    </button>
+                    </form>
+
                 </div>
-            </form>
+            </div>
+
         </div>
     </div>
     {% endif %}
+
 </div>
+
 {% endblock %}
