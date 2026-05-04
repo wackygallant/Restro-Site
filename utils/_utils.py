@@ -1,4 +1,6 @@
 import random
+from django.core.mail import send_mail
+from django.conf import settings
 
 def get_username(request):
     if request.user.is_authenticated:

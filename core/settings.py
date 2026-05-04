@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Django Extensions
+    'rest_framework',
+    'drf_spectacular',
     # Created Apps
     'admin_panel',
     'customer_panel',
@@ -48,8 +51,6 @@ INSTALLED_APPS = [
     'user_accounts',
     'order',
     'payments',
-    'rest_framework',
-    'drf_spectacular',
 ]
 
 MIDDLEWARE = [

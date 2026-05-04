@@ -68,7 +68,11 @@ class RegisterView(View):
             # Login the user after registration
             user = authenticate(username=username, password=password)
             login(request, user)
-            messages.success(request, 'Account created successfully') 
+            messages.success(request, 'Account created successfully')
+            
+            # Sending Welcome Email to the User
+            recipient = form.cleaned_data.get('email')
+            send_mail("Welcome Email", f"Welcome {form.cleaned_data.get('first_name')}! for being a part of our Restro. \n Enjoy your best dining experience with us", settings.DEFAULT_FROM_EMAIL, [recipient])
             return redirect('home')
         else:
             messages.error(request, 'Please correct the error below.')

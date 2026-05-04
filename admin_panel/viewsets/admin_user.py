@@ -27,8 +27,8 @@ class UserAdminView(AdminLoginRequiredMixin, generic.ListView):
             if filters:
                 queryset = queryset.filter(is_active=True) if 'active' in filters else queryset
                 queryset = queryset.filter(is_staff=True) if 'staff' in filters else queryset
-            return queryset.order_by('date_joined')
-        return User.objects.exclude(is_superuser=True).order_by('date_joined')
+            return queryset.order_by('-date_joined')
+        return User.objects.exclude(is_superuser=True).order_by('-date_joined')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
