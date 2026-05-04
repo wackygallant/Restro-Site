@@ -103,6 +103,17 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT'),
     }
 }
+# TO implement cache server
+# CACHES = {
+#     'default': {
+#         'BACKEND': os.getenv('BACKEND'),
+#         'LOCATION': os.getenv('LOCATION'),
+#         'OPTIONS': {
+#             'CLIENT_CLASS': os.getenv('CLIENT_CLASS'),
+#         }
+#     }
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators

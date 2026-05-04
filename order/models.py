@@ -58,11 +58,11 @@ class Order(BaseModel):
         ('failed', 'Failed'),
     }
     
-    order_id = models.CharField(max_length=100, unique=True)
+    order_id = models.CharField(max_length=100, unique=True, db_index=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
     total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     
-    order_status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    order_status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending', db_index=True)
     shippingaddress = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
@@ -104,8 +104,8 @@ class Order(BaseModel):
 
 class OrderItem(BaseModel):
     """Items in a completed order"""
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items')
-    menu_item = models.ForeignKey(MenuItems, on_delete=models.SET_NULL, null=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='order_items', db_index=True)
+    menu_item = models.ForeignKey(MenuItems, on_delete=models.SET_NULL, null=True, db_index=True)
     quantity = models.PositiveIntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)  # Price at time of order
 
@@ -119,6 +119,7 @@ class OrderItem(BaseModel):
         db_table = 'order_items'
         verbose_name = 'Order Item'
         verbose_name_plural = 'Order Items'
+        ordering = ['-order']
 
 
 

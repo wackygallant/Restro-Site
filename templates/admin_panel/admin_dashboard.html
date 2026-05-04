@@ -6,6 +6,9 @@
 
 {% block content %}
 
+<link rel="stylesheet" href="{% static 'admin_panel/css/dashboard.css' %}">
+
+
 <div class="container-fluid">
 
     <!-- ================= STATS ================= -->
@@ -80,16 +83,14 @@
         <div class="col-12 col-lg-8">
             <div class="card border-0 shadow-sm h-100">
 
-                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <div class="card-header bg-white">
                     <h6 class="mb-0 fw-bold">Revenue Analytics</h6>
-                    <button class="btn btn-sm btn-outline-primary">
-                        Export
-                    </button>
                 </div>
 
-                <div class="card-body">
-                    <div style="height: 300px;">
-                        <canvas id="revenueChart"></canvas>
+                <div class="card-body p-1">
+                    <div class="ratio ratio-21x9 overflow-hidden">
+                        <img src="data:image/png;base64,{{ revenue_chart }}"
+                            class="img-fluid w-100 h-100 revenue-chart" />
                     </div>
                 </div>
 
