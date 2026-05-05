@@ -103,16 +103,16 @@ DATABASES = {
         'PORT': os.getenv('DB_PORT'),
     }
 }
-# TO implement cache server
-# CACHES = {
-#     'default': {
-#         'BACKEND': os.getenv('BACKEND'),
-#         'LOCATION': os.getenv('LOCATION'),
-#         'OPTIONS': {
-#             'CLIENT_CLASS': os.getenv('CLIENT_CLASS'),
-#         }
-#     }
-# }
+#TO implement cache server
+CACHES = {
+    'default': {
+        'BACKEND': os.getenv('BACKEND'),
+        'LOCATION': os.getenv('LOCATION'),
+        'OPTIONS': {
+            'CLIENT_CLASS': os.getenv('CLIENT_CLASS'),
+        }
+    }
+}
 
 
 # Password validation

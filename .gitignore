@@ -23,6 +23,6 @@ staticfiles/
 .DS_Store
 .vscode/
 .idea/
+Backup/
 Dockerfile
-Restro_backup.sql
 docker-compose.yml
