@@ -17,8 +17,8 @@ services:
     volumes:
       - .:/app
     ports:
-      - "8000:8000"
-    command: python manage.py runserver 0.0.0.0:8000
+      - "192.168.101.17:8000:8000"
+    command: python manage.py runserver 192.168.101.17:8000
     environment:
       # We construct the URL using the variables from .env
       # Notice we use '@db' so Docker knows where to go

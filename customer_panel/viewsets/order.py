@@ -277,7 +277,7 @@ class PaymentVerificationView(LoginRequiredMixin, generic.TemplateView):
                 except Exception as e:
                     print(f"Cart clearing error: {e}")
 
-            messages.success(request, "Payment successful via eSewa, Order Created with {order.order_id}!")
+            messages.success(request, f"Payment successful via eSewa, Order Created with {order.order_id}!")
             return redirect('orders')
 
         else:
@@ -346,8 +346,8 @@ class CheckoutView(LoginRequiredMixin, View):
             'Content-Type': 'application/json',
         }
         payload = {
-            "return_url": "http://localhost:8000/payment_verify/",
-            "website_url": "http://localhost:8000/",
+            "return_url": "http://192.168.101.17:8000/payment_verify/",
+            "website_url": "http://192.168.101.17:8000/",
             "amount": float(order.total_amount * 100),
             "purchase_order_id": unique_txn_id,
             "purchase_order_name": f"Order #{order.order_id}",
