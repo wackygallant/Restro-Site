@@ -24,5 +24,3 @@ staticfiles/
 .vscode/
 .idea/
 Backup/
-Dockerfile
-docker-compose.yml
