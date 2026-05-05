@@ -1,119 +1,173 @@
 {% extends "customer_panel/base.html" %}
 
 {% block content %}
-<section class="about-hero position-relative text-white text-center">
-    <div class="container py-5">
-        <h1 class="display-3 fw-bold">Reserve Your Table</h1>
-        <p class="lead fs-5">Quick, easy, and instant confirmation.</p>
+
+<!-- HERO -->
+<section class="about-hero text-white text-center">
+    <div class="container py-4 py-md-5">
+        <h1 class="fw-bold display-5 display-md-3">Reserve Your Table</h1>
+        <p class="lead small">Quick, easy booking</p>
     </div>
 </section>
 
-<div class="container py-5">
+<div class="container py-4 py-md-5">
+
     {% if user.is_authenticated %}
+
     <div class="row justify-content-center">
-        <div class="col-lg-8">
-            
-            <div class="card border-0 shadow-lg booking-form-card">
-                <div class="card-body p-4 p-md-5">
-                    <form method="POST"> 
+        <div class="col-12 col-md-10 col-lg-8">
+
+            <!-- FORM CARD -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-3 p-md-4">
+
+                    <form method="POST">
                         {% csrf_token %}
 
-                        <div class="mb-5">
-                            <h5 class="fw-bold mb-4 form-section-title">👤 Personal Information</h5>
-                            <div class="row g-3">
+                        <!-- PERSONAL INFO -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">👤 Personal Info</h6>
+
+                            <div class="row g-2">
+
                                 <div class="col-12">
-                                    <label class="form-label fw-bold">Full Name</label>
-                                    <input type="text" class="form-control bg-light" name="name" value="{{ user.username }}" readonly>
+                                    <input type="text"
+                                           class="form-control bg-light"
+                                           value="{{ user.username }}"
+                                           readonly>
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label fw-bold">Email</label>
-                                    <input type="email" class="form-control bg-light" name="email" value="{{ user.email }}" readonly>
+
+                                <div class="col-12 col-md-6">
+                                    <input type="email"
+                                           class="form-control bg-light"
+                                           value="{{ user.email }}"
+                                           readonly>
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="phone_number" class="form-label fw-bold">Phone Number</label>
-                                    <input type="tel" name="phone_number" id="phone_number" 
-                                           class="form-control" placeholder="e.g. 123456789" required maxlength="10" minlength="7">
+
+                                <div class="col-12 col-md-6">
+                                    <input type="tel"
+                                           name="phone_number"
+                                           class="form-control"
+                                           placeholder="Phone number"
+                                           required>
                                 </div>
+
                             </div>
                         </div>
 
-                        <div class="mb-5">
-                            <h5 class="fw-bold mb-4 form-section-title">🍽️ Booking Details</h5>
-                            <div class="row g-4">
-                                <div class="col-md-4">
-                                    <label for="person_count" class="form-label fw-bold">Guests</label>
-                                    <select name="person_count" id="person_count" class="form-select" required>
-                                        <option value="" disabled selected>Select size</option>
-                                        <option value="1">1 Person</option>
-                                        <option value="2">2 People</option>
-                                        <option value="3">3 People</option>
-                                        <option value="4">4 People</option>
-                                        <option value="5">5+ People</option>
+                        <!-- BOOKING -->
+                        <div class="mb-4">
+                            <h6 class="fw-bold mb-3">🍽 Booking</h6>
+
+                            <div class="row g-2">
+
+                                <div class="col-12 col-md-4">
+                                    <select name="person_count" class="form-select" required>
+                                        <option disabled selected>Guests</option>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5+</option>
                                     </select>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <label for="booking_date" class="form-label fw-bold">Date</label>
-                                    <input type="date" name="booking_date" id="booking_date" 
-                                           class="form-control" required>
+                                <div class="col-12 col-md-4">
+                                    <input type="date"
+                                           name="booking_date"
+                                           class="form-control"
+                                           required>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <label for="time_slot" class="form-label fw-bold">Time</label>
-                                    <select name="time_slot" id="time_slot" class="form-select" required>
-                                        <option value="" disabled selected>Choose time</option>
+                                <div class="col-12 col-md-4">
+                                    <select name="time_slot" class="form-select" required>
+                                        <option disabled selected>Time</option>
                                         {% for time in time_slots %}
-                                        <option value="{{ time.id }}">{{ time.time|time:"g:i A" }}</option>
+                                        <option value="{{ time.id }}">
+                                            {{ time.time|time:"g:i A" }}
+                                        </option>
                                         {% endfor %}
                                     </select>
                                 </div>
+
                             </div>
                         </div>
 
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                            <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-lg px-5">Cancel</a>
-                            <button type="submit" class="btn btn-dark btn-lg px-5 fw-bold">Confirm Booking</button>
+                        <!-- ACTIONS -->
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+
+                            <a href="{% url 'home' %}"
+                               class="btn btn-outline-secondary w-100 w-md-auto">
+                                Cancel
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-dark w-100 w-md-auto">
+                                Confirm Booking
+                            </button>
+
                         </div>
+
                     </form>
+
                 </div>
             </div>
 
-            <div class="row g-3 mt-5">
-                <div class="col-md-4 text-center">
-                    <div class="p-3 border rounded shadow-sm bg-white">
-                        <div class="fs-2">🎯</div>
-                        <h6 class="fw-bold">Easy Booking</h6>
+            <!-- FEATURES -->
+            <div class="row g-2 mt-4">
+
+                <div class="col-4 text-center">
+                    <div class="p-2 border rounded small bg-white shadow-sm">
+                        🎯 <br><strong>Easy</strong>
                     </div>
                 </div>
-                <div class="col-md-4 text-center">
-                    <div class="p-3 border rounded shadow-sm bg-white">
-                        <div class="fs-2">⏱️</div>
-                        <h6 class="fw-bold">Instant Confirm</h6>
+
+                <div class="col-4 text-center">
+                    <div class="p-2 border rounded small bg-white shadow-sm">
+                        ⏱️ <br><strong>Fast</strong>
                     </div>
                 </div>
-                <div class="col-md-4 text-center">
-                    <div class="p-3 border rounded shadow-sm bg-white">
-                        <div class="fs-2">💬</div>
-                        <h6 class="fw-bold">24/7 Support</h6>
+
+                <div class="col-4 text-center">
+                    <div class="p-2 border rounded small bg-white shadow-sm">
+                        💬 <br><strong>Support</strong>
                     </div>
                 </div>
+
             </div>
 
         </div>
     </div>
+
     {% else %}
+
+    <!-- LOGIN REQUIRED -->
     <div class="row justify-content-center">
-        <div class="col-lg-6">
-            <div class="card border-0 shadow text-center p-5">
-                <h4 class="fw-bold">🔐 Login Required</h4>
-                <p class="text-muted">Please sign in to book your table.</p>
-                <div class="d-grid gap-2 mt-3">
-                    <a href="{% url 'login' %}" class="btn btn-dark">Sign In</a>
-                    <a href="{% url 'register' %}" class="btn btn-outline-dark">Create Account</a>
+        <div class="col-12 col-md-6">
+
+            <div class="card border-0 shadow-sm text-center p-4">
+
+                <h5 class="fw-bold">🔐 Login Required</h5>
+                <p class="text-muted small">
+                    Please sign in to book your table
+                </p>
+
+                <div class="d-grid gap-2 mt-2">
+                    <a href="{% url 'login' %}" class="btn btn-dark">
+                        Sign In
+                    </a>
+                    <a href="{% url 'register' %}" class="btn btn-outline-dark">
+                        Create Account
+                    </a>
                 </div>
+
             </div>
+
         </div>
     </div>
+
     {% endif %}
+
 </div>
+
 {% endblock %}

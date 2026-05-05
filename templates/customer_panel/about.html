@@ -4,106 +4,171 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'customer_panel/css/index.css' %}">
 
+<!-- HERO -->
 <section class="about-hero text-white text-center">
-    <div class="container py-5">
-        <h1 class="display-3 fw-bold">About Restro</h1>
-        <p class="lead fs-5">Crafting culinary excellence since 2015</p>
+    <div class="container py-4 py-md-5">
+        <h1 class="fw-bold display-5 display-md-3">About Restro</h1>
+        <p class="lead small fs-md-5">Crafting culinary excellence since 2015</p>
     </div>
 </section>
 
-<div class="container py-5">
-    <section class="mb-5">
-        <div class="row align-items-center g-4">
-            <div class="text-center">
-                <h2 class="section-title">Our Story</h2>
-            </div>
-            <div class="col-md-6">
+<!-- MAIN -->
+<div class="container py-4 py-md-5">
+
+    <!-- OUR STORY -->
+    <section class="mb-4 mb-md-5">
+        <h2 class="section-title text-center">Our Story</h2>
+
+        <div class="row align-items-center g-3 g-md-4 mt-2">
+
+            <!-- IMAGE -->
+            <div class="col-12 col-md-6">
                 <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1"
-                    class="img-fluid rounded shadow-sm" alt="Restaurant Interior">
+                     class="img-fluid rounded shadow-sm w-100"
+                     style="object-fit: cover; max-height: 300px;"
+                     alt="Restaurant Interior">
             </div>
-            <div class="col-md-6">
-                <p class="lead text-muted">Restro was founded with a simple mission: to bring authentic, delicious
-                    cuisine to our community.</p>
-                <p class="lead text-muted">Started in 2015, Restro has grown from a small neighborhood bistro to one of the city's most celebrated restaurants.</p>
+
+            <!-- TEXT -->
+            <div class="col-12 col-md-6 text-center text-md-start">
+                <p class="text-muted small small-md">
+                    Restro was founded with a simple mission: to bring authentic,
+                    delicious cuisine to our community.
+                </p>
+                <p class="text-muted small small-md">
+                    Started in 2015, Restro has grown from a small neighborhood
+                    bistro to one of the city's most celebrated restaurants.
+                </p>
             </div>
+
         </div>
     </section>
 
-    <section class="py-5 bg-light rounded">
+    <!-- TEAM -->
+    <section class="py-4 py-md-5 bg-light rounded">
         <div class="container position-relative">
-        <div class="text-center">
-            <h2 class="section-title">Meet Our Team</h2>
-        </div>
+
+            <h2 class="section-title text-center">Meet Our Team</h2>
+
             <div class="carousel-wrapper">
                 <div class="carousel-track" id="team-track">
+
                     {% for team in teams %}
                     <div class="carousel-card">
-                        <div class="card border-0 shadow-sm overflow-hidden h-100">
-                            <img src="{{ team.image.url }}" class="card-img-top" alt="{{ team.name }}"
-                                style="height: 250px; object-fit: cover;">
-                            <div class="card-body">
-                                <h5 class="card-title fw-bold">{{ team.name }}</h5>
-                                <p class="card-text text-warning small fw-bold">{{ team.role }}</p>
-                                <p class="small text-muted">{{ team.bio }}</p>
+                        <div class="card border-0 shadow-sm h-100 overflow-hidden">
+
+                            <img src="{{ team.image.url }}"
+                                 class="card-img-top"
+                                 style="height: 180px; object-fit: cover;"
+                                 alt="{{ team.name }}">
+
+                            <div class="card-body text-center text-md-start">
+                                <h6 class="fw-bold mb-1">{{ team.name }}</h6>
+                                <p class="text-warning small fw-semibold mb-1">
+                                    {{ team.role }}
+                                </p>
+                                <p class="small text-muted mb-0">
+                                    {{ team.bio|truncatechars:80 }}
+                                </p>
                             </div>
+
                         </div>
                     </div>
                     {% endfor %}
+
                 </div>
             </div>
-            
-            <!-- Buttons -->
+
+            <!-- NAV -->
             <button class="nav-btn left" id="team-prev">❮</button>
             <button class="nav-btn right" id="team-next">❯</button>
+
         </div>
     </section>
 
-    <section class="my-5 bg-dark text-white p-5 rounded">
-        <h2 class="fw-bold text-center mb-4 text-warning">Commitment to Sustainability</h2>
-        <div class="row g-4 text-center">
-            <div class="col-md-4">
-                <div class="fs-1 mb-2">🚚</div>
-                <h5 class="fw-bold">Local Sourcing</h5>
-                <p class="small opacity-75">80% ingredients within 50 miles</p>
+    <!-- SUSTAINABILITY -->
+    <section class="my-4 my-md-5 bg-dark text-white p-3 p-md-5 rounded text-center">
+        <h2 class="fw-bold text-warning mb-4">Commitment to Sustainability</h2>
+
+        <div class="row g-3 g-md-4">
+
+            <div class="col-12 col-md-4">
+                <div class="fs-2 fs-md-1 mb-2">🚚</div>
+                <h6 class="fw-bold">Local Sourcing</h6>
+                <p class="small opacity-75 mb-0">
+                    80% ingredients within 50 miles
+                </p>
             </div>
-            <div class="col-md-4">
-                <div class="fs-1 mb-2">♻️</div>
-                <h5 class="fw-bold">Zero Waste</h5>
-                <p class="small opacity-75">Composting and full recycling</p>
+
+            <div class="col-12 col-md-4">
+                <div class="fs-2 fs-md-1 mb-2">♻️</div>
+                <h6 class="fw-bold">Zero Waste</h6>
+                <p class="small opacity-75 mb-0">
+                    Composting and recycling
+                </p>
             </div>
-            <div class="col-md-4">
-                <div class="fs-1 mb-2">⚡</div>
-                <h5 class="fw-bold">Green Energy</h5>
-                <p class="small opacity-75">100% Renewable powered</p>
+
+            <div class="col-12 col-md-4">
+                <div class="fs-2 fs-md-1 mb-2">⚡</div>
+                <h6 class="fw-bold">Green Energy</h6>
+                <p class="small opacity-75 mb-0">
+                    100% renewable powered
+                </p>
             </div>
+
         </div>
     </section>
 
-    <section class="mb-5" id="contact-us">
-        <h2 class="fw-bold text-center mb-5">Visit Us Today</h2>
-        <div class="row g-4">
-            <div class="col-md-6">
-                <div class="card border-0 shadow-sm p-4">
-                    <h5 class="fw-bold mb-3">Contact Information</h5>
-                    <p><strong>📍 Address:</strong> 123 Main Street, Your City</p>
-                    <p><strong>📞 Phone:</strong> (123) 456-7890</p>
-                    <div class="d-grid mt-3">
-                        <a href="{% url 'booking_page' %}" class="btn btn-warning fw-bold">Reserve Now</a>
+    <!-- CONTACT -->
+    <section class="mb-4 mb-md-5" id="contact-us">
+        <h2 class="fw-bold text-center mb-4">Visit Us Today</h2>
+
+        <div class="row g-3 g-md-4">
+
+            <!-- CONTACT CARD -->
+            <div class="col-12 col-md-6">
+                <div class="card border-0 shadow-sm p-3 p-md-4 h-100">
+
+                    <h6 class="fw-bold mb-3">Contact Information</h6>
+
+                    <p class="small mb-1">
+                        <strong>📍 Address:</strong> 123 Main Street
+                    </p>
+                    <p class="small mb-2">
+                        <strong>📞 Phone:</strong> (123) 456-7890
+                    </p>
+
+                    <div class="d-grid mt-2">
+                        <a href="{% url 'booking_page' %}" class="btn btn-warning">
+                            Reserve Now
+                        </a>
                     </div>
+
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="card border-0 shadow-sm p-4 h-100 bg-secondary text-white text-center d-flex align-items-center justify-content-center">
+
+            <!-- MAP -->
+            <div class="col-12 col-md-6">
+                <div class="card border-0 shadow-sm p-3 p-md-4 h-100 bg-secondary text-white text-center d-flex align-items-center justify-content-center">
                     <div>
-                        <p class="mb-0">📍 Google Map Integration</p>
+                        <p class="mb-0 small">📍 Google Map</p>
                         <small>Map will load here</small>
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
+
 </div>
 
 <script src="{% static 'customer_panel/js/index.js' %}"></script>
 <script src="{% static 'customer_panel/js/about.js' %}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    initCarousel('team-track', 'team-prev', 'team-next');
+});
+</script>
+
 {% endblock %}

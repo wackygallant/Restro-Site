@@ -93,6 +93,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #     }
 # }
 
+BASE_IP=os.getenv('BASE_IP')
+BASE_PORT=os.getenv('BASE_PORT')
+
 DATABASES = {
     'default': {
         'ENGINE': os.getenv('DB_ENGINE'),

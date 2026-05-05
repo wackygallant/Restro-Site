@@ -1,116 +1,149 @@
-    .carousel-wrapper {
+/* ===== CAROUSEL ===== */
+.carousel-wrapper {
     overflow: hidden;
     position: relative;
 }
 
 .carousel-track {
     display: flex;
-    transition: transform 0.6s ease;
+    transition: transform 0.5s ease;
 }
 
-/* Show center + side peek */
+/* MOBILE FIRST: 1 card */
 .carousel-card {
-    min-width: 33.33%;
-    padding: 0 10px;
-    transform: scale(0.9);
-    transition: all 0.4s ease;
+    min-width: 100%;
+    padding: 0 8px;
+    transition: transform 0.3s ease;
 }
 
-/* Image styling */
+/* TABLET: 2 cards */
+@media (min-width: 768px) {
+    .carousel-card {
+        min-width: 50%;
+    }
+}
+
+/* DESKTOP: 3 cards */
+@media (min-width: 992px) {
+    .carousel-card {
+        min-width: 33.33%;
+    }
+}
+
+/* Image */
 .carousel-card img {
-    height: 220px;
+    height: 180px;
     object-fit: cover;
-    border-radius: 12px;
+    border-radius: 10px;
 }
 
-/* Buttons */
+@media (min-width: 768px) {
+    .carousel-card img {
+        height: 220px;
+    }
+}
+
+/* NAV BUTTONS */
 .nav-btn {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(255,255,255,0.1);
+    background: rgba(0,0,0,0.5);
     border: none;
-    font-size: 28px;
     color: white;
-    padding: 10px 15px;
-    cursor: pointer;
+    font-size: 20px;
+    padding: 6px 10px;
+    border-radius: 6px;
     z-index: 10;
 }
 
-.nav-btn.left { 
-    left: -10px; 
-    color: black;
+.nav-btn.left { left: 5px; }
+.nav-btn.right { right: 5px; }
+
+@media (min-width: 768px) {
+    .nav-btn {
+        font-size: 28px;
+        padding: 10px 15px;
+    }
 }
 
-.nav-btn.right { 
-    right: -10px; 
-    color: black;
+/* ===== HERO ===== */
+.about-hero {
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+                url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4") center/cover;
+    padding: 60px 0;
 }
 
-/* Section spacing */
-section.py-5.bg-white {
-    margin-bottom: 2rem;
+@media (min-width: 768px) {
+    .about-hero {
+        padding: 100px 0;
+    }
 }
 
-/* Review Form Styling */
-.rating-stars .btn {
-    transition: all 0.2s ease;
-    text-decoration: none;
-}
-
-.rating-stars .btn:hover {
-    transform: scale(1.1);
-}
-
-.rating-stars .btn.active i {
-    color: #ffc107 !important;
-}
-
-.rating-stars .btn i {
-    transition: color 0.2s ease;
-}
-
-.rating-stars .btn:hover i {
-    color: #ffc107 !important;
-}
-
-/* Review form size reduction */
-#reviewForm .card {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 2rem !important;
-}
-
-#reviewForm .form-control {
-    font-size: 0.9rem;
-}
-
-#reviewForm .form-label {
-    font-size: 0.9rem;
-}
-
-#reviewForm .btn {
-    font-size: 0.9rem;
-    padding: 0.5rem 2rem;
-}
-
-/* Feature cards styling */
+/* ===== FEATURE CARDS ===== */
 .feature-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+    transform: translateY(-4px);
 }
 
+/* ===== ICON ===== */
 .icon-box {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    display: inline-block;
-    transition: transform 0.3s ease;
+    font-size: 2.5rem;
 }
 
-.feature-card:hover .icon-box {
-    transform: scale(1.1);
+@media (min-width: 768px) {
+    .icon-box {
+        font-size: 3rem;
+    }
+}
+
+/* ===== REVIEW FORM ===== */
+#reviewForm .card {
+    padding: 1.5rem !important;
+}
+
+@media (min-width: 768px) {
+    #reviewForm .card {
+        padding: 2rem !important;
+    }
+}
+
+/* ===== STAR RATING ===== */
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    width: fit-content;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating .star {
+    font-size: 2rem;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    user-select: none;
+}
+
+.star-rating input:checked ~ .star,
+.star-rating .star:hover,
+.star-rating input:checked ~ .star:hover {
+    color: #ffc107;
+}
+
+.star-rating:has(input:checked) .star:hover {
+    color: #ffc107;
+}
+
+/* ===== GENERAL ===== */
+.section-title {
+    font-weight: 700;
+    margin-bottom: 1.5rem;
 }
