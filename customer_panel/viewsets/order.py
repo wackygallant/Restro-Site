@@ -59,7 +59,7 @@ class OrderCartView(LoginRequiredMixin, View):
         order_cart_items = order_cart.order_cart_items.all()
         total_items = order_cart.get_total_items()
         total_price = order_cart.get_total_price()
-        breakpoint()
+
 
         return render(request, 'customer_panel/cart.html', {
             'order_cart': order_cart,

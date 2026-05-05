@@ -22,16 +22,16 @@ urlpatterns = [
     ])),
     
     # Orders
-    path('orders/', include([
-        path('', OrderListView.as_view(), name='orders'),
-            path('cart/', include([
-                path('', OrderCartView.as_view(), name='order_cart'),
-                path('add/', AddToOrderCartView.as_view(), name='add_to_order_cart'),
-                path('remove/<int:order_cart_item_id>/', RemoveFromOrderCartView.as_view(), name='remove_from_order_cart'),
-                path('update/<int:order_cart_item_id>/', UpdateOrderCartItemView.as_view(), name='update_order_cart_item'),
-            ])),
-        ])),
+    path('orders/', OrderListView.as_view(), name='orders'),
 
+    # Cart
+    path('cart/', include([
+        path('', OrderCartView.as_view(), name='order_cart'),
+        path('add/', AddToOrderCartView.as_view(), name='add_to_order_cart'),
+        path('remove/<int:order_cart_item_id>/', RemoveFromOrderCartView.as_view(), name='remove_from_order_cart'),
+        path('update/<int:order_cart_item_id>/', UpdateOrderCartItemView.as_view(), name='update_order_cart_item'),
+    ])),
+    
     # Checkout and Payment Verification
     path('checkout/', CheckoutView.as_view(), name='checkout'),
     path('payment_verify/', PaymentVerificationView.as_view(), name="payment_verify")
