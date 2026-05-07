@@ -1,6 +1,7 @@
 # Django Modules Imports
+from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views import View, generic
 from django.contrib import messages
 
@@ -33,15 +34,21 @@ class BookTableView(LoginRequiredMixin, View):
     def post(self, request):
         form = BookingForm(request.POST)
         if form.is_valid():
+            validate_date = form.cleaned_data['booking_date']
+            
+            if validate_date < timezone.now().date():
+                messages.error(request, "Table booking failed. Cannot book a past date!")
+                return redirect('booking_page')
+            
+            # If valid, proceed to save
             booking = form.save(commit=False)
             booking.user = request.user
             booking.booking_id = booking.create_booking_id()
             booking.save()
             
-            messages.success(request, "Table booked successfully, Please wait for the confirmation of your booking!")
-            return render(request, "customer_panel/booktable.html")
-        
+            messages.success(request, "Table booked successfully! Please wait for confirmation.")
+            return redirect('booking_page')
+    
         else:
-            messages.error(request, "Form errors: " + str(form.errors))
-            
-            return render(request, "customer_panel/booktable.html")
+            # Form-level validation errors (e.g. wrong format)
+            return render(request, "customer_panel/booktable.html", {'form': form})
