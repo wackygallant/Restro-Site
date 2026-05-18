@@ -21,6 +21,7 @@
 <!-- SPECIALS -->
 <section class="py-4 py-md-5">
     <div class="container">
+        {% if item %}
         <h2 class="section-title text-center">Today's Specials</h2>
 
         <div class="carousel-wrapper">
@@ -52,6 +53,7 @@
             <button class="nav-btn left" id="dish-prev">❮</button>
             <button class="nav-btn right" id="dish-next">❯</button>
         </div>
+        {% endif %}
     </div>
 </section>
 
@@ -89,9 +91,10 @@
 </section>
 
 <!-- REVIEWS -->
+{% if reviews %}
 <section class="py-4 py-md-5">
-    <div class="container">
-        <h2 class="section-title text-center">Reviews</h2>
+    <div class="container text-center">
+        <h2 class="section-title">Reviews</h2>
 
         <div class="carousel-wrapper">
             <div class="carousel-track" id="review-track">
@@ -122,6 +125,7 @@
         </div>
     </div>
 </section>
+{% endif %}
 
 <!-- REVIEW FORM -->
 <section class="py-4 py-md-5 bg-light">

@@ -34,7 +34,7 @@ class DashboardView(AdminLoginRequiredMixin, generic.TemplateView):
         revenue_chart = generate_revenue_chart()
 
         context.update({
-            'total_users': User.objects.count(),
+            'total_users': User.objects.filter(is_staff=False).count(),
             'total_orders': completed_orders.count(),
             'total_revenue': completed_orders.aggregate(total=Sum('total_amount'))['total'] or 0,
             'total_reservations': confirmed_bookings.count(),
