@@ -5,9 +5,9 @@ services:
       - postgres_data:/var/lib/postgresql/data
     environment:
       # This pulls directly from your .env file
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
 
   redis:
     image: redis:7-alpine
@@ -17,12 +17,12 @@ services:
     volumes:
       - .:/app
     ports:
-      - "${BASE_URL:-127.0.0.1}:8000:8000"
+      - "8000:8000"
     command: python manage.py runserver 0.0.0.0:8000
     environment:
       # We construct the URL using the variables from .env
       # Notice we use '@db' so Docker knows where to go
-      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      - DATABASE_URL=postgres://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
       - REDIS_URL=redis://redis:6379/1
       - DEBUG=${DEBUG}
     depends_on:

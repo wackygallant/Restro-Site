@@ -346,8 +346,8 @@ class CheckoutView(LoginRequiredMixin, View):
             'Content-Type': 'application/json',
         }
         payload = {
-            "return_url": f"http://{settings.BASE_IP}:{settings.BASE_PORT}/payment_verify/",
-            "website_url": f"http://{settings.BASE_IP}:{settings.BASE_PORT}/",
+            "return_url": f"http://localhost:8000/payment_verify/",
+            "website_url": f"http://localhost:8000/",
             "amount": float(order.total_amount * 100),
             "purchase_order_id": unique_txn_id,
             "purchase_order_name": f"Order #{order.order_id}",
